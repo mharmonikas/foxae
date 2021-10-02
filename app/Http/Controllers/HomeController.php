@@ -1315,10 +1315,12 @@ class HomeController extends Controller {
 		$this->checklogin();
 		$packageid = Session::get('packageid');
 		$getplan = DB::table('tbl_plan')->where('plan_id',$packageid)->where('plan_status','A')->first();
-		if(empty($packageid) || empty($getplan)){
+
+		if(empty($packageid) || empty($getplan)) {
 			return redirect('/');
 			exit;
 		}
+
 		$country = DB::table('tblcountry')->get();
 
 		return view('/checkout',compact('country','getplan'));
