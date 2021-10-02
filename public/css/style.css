@@ -1,0 +1,145 @@
+.main-container{
+background-color:#000;
+
+}
+.container.logo img {
+    width: 65%;
+}
+.container.logo img {
+    margin: 18px 0px 0px 0px;
+}
+
+.title h5{
+	color:#fff;
+	float:right;
+	
+}
+
+.form-control.gray {
+    background-color: #000;
+    border-color: #000;
+    font-size: 30px;
+    font-weight: 600;
+}
+
+.search {
+    display: inline-block;
+    width: 100%;
+    padding-left: 65px;
+    position: relative;
+}
+
+.btn.btn-outline {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    padding: 4px 12px;
+    background-color: black;
+    border: 2px solid #fff;
+}
+
+
+.navigation-bar {
+    color: #fff;
+    margin: 28px 0px 0px 0px;
+	    font-weight: bold;
+}
+
+
+.icons {
+    display: inline-block;
+   
+}
+
+.banner-image img {
+    width: 100%;
+}
+.banner-image {
+  padding: 54px 0px 0px 0px; 
+ }
+  
+.input_set  label i::after {
+
+    content: "\2713";
+    font-weight: bold;
+    position: absolute;
+    top: -4px;
+    opacity: 0;
+
+} 
+.input_set label input{
+	position:absolute;
+	opacity:0;
+}
+.input_set label input:checked + i::after {
+
+    opacity: 1;
+
+}
+.input_set {
+
+    display: inline-block;
+    margin-right:29px;
+
+}
+select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background: transparent;
+    color: #fff;
+    border: none;
+    outline: none;
+    font-size: 20px !important;
+    font-weight: bold;
+}
+.image-icon {
+    padding-right: 28px;
+}
+.input_set {
+
+    display: inline-block;
+}
+.input_set label i {
+    width: 17px;
+    height: 17px;
+    display: inline-block;
+    border: 2px solid #ee7538;
+    background-color: #434343;
+    margin-right: 14px;
+    position: relative;
+    top: 3px;
+}
+.input_set label {
+color:#fff !important;
+font-size:18px;
+}
+.iconsdsf ul {
+    padding: 0;
+    list-style: none;
+    display: inline-block;
+    width: 100%;
+}
+.iconsdsf li {
+    display: inline-block;
+}
+.iconsdsf li:last-child {
+    float: right;
+	 
+}
+.iconsdsf ul li {
+    font-size: 20px;
+}
+.iconsdsf li:last-child .image-icon {
+	padding-right: 0px;
+}
+@media  screen and (max-width: 667px) {
+.main img {width: 95%;}
+.banner-image1 img {padding: 20px 0px 0px 0px;}
+.banner-image2 img {padding: 20px 0px 0px 0px;}
+.banner-image3 img {padding: 20px 0px 0px 0px;}
+.search {padding-left: 47px;}
+.btn.btn-outline{ padding: 5px 11px;}
+.iconsdsf li:last-child {float: none;}
+.banner-image {padding: 0;}
+}

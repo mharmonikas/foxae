@@ -1,0 +1,17 @@
+ 
+		.homepage{background-color: #F2F2F2!important;}
+		.pagination .ng-binding {color: #008C19!important;}
+		.colorwhite.ng-binding {color: #008C19!important;}
+		.navigation-bar {color: #E46C3D!important;}
+		#cboxLoadedContent { background-color: #000000!important;}
+		input[type="checkbox"] + span{ border: 2px solid #008C19!important;}
+		.check-box-container, .ng-binding, .dropdownlabel { color: #C4C4C4!important;}
+		.container.logo img{ height:125px !important; width:400px !important;}
+		.check-box-container .checkmark:after{ border:solid #000000 ; }
+		.pagination .ng-binding, .ng-scope.disabled a{ background: #008C19 !important; }
+		.video-parts .inner-parts{  box-shadow: -1px -2px 10px 3px #9CC99F !important; }
+		.form-control.gray{  background-color:  #C4C4C4 !important; }
+		.btn.btn-outline{  background-color:  #C4C4C4 !important; }
+		i.fa.fa-search{  color:  #008C19 !important; }
+		.searchresult{  background:  #008C19 !important; }
+		

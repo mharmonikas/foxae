@@ -1,0 +1,15 @@
+[2021-09-15 07:25:02] local.ERROR: Undefined index: name {"exception":"[object] (ErrorException(code: 0): Undefined index: name at /home/martin/fox-ae/local/vendor/laravel/framework/src/Illuminate/Foundation/PackageManifest.php:131)
+[stacktrace]
+#0 /home/martin/fox-ae/local/vendor/laravel/framework/src/Illuminate/Foundation/PackageManifest.php(131): Illuminate\\Foundation\\Bootstrap\\HandleExceptions->handleError()
+#1 /home/martin/fox-ae/local/vendor/laravel/framework/src/Illuminate/Support/Collection.php(685): Illuminate\\Foundation\\PackageManifest->Illuminate\\Foundation\\{closure}()
+#2 /home/martin/fox-ae/local/vendor/laravel/framework/src/Illuminate/Foundation/PackageManifest.php(132): Illuminate\\Support\\Collection->mapWithKeys()
+#3 /home/martin/fox-ae/local/vendor/laravel/framework/src/Illuminate/Foundation/PackageManifest.php(106): Illuminate\\Foundation\\PackageManifest->build()
+#4 /home/martin/fox-ae/local/vendor/laravel/framework/src/Illuminate/Foundation/PackageManifest.php(89): Illuminate\\Foundation\\PackageManifest->getManifest()
+#5 /home/martin/fox-ae/local/vendor/laravel/framework/src/Illuminate/Foundation/PackageManifest.php(78): Illuminate\\Foundation\\PackageManifest->config()
+#6 /home/martin/fox-ae/local/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/RegisterFacades.php(26): Illuminate\\Foundation\\PackageManifest->aliases()
+#7 /home/martin/fox-ae/local/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(219): Illuminate\\Foundation\\Bootstrap\\RegisterFacades->bootstrap()
+#8 /home/martin/fox-ae/local/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(320): Illuminate\\Foundation\\Application->bootstrapWith()
+#9 /home/martin/fox-ae/local/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(129): Illuminate\\Foundation\\Console\\Kernel->bootstrap()
+#10 /home/martin/fox-ae/local/artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle()
+#11 {main}
+"} 

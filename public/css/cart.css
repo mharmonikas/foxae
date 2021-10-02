@@ -1,0 +1,87 @@
+.profile-container thead tr:first-child {
+    background-color: #f7f7f7;
+}
+
+input[type=checkbox]{
+	margin-top: 70px;
+    width: 60% !important;
+    display: block;
+}
+
+a{
+ cursor: pointer;
+}
+.text-style{
+    color: #3490dc;
+}
+span.hint {
+    color: red;
+    font-size: 17px;
+    font-weight: bolder;
+}
+.myloadercontainer2 {
+    position: fixed;
+    z-index: 99999;
+    width: 100%;
+    height: 100%;
+}
+
+
+.profile-container.cart_table .alert-section tr {
+    border-bottom: 0px solid #b9b9b9 !important;
+}
+
+.custom-apply {
+    position: fixed;
+    right: 8%;
+    z-index: 9;
+    width: 245px;
+    margin-right: -55px;
+    margin-top: 110px;
+}
+
+#apply_coupon {
+    width: 70%;
+	height: 29px;
+	background: #FFECB4;
+    border-radius: 0px 0px 0px 6px;
+    border: 1px solid #FFECB4;
+	padding: 0 10px;
+    box-shadow: 0 4px 6px rgb(0 0 0 / 25%);
+    outline: none;
+}
+#apply_coupon::placeholder {
+    color: #BDBDBD !important;
+    opacity: 1 !important;
+}
+#apply_coupon:focus {
+    outline: none;
+}
+.custom-button {
+    margin-left: -5px;
+    background: #FF8F09;
+    border: 0.25px solid #BDBDBD;
+    box-sizing: border-box;
+    border-radius: 0 0 6px 0;
+    color: #fff;
+    height: 29px;
+    width: 71px;
+    box-shadow: 1px 4px 6px rgb(0 0 0 / 25%);
+
+    font-family: Roboto, serif;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 16px;
+    align-items: center;
+    letter-spacing: 1.25px;
+    text-transform: uppercase;
+}
+
+button.custom-button:focus {
+    box-shadow: 1px 4px 4px rgb(0 0 0 / 25%) !important;
+}
+
+.custom-warning {
+    padding: 5px 5px;
+}

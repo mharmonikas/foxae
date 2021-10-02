@@ -1,0 +1,250 @@
+ .homepage .top-view a.navbar-brand img{ height:70px !important; width:200px !important;}
+			.nav-link.active { color: #FF0000 !important;}
+	
+		li.nav-item.cart a span { background: #FF0000 !important; color: #F7F7F7 !important;}
+		.btn.btn-outline { background-color: #FF0000 !important;}
+		.btn-download, .btn-setting, .submit-btn { background-color: #FF0000 !important;border: #FF0000 !important;}
+		li.ng-scope.active a.ng-binding {background: #FF0000 !important; color: #F7F7F7 !important;}
+		.pagination .ng-binding, .ng-scope.disabled a { background: #ECECEC !important;}
+		.pagination .ng-binding { color: #56423D !important;}
+		.form-control.gray {background-color: #ECECEC !important;}
+		.nav-link {color: #56423D !important;}
+		
+		input#searchkeyword::placeholder, input#searchkeyword, h5.ng-binding { color: #56423D !important;}
+		.form-control.gray { background-color: #ECECEC !important;}
+		.check-box-container, .ng-binding, .dropdownlabel { color: #56423D!important;}
+		.standard { background-color: #FF8F09 !important;}
+		.cnrflash-label { color: #F7F7F7!important;}
+		.standard:after, .standard:before { border: 8px solid #FF8F09 !important;}
+		.premium {background-color: #0076CC !important;}
+		.premium:after, .premium:before {border: 8px solid #0076CC !important;}
+		.ultra_premium:after, .ultra_premium:before {border: 8px solid #DBB900 !important;}
+		.ultra_premium { background-color: #DBB900 !important;}
+		ul.video-parts li .cart-btn {color: #F7F7F7 !important;}
+		.crat-popup {background: #FFE6D9 !important;}
+		button.btn {background: #FF0000 !important;}
+		.crat-popup button.btn.btn-default {color: #F7F7F7 !important;}
+		div#footer { border-top: 2px solid #ECECEC !important; border-bottom: 2px solid #ECECEC !important; background-color: #ECECEC !important;}
+		div#footer ul li a svg path { fill: #56423D !important;}
+		div#footer ul li a { color: #56423D !important;}
+		.f-left h3, .f-right h3 { color: #56423D !important;}
+		div#footer h3:after { border-bottom: 0.25px solid #56423D !important; }
+		.homepage .main-container.top-view ul.navbar-nav a.nav-link.svg-icon svg path:last-child {fill: #56423D !important;}
+		.homepage { background-color: #FFF4EE!important; }
+		input[type="checkbox"]:checked + span {border: 2px solid #FF0000!important; background-color: #FF0000 !important;}
+		input[type="checkbox"] + span {border: 2px solid #56423D!important;}
+		i.fa.fa-search { color: #F7F7F7 !important; }
+		.bgpopup-color { background-color: #FFF4EE !important; }
+		.big-image h3 { color: #56423D!important; text-shadow: 1px 1px 4px rgb(86 66 61 / 25%) !important;}
+		.img-btm p {color: #56423D!important;}
+		.img-btm a { color: #0044CC !important;}
+		.rlt-key a { color: #0044CC !important;}
+		.img-btm a { color: #0044CC !important;}
+		.img-btm p { color: #56423D !important; }
+		.footer-bottom ul:before { border-bottom: 0.25px solid #56423D !important;}
+		.customform_inner .custom_forms, .customform_inner .customform_contect { background: #FFE6D9 !important;}
+		.customform_inner h4 {color: #56423D !important;}
+		.main_customform .custom_forms form { border-top: 0.25px solid #56423D !important; }
+		.btn-download, .btn-setting, .submit-btn { background-color: #FF0000 !important; border: #FF0000 !important;}
+		.submit-btn { color: #F7F7F7;}
+	
+		.customform_contect div { color: #56423D !important;}
+		.customform_service ul li a {background: #FFE6D9 !important; color: #56423D !important;}
+		.customf_video h4 {color: #56423D !important; border-bottom: 0.25px solid #56423D!important;} 
+		#pricing {color: #56423D !important; }
+		.pricing_main_section { border-bottom: 0.25px solid #56423D !important;}
+		.pricing_main { border-bottom: 1px solid #56423D;} 
+		.check-box-container .checkmark:after { border: solid #F7F7F7;}
+		.pricing_total_section p span {color: #56423D !important;}
+		#collapse1, #collapse_two, #collapse_three {color: #0044CC !important;}
+		.support-link a { color: #0044CC !important;}
+		.customform_inner .custom_forms, .customform_inner .customform_contect { background: #FFE6D9 !important;}
+		.main_customform .custom_forms form {border-top: 0.25px solid #56423D !important;}
+		.customform_inner .form-group input, .customform_inner .form-group textarea { background: #FFF4EE !important; color: #56423D !important;}
+		.btn-download, .btn-setting, .submit-btn { background-color: #FF0000 !important;  border: #FF0000 !important;}
+		.modal-dialog.login-modal .modal-content { background-color: #FFE6D9 !important;}
+		.crat-popup { background: #FFE6D9 !important; }
+		.crat-price { border-bottom: 1px #56423D solid !important;}
+		.crat-popup span { color: #56423D !important; }
+		
+		a.tablinks.inactive { color: #BDBDBD !important;}
+		a.tablinks.clicked {color: #FF0000 !important;}
+		.bg_section .pricing_titles:before { background: #5B5C5C !important;}
+		.pricing_main.bg_section .payment_sections p {color: #56423D !important;}
+		
+		.standard .pricing_titles:before { background: #FF8F09 !important; }
+		.bg_section .pricing_titles p { color: #F7F7F7 !important; }
+		.premium .pricing_titles:before { background: #0076CC !important; }
+		.deluxe .pricing_titles:before { background: #DBB900 !important; }
+		.download_section p { color: #56423D !important; }
+		.pricing_button a { background: #FF0000 !important;  color: #F7F7F7 !important; }
+		.bg-color .profile-container { background-color: #ECECEC !important; color: #56423D !important; }
+		td.cart-text-center h5 { color: #56423D !important;}
+		span.tag { color: #F7F7F7 !important;}
+		.standard { background-color: #FF8F09 !important; }
+		.ultra_premium { background-color: #DBB900 !important; }
+		.premium { background-color: #0076CC !important;}
+		.profile-container.cart_table td.cart-text-center { color: #56423D !important;}
+		span.clr-grey { color: #56423D !important;}
+		.text-style { color: #0044CC !important; }
+		input:checked ~ .checkmarked { background-color: #FF0000 !important; border: 2px solid #FF0000 !important;}
+		.crat-popup p { color: #0044CC !important;}
+		h4.main-heading { border-bottom: 1px solid #56423D !important; color: #56423D !important;}
+		.signup-modal button.btn.btn-primary.trans { background: #FF0000 !important; color: #FFF4EE !important; }
+		.searchplaceholder { -webkit-animation: color-change 2s infinite alternate; }
+		@-webkit-keyframes color-change {25% { color: #BDBDBD; } 75% { color: #FF0000; }}
+		@-moz-keyframes color-change {
+			 25% { color: #BDBDBD; }      
+		   100% { color: #FF0000; }
+		}
+		@-ms-keyframes color-change {
+			 25% { color: #BDBDBD; }
+		   100% { color: #FF0000; }
+		}
+		@-o-keyframes color-change {
+			 25% { color: #BDBDBD ; }
+		   100% { color: #FF0000 ; }
+		}
+		@keyframes color-change {
+			25% { color: #BDBDBD; }
+		   100% { color: #FF0000 ; }
+		}
+
+		.homepage .main-container.top-view ul.navbar-nav a.nav-link.active svg path:last-child {
+			fill: #FF0000 !important;
+		}
+		.row-fuild-maintain { background: #FFF4EE !important; border: 1px solid  #FFF4EE !important; }
+		.profile-container { background-color: #FFF4EE !important; color: #56423D !important }
+		.row-fuild-maintain h1:after { border-bottom: 2px solid #FF0000 !important; }
+		.row-fuild-maintain a.list-group-item.list-group-item-action { background: #ECECEC!important; color: #56423D !important ;}
+		.row-fuild-maintain a.list-group-item.list-group-item-action.active {color: #56423D!important;}
+		.row-fuild-maintain a.list-group-item.list-group-item-action.active { background-color: #FF0000 !important; color: #F7F7F7 !important }
+		.table thead th { border-bottom: 2px solid #ECECEC; }
+		table.table.fav-table a { color: #0044CC !important;}
+		table.table.download-table a { color: #0044CC !important; }
+		.page-link { color: #56423D !important; background-color: #ECECEC!important;  border: 1px solid #ECECEC!important;}
+		.page-item.active .page-link {color: #0044CC!important; background-color: #ECECEC!important; border-color: #ECECEC!important;}
+		form-control {color: #56423D !important; background-color: #FFF4EE!important; border: 1px solid #ECECEC!important; }
+		.leftsidenav { background-color: #FFF4EE!important;}
+		.download-message { background: #FFE6D9!important; }
+		#subscribe_success { color: #56423D !important;}
+		#download_success { color: #56423D !important;}
+		div#download_success p { color: #56423D !important; }
+		div#subscribe_success p { color: #56423D !important; }
+		div#incartcredit strong, div#availablecredit strong, div#errorMessage strong{ background: #FFE6D9!important; }
+		#errorMessage { color: #56423D !important; }
+		.signup-modal button.btn.btn-primary.trans { background: #FF0000 !important; }
+		.billing-form .buy_button.detail button { background: #FF0000 !important; }
+		.video-parts .inner-parts{  box-shadow: -1px -2px 10px 3px rgb(86 66 61 / 45%) !important; }
+		.inner-parts.ng-scope:hover {box-shadow: 1px 4px 10px 5px rgb(86 66 61 / 90%) !important;}
+		.pagination .ng-binding {box-shadow: 0px 4px 4px rgb(86 66 61 / 25%) !important;}
+		input#searchkeyword { box-shadow: 0px 4px 4px rgb(86 66 61 / 25%) !important;}
+		.btn.btn-outline { box-shadow: 0px 4px 4px rgb(86 66 61 / 25%) !important;}
+		.customform_service ul li a { box-shadow: 0px 4px 4px rgb(86 66 61 / 25%) !important;}
+		.customform_inner .custom_forms, .customform_inner .customform_contect { box-shadow: 0px 4px 4px rgb(86 66 61 / 25%) !important}
+		.crat-popup {box-shadow: 0px 4px 4px rgb(86 66 61 / 25%) !important;}
+		.customform_inner .form-group input, .customform_inner .form-group textarea { box-shadow: 0px 4px 4px rgba(86,66,61, 0.25) !important;}
+		.main_customform .bt_sec button.submit-btn { box-shadow: 0px 4px 4px rgb(86 66 61 / 25%) !important;}
+		td.cart-img img {box-shadow: -1px -2px 10px 3px rgb(86 66 61 / 45%) !important;}
+		.verfiy-email {background: #FF0000 !important; color: #F7F7F7 !important;}
+		input:checked ~ .checkmarked-button { background-color: #FF0000 !important;}
+		ul.navbar-nav:after { border-bottom: 0.25px solid #56423D !important;}
+		.iconsdsf select { border: 0.5px solid #56423D !important; color: #56423D !important; } 
+		p.p-heading { color: #56423D !important; }
+		.big-image .rlt-key span { color: #56423D !important;}
+		.main-icon ul li p { color: #56423D !important;}
+		.bgpopup-color svg:hover path {fill: #FF0000 !important;}
+		.bgpopup-color svg path {fill: #56423D !important;}
+		.big-image span.close_icon { color: #56423D !important; filter: drop-shadow(1px 1px 4px rgba(86, 66, 61, 0.25)) !important;}
+		.profile-container.cart_table .heading-table tr{border-bottom: 1px solid #56423D;}
+		.modal-header .modal-title {color: #56423D !important;}
+		.changebg-modal .modal-header .modal-title {color: #56423D !important;}
+		button.btn.btn-default {color: #F7F7F7 !important; }
+		.checkmarked:after { border: solid #F7F7F7 !important; }
+		.changebg-modal select {  border: 1px solid #56423D !important;  color: #56423D !important; } 
+		span.text-setting { color: #56423D !important; }
+		.close { color: #56423D !important;  }
+		.botm p { color: #56423D !important;}
+		.svg-setting svg path { fill: #56423D !important;}
+		div#the-count span { color: #56423D !important;}
+		.billing-form h6 { color: #56423D !important;}
+		.billing-form .inputBox .inputText { color: #56423D !important;}
+		.billing-form .input, .billing-form input { color: #56423D !important;}
+		
+		form.method_sec label { color: #56423D !important;}
+		.order-summary h6 { border-bottom: 1px solid #56423D !important;}
+		p#plan-name, p#plan-price { color: #56423D !important;}
+		.billing-form .check_com { border-top: 1px solid #56423D !important;}
+		.billing-form .check_com p { color: #56423D !important;}
+		.loginshowXpassword svg path:last-child{ fill: #56423D !important;}
+		.showXpassword svg path:last-child{ fill: #56423D !important;}
+		form .loginForm3 .form-control { color: #56423D !important;}
+		input#cart-loginemail, input#cart-loginpassword, input#signupname, input#signupemail, input#cartsignuppassword, input#cartsignupconfirmpassword  { color: #56423D !important;}
+		.form-group h6 { color: #56423D !important; border-bottom: 1px solid #56423D !important;}
+		p.head-recap {color: #56423D!important; }
+		.conpasswordplaceholder span, .passwordplaceholder span, .nameplaceholder span, .emailplaceholder span, .formBox.border span, .method.border span { color: #F80707 !important;}
+		.conpasswordplaceholder, .passwordplaceholder, .nameplaceholder, .emailplaceholder{ color: #BDBDBD !important; }
+		input#cart-loginemail::placeholder, input#cart-loginpassword::placeholder, input#forgotemail::placeholder{color: #BDBDBD !important;}
+		a.hyperlink-setting { color: #0044CC !important;}
+		a#collapse_one { color: #0044CC !important;}
+		.bg_section .pricing_titles:after { border-right: 17px solid #FFF4EE!important;}
+		span.tag:after {  border-right: 10px solid  #FFF4EE!important;}
+		.container-fuild-maintain { background: #FFF4EE!important;}
+		.form-container .btn {color: #F7F7F7 !important;}
+		.signup-modal button.btn.btn-primary.trans{ color: #F7F7F7 !important; }
+		.download-message hr{border-top: 0.25px solid #56423D !important;}
+		.buy_button button{color: #F7F7F7 !important;}
+		.feat-ryt div#login-user ul {border-top: 1px solid #56423D !important; border-bottom: 1px solid #56423D !important;}
+		.feat-ryt div#login-user ul li{ color: #56423D !important; }
+		.feat-top .rlt-key span { color: #56423D !important; }
+		.feat-ryt .main-icon { border-top: 1px solid #56423D !important; } input#email::placeholder,input#Phone::placeholder,textarea#exampleFormControlTextarea1::placeholder, input#cvv::placeholder,input#cardnumber::placeholder,input#expirationdate::placeholder,input#expirationYeardate::placeholder{color: #BDBDBD !important;}
+		.verfiy-email a.resend { color: #0044CC !important;}
+		body { color: #56423D !important;}
+		.thank-container.acc-verify p {color: #56423D!important;}
+		.thank-container.acc-verify p a { color: #0044CC !important; }
+		.success-img svg path {  fill: #FF0000 !important; }
+		.dropdown-menu { color: #56423D !important;  background-color: #FFF4EE!important;     border: 1px solid #FFF4EE !important;}
+		.dropdown-menu.show a { border-bottom: 1px solid #56423D !important;}
+	 .dropdown-item { color: #56423D !important;}
+	 .dropdown-item:focus, .dropdown-item:hover { color: #56423D!important; background-color: #ECECEC!important; }
+	 .homepage .billing-form .modal-body form.ng-pristine.ng-valid input { border-bottom: 1px solid #56423D !important;}
+	 .billing-form .inputBox .input { border-bottom: 1px solid #56423D !important; }
+	 form.form-container.ng-pristine.ng-valid input.form-control { border-bottom: 1px solid #56423D !important; }
+	 .confirm-modal .modal-content{background-color: #FFE6D9 !important;}
+	 .table thead th { border-bottom: 2px solid #56423D !important; }
+	 .form-control { color: #56423D !important; background-color: #FFF4EE!important; }
+	 .changebg-modal .modal-content{ background-color: #FFF4EE!important; }
+	 .dropdown select option{ background:  #FFF4EE!important; }
+	 .iconsdsf select { background:#FFF4EE!important; }
+	 .searchresult { background: #FFF4EE!important; }
+	 li.fox-list.ng-binding.ng-scope:hover { background-color: #ECECEC!important; color: #56423D!important; }
+	 .modal-dialog.modal-lg.login-modal.signup-modal.checkoutModal.billing-form .close {color: #56423D !important; }
+	 form#password-changed .btn-primary { color: #F7F7F7 !important; }
+	 div#custom-modal p { color: #56423D !important;}
+	 .keyword { color: #F80707 !important; }
+	 .keyword li { color: #0044CC !important; }
+	 .img-show span{color: #BDBDBD !important;}
+		p.bigimagename-p{color: #BDBDBD !important;}
+	 .imgs-setup button:hover, .imgs-setup button { background-color: #ECECEC!important; }
+	 .imgs-setup button svg path, .imgs-setup button svg:hover path { fill: #56423D !important; }
+	 .confirm-modal .modal-content { background-color: #FFE6D9 !important; }
+	 div#changeplan-modal .modal-body:after { background: #56423D !important;}
+	 .custom{ background-color: #FF0000 !important; }
+	.custom:after, .custom:before {  border: 8px solid #FF0000 !important;  }
+	.custom .cnrflash-label { color: #F7F7F7!important; }
+	td.subscripition a{ color: #F7F7F7 !important;}
+	a.btn.btn-primary.btn-setting { color: #F7F7F7 !important ;}
+ 
+	 @media only screen and (max-width: 767px){
+		.after_click +.pricing_main, .pricing_main.tap_anywhere.onetime-div {
+			background-color: #FFE6D9 !important;
+		}
+		form#price-plan-from .pricing_button {
+			background-color: #FFE6D9 !important; 
+   
+		}
+		
+	 }
+
+	 
+		

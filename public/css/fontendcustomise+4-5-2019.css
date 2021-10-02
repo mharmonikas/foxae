@@ -1,0 +1,185 @@
+	.main-container{
+background-color:#000;
+}
+.container.logo img {
+    width: 65%;
+}
+.container.logo img {
+    margin: 18px 0px 0px 0px;
+}
+.title h5{
+	color:#fff;
+	float:right;
+	
+}
+
+.form-control.gray {
+    background-color: #000;
+    border-color: #000;
+    font-size: 30px;
+    font-weight: 600;
+}
+
+.search {
+    display: inline-block;
+    width: 100%;
+    padding-left: 65px;
+    position: relative;
+}
+
+.btn.btn-outline {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    padding: 4px 12px;
+    background-color: black;
+    border: 2px solid #fff;
+}
+
+
+.navigation-bar {
+    color: #fff;
+    margin: 28px 0px 0px 0px;
+	    font-weight: bold;
+}
+
+
+.icons {
+    display: inline-block;
+   
+}
+
+.banner-image img {
+    width: 100%;
+}
+.banner-image {
+  padding: 54px 0px 0px 0px; 
+ }
+  
+.image-icon {
+    padding-right: 28px;
+}
+.input_set {
+
+    display: inline-block;
+}
+
+
+.iconsdsf ul {
+    padding: 0;
+    list-style: none;
+    display: inline-block;
+    width: 100%;
+}
+.iconsdsf li {
+    display: inline-block;
+}
+.iconsdsf li:last-child {
+    float: right;
+	 
+}
+.iconsdsf ul li {
+    font-size: 20px;
+}
+.iconsdsf li:last-child .image-icon {
+	padding-right: 0px;
+}
+
+/*--- NoV-30th ----*/
+
+.video-parts {
+	padding: 0;
+}
+.video-parts .inner-parts {
+	display: inline-block;
+	width: 31%;
+	padding: 10px;
+	margin: 10px;   
+	border-radius: 5px;
+	box-shadow: -1px -2px 10px 3px rgba(228, 108, 61, 0.4);
+}
+
+
+.banner-image {
+	padding: 54px 0 0 0;
+	float: left;
+	width: 100%;
+	background: #000;
+}
+.pagination {
+	margin: 20px 0 40px;
+	text-align: center;
+	width: 100%;
+}
+.ng-scope.disabled a {
+	pointer-events: none;
+	background: #111;
+}
+.video-parts {
+	padding: 0;
+}
+.video-parts .inner-parts {
+	display: inline-block;
+	width: 31%;
+	padding: 10px;
+	margin: 10px 10px 15px;
+	border-radius: 5px;
+	box-shadow: -1px -2px 10px 3px rgba(228,108,61,.4);
+}
+.input_set label i::after {
+	top: -10px;
+}
+.pagination .ng-binding {
+	background: #000000;
+	padding: 9px 10px;
+	border: 1px solid rgba(255, 255, 255, 0.1);
+	color: #e46c3d;
+}
+.input_set label input {
+	position: absolute;
+	opacity: 0;
+	width: 18px;
+	height: 18px;
+	bottom: 50px;
+}
+.dropdown select option {
+	background: #e26d3b;
+}
+.proper_fit {
+	text-align: center;
+}
+.colorwhite.ng-binding {
+	font-size: 18px;
+	font-weight: 600;
+	letter-spacing: 1px;
+	color: #e46c3d !important;
+	text-transform: capitalize;
+}
+@media only screen and (max-width: 991px) {
+.video-parts .inner-parts {
+	width: 30%;
+	margin: 8px;
+}
+}
+@media only screen and (max-width: 767px) {
+.video-parts .inner-parts {
+	width: 100%;
+}
+} 
+
+@media only screen and (max-width: 480px) {
+.video-parts .inner-parts {
+	width: 93%;
+}
+} 
+
+@media  screen and (max-width: 667px) {
+.main img {width: 95%;}
+.banner-image1 img {padding: 20px 0px 0px 0px;}
+.banner-image2 img {padding: 20px 0px 0px 0px;}
+.banner-image3 img {padding: 20px 0px 0px 0px;}
+.search {padding-left: 47px;}
+.btn.btn-outline{ padding: 5px 11px;}
+.iconsdsf li:last-child {float: none;}
+.banner-image {padding: 0;}
+}
