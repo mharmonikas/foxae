@@ -16,13 +16,12 @@
 									<th class="cart-hide-on-mobile" colspan="3" style="text-align:right;">Price</th>
 								</tr>
 								</table>
-								<table class="table heading-table" width="100%" id="alert">
+                            <table class="table heading-table" width="100%" id="alert">
 
-								</table>
-								<table class="table heading-table @if(count($response)==0)empty-cart @endif" id="cart-area" width="100%" >
-
-
+                            </table>
+                            <table class="table heading-table @if(count($response)==0)empty-cart @endif" id="cart-area" width="100%" >
 									@php $i=1; @endphp
+
 									@if(count($response)>0)
 										@foreach($response as $res)
 										  <tr class="remove_cart_{{$res->id}} @if($res->transparent!='Y'){{'cart-twobtns'}}@endif" >
@@ -156,34 +155,51 @@
 											@endif
 											</td>
 											<td class="price-cart cart-hide-on-mobile" style="text-align:right;">
-											@php
-												if(empty($checkloginuser)){
-													if($res->stock!=0){
-													$price=$res->stock/$res->conversion_rate;
-													}else{
-													$price=0;
-													}
-												}else{
-													if(empty($packageid)){
-													if($res->stock!=0){
-														$price=$res->stock/$res->conversion_rate;
-													}else{
-													$price=0;
+{{--                                                @php--}}
+{{--                                                    $coupon = data_get(Session::get('cart-coupon'), 'coupon');--}}
+{{--                                                    $discount = false;--}}
+{{--                                                    $discountText = '';--}}
 
-													}
-													}
-												}
-											@endphp
+{{--                                                    if(empty($checkloginuser)) {--}}
+{{--                                                        if($res->stock!=0){--}}
+{{--                                                            $price=$res->stock/$res->conversion_rate;--}}
+{{--                                                        } else {--}}
+{{--                                                            $price=0;--}}
+{{--                                                        }--}}
+{{--                                                    } --}}
+{{--                                                    --}}
+{{--                                                    else if(empty($packageid)) {--}}
+{{--                                                        if($res->stock != 0) {--}}
+{{--                                                            $stock = $res->stock;--}}
+{{--                                                            $tiers = $coupon ? explode(',', $coupon->tier) : [];--}}
 
-											@if(!empty($checkloginuser))
-												@if(!empty($packageid))
-													@if(!empty($res->stock)){{$res->stock}} Credits @else 0 Credit @endif
-												@else
-													${{number_format($price, 2)}}
-												@endif
-										@else ${{number_format($price, 2)}} @endif
+{{--                                                            if($coupon && in_array($res->content_category, $tiers)) {--}}
+{{--                                                                $stock = $coupon->discount_type == 'P' ? $stock - $stock * $coupon->amount / 100 : $stock - $coupon->amount;--}}
+{{--                                                                $discount = true;--}}
+{{--                                                                $discountText = $coupon->discount_type == 'P' ? 'Coupon '.$coupon->amount.'% off' : sprintf('Coupon $%s off', $coupon->amount);--}}
+{{--                                                            }--}}
+
+{{--                                                            $price = $stock/$res->conversion_rate;--}}
+{{--                                                        } else {--}}
+{{--                                                            $price = 0;--}}
+{{--                                                        }--}}
+{{--                                                    }--}}
+{{--                                                @endphp--}}
+
+											    @if(!empty($checkloginuser))
+                                                    @if(!empty($packageid))
+                                                        @if(!empty($res->stock)){{$res->stock}} Credits @else 0 Credit @endif
+                                                    @else
+                                                        ${{number_format($price, 2)}}
+                                                    @endif
+                                                @else
+                                                    ${{number_format($price, 2)}}
+                                                @endif
+
+                                                @if($discountText = data_get($res, 'discountText'))
+                                                    <b><br>{!! nl2br(str_repeat(' ', 30) . $discountText) !!}</b>
+                                                @endif
 											</td>
-
 										</tr>
 										  @php $i++; @endphp
 									@endforeach
@@ -195,8 +211,6 @@
 										<input type="hidden" value="{{ $availablecount }}" id="available-credit">
 									@if(!empty($packageid))Available Credits : <b>{{ $availablecount }} Credits   </b>
 										<a class="hyperlink-setting" href="/pricing"><p>Not enough credit? Upgrade plan!</p></a>
-
-
 								@endif
 
 									@endif
@@ -215,15 +229,22 @@
 									@endif
 									</td>
 									<td  style="text-align:right">
-									<div id="cart-text"><span>Subtotal&nbsp;({{$totalitems}} items): </span><span><b>@if(!empty($checkloginuser))
-										@if(!empty($packageid))
-											<input type="hidden" id="cart-value" value="{{$cartvalue}}">
-											{{$cartvalue}} Credits
-										@else ${{number_format($cartvalue, 2)}}
-										@endif
-									@else
-										${{number_format($cartvalue, 2)}}
-									@endif </b></span>
+									<div id="cart-text">
+                                        <span>Subtotal&nbsp;({{$totalitems}} items): </span>
+                                        <span>
+                                            <b>
+                                                @if(!empty($checkloginuser))
+                                                    @if(!empty($packageid))
+                                                        <input type="hidden" id="cart-value" value="{{$cartvalue}}">
+                                                        {{$cartvalue}} Credits
+                                                    @else
+                                                        ${{number_format($cartvalue, 2)}}
+                                                    @endif
+                                                @else
+                                                    ${{number_format($cartvalue, 2)}}
+                                                @endif
+                                            </b>
+                                        </span>
 
 									@if(empty($checkloginuser))
 
@@ -244,7 +265,9 @@
 									</tr>
 										<input type="hidden" id="productid" >
 
-									@else
+
+
+                                    @else
 										 <tr>
 											<td colspan='5' style="text-align:center"><h2>Cart is Empty </h2></td>
 										 </tr>
@@ -273,40 +296,42 @@
 
 					<div class="col">
 						@if(!empty($checkloginuser))
-							@if(!empty($packageid))
-								<div class="crat-popup">
-									<input type="hidden" class="" value="">
+                            @if(!empty($packageid))
+                                <div class="crat-popup">
+                                    <input type="hidden" class="" value="">
 
-									<div class="crat-price1"><span class="title-head">Available Credits: </span><span><b>@if(!empty($packageid)){{ $availablecount }} Credits @endif</b></span></div>
+                                    <div class="crat-price1"><span class="title-head">Available Credits: </span><span><b>@if(!empty($packageid)){{ $availablecount }} Credits @endif</b></span></div>
 
-									<div class="crat-price"><span class="title-head">In Cart&nbsp;({{$totalitems}} items): </span><span><b>{{$cartvalue}} Credits </b></span></div>
+                                    <div class="crat-price"><span class="title-head">In Cart&nbsp;({{$totalitems}} items): </span><span><b>{{$cartvalue}} Credits </b></span></div>
 
-									<button class="btn btn-default" onclick="downloadcart()" >BUY SELECTED ITEMS</button>
+                                    <button class="btn btn-default" onclick="downloadcart()" >BUY SELECTED ITEMS</button>
 
-									<a class="hyperlink-setting" href="/pricing"><p>Not enough credit?Upgrade plan!</p></a>
-								</div>
-							@else
-								<div class="crat-popup">
-									<div class="crat-price"><span>In Cart&nbsp;({{$totalitems}} items): </span><span><b>${{number_format($cartvalue, 2)}}</b></span></div>
+                                    <a class="hyperlink-setting" href="/pricing"><p>Not enough credit? Upgrade plan!</p></a>
+                                </div>
+                            @else
+                                <div class="crat-popup">
+                                    <div class="crat-price"><span>In Cart&nbsp;({{$totalitems}} items): </span><span><b>${{number_format($cartvalue, 2)}}</b></span></div>
 
-									<button class="btn btn-default open-form" >PROCEED TO CHECKOUT</button>
+                                    <button class="btn btn-default open-form" >PROCEED TO CHECKOUT</button>
 
-									@if($cartvalue>0)
-										<p>	<a class="open-form hyperlink-setting" >Save up to ${{number_format($saveuptoamount, 2)}} by subscribing</a></p>
-									@elseif($cartvalue<=0)
-										<p>	<a class="hyperlink-setting" href="/pricing" >Have you considered subscribing?</a></p>
-									@endif
-								</div>
-							@endif
+                                    @if($cartvalue>0)
+                                        <p>	<a class="open-form hyperlink-setting" >Save up to ${{number_format($saveuptoamount, 2)}} by subscribing</a></p>
+                                    @elseif($cartvalue<=0)
+                                        <p>	<a class="hyperlink-setting" href="/pricing" >Have you considered subscribing?</a></p>
+                                    @endif
+                                </div>
+                            @endif
 						@endif
 
-						<div class="custom-apply">
-							<input type="text" name="apply_coupon" id="apply_coupon" placeholder="Discount Code">
-							<input type="hidden" name="apply_type" id="apply_type" value="1">
-							<button class="custom-button" type="submit"> Apply</button>
+                        @if(empty($packageid) || !$packageid)
+                            <div class="custom-apply">
+                                <input type="text" name="apply_coupon" id="apply_coupon" placeholder="Discount Code">
+                                <input type="hidden" name="apply_type" id="apply_type" value="1">
+                                <button class="custom-button" type="submit" style="cursor: pointer;"> Apply</button>
 
-							<p class="custom-warning"></p>
-						</div>
+                                <p class="custom-warning"></p>
+                            </div>
+                        @endif
 					</div>
 				</div>
 			</div>
@@ -400,8 +425,8 @@
 													@if($late_res->EnumType=='I')<img src="/resize1/showimage/{{ $late_res->IntId }}/{{$siteid}}/{{ $late_res->VchResizeimage}}/?={{ $late_res->intsetdefault}}" height="60px" width="100px" class="cart-img-size">@else <img src="/resize2/showimage/{{$late_res->IntId}}/{{$late_res->siteid}}/{{$late_res->VchVideothumbnail}}/?=16" height="60px" width="100px"> @endif
 													</div>
 												</td>
-												
-												<td class="cart-text-center cart-hide-on-mobile"><h5 class="cart-hide-on-mobile">{{$late_res->VchTitle}}</h5> 
+
+												<td class="cart-text-center cart-hide-on-mobile"><h5 class="cart-hide-on-mobile">{{$late_res->VchTitle}}</h5>
 												<div class="cart-hide-on-mobile outter">
 												@if($late_res->content_category == 1)
 													<div class="standard">
@@ -413,13 +438,13 @@
 														<span class="tag">Premium
 														</span>
 													</div>
-												@elseif($late_res->content_category == 3)	
+												@elseif($late_res->content_category == 3)
 													<div class="ultra_premium">
 														<span class="tag">Deluxe
 														</span>
 													</div>
-												@endif	
-											
+												@endif
+
 													<div class="object-type">
 													@if($late_res->EnumType=='I')Image @else Video @endif
 												</div>
@@ -429,43 +454,43 @@
 														$price=$late_res->stock/$late_res->conversion_rate;
 													}
 												@endphp
-												
+
 												@if(!empty($checkloginuser))
 												@if(!empty($late_res->stock)){{$late_res->stock}} Credits @else 0 Credit @endif @else $ {{number_format($price, 2)}} @endif
 											</div>
 												</div>
-												
-												| <a class="text-style" data-title="Remove" title="Remove" onclick="later_delete({{$late_res->id}})" >Remove</a>  | <a class="later text-style" onclick="changestatus({{$late_res->id}},'cart')" data-title="Move to Cart"  title="Move to Cart">Move to Cart</a> 
+
+												| <a class="text-style" data-title="Remove" title="Remove" onclick="later_delete({{$late_res->id}})" >Remove</a>  | <a class="later text-style" onclick="changestatus({{$late_res->id}},'cart')" data-title="Move to Cart"  title="Move to Cart">Move to Cart</a>
 												</td>
-												
-												
+
+
 												<!--------------------------button for mobile-------------------------------->
-												
+
 												<td class="cart-text-center cart-hide-on-desktop mobile-btn-save">
-												
-												<a class="text-style" data-title="Remove" title="Remove" onclick="later_delete({{$late_res->id}})" >Remove</a> <a class="later text-style" onclick="changestatus({{$late_res->id}},'cart')" data-title="Move to Cart"  title="Move to Cart">Move to Cart</a> 
+
+												<a class="text-style" data-title="Remove" title="Remove" onclick="later_delete({{$late_res->id}})" >Remove</a> <a class="later text-style" onclick="changestatus({{$late_res->id}},'cart')" data-title="Move to Cart"  title="Move to Cart">Move to Cart</a>
 												</td>
-												
-												
+
+
 												<!--------------------------button for mobile end------------------------->
-												
-												
+
+
 												<td class="price-cart cart-hide-on-mobile"  style="text-align:right;">
 												@php
 													if(empty($checkloginuser)){
 														$price=$late_res->stock/$late_res->conversion_rate;
 													}
 												@endphp
-												
+
 												@if(!empty($checkloginuser))
 												@if(!empty($late_res->stock)){{$late_res->stock}} Credits @else 0 Credit @endif @else $ {{number_format($price, 2)}} @endif
 												</td>
 											</tr>
 											  @php $i++; @endphp
-										@endforeach  
+										@endforeach
 											<input type="hidden" id="productid" >
-											
-										@else 
+
+										@else
 											 <tr>
 												<td colspan='5' style="text-align:center"><h2> No Records Found </h2></td>
 											 </tr>
@@ -491,13 +516,13 @@
         <h4 class="modal-title" id="background-effect_{{$res->IntId}}">@if(!empty($res->applied_bg)){{strtoupper($res->applied_bg)}} {{'BACKGROUND'}} @elseif($res->transparent=='Y'){{'TRANSPARENT BACKGROUND'}} @endif </h4>
       </div>
       <div class="modal-body">
-	 
+
 	  <div class="myloadercontainer2" id="loader">
-				<div class="loder_innes">   
-					<div class="loaderview1">     
+				<div class="loder_innes">
+					<div class="loaderview1">
 						<img src="images/{{$managesite->gificon}}" alt="img" style="width:auto !important;height:130px;">
 					</div>
-				</div> 	
+				</div>
 			</div>
 		@if(!empty($res->applied_bg))
 			<img src="showimg/{{$res->userid}}/{{$res->img_name}}" class="non-active ui-draggable ui-draggable-handle" id="bigimagesize_{{$res->IntId}}" style="position: relative;">
@@ -509,17 +534,17 @@
 		<input id="wishlist-id" hidden value="{{$res->id}}">
       </div>
       <div class="modal-footer">
-	  
+
 		<div class="check-apply">
 		<span class='hint' id="error"></span>
-		
+
 		<div class="">
 		<input type="checkbox" name="all" class="form-control check_box all-checkbox" id="one_check_{{$res->IntId}}" onclick="oneinputchecked({{$res->IntId}},'one');" checked><span class="checkmarked-button"></span>
 		<span class="text-setting">Apply this background to this image  <strong>ONLY</strong></span>
 		</div>
 		<div><input type="checkbox" name="all" class="form-control check_box all-checkbox" id="all_check_{{$res->IntId}}" onclick="allinputchecked({{$res->IntId}},'all');"><span class="checkmarked-button"></span>
 		<span class="text-setting">Apply this background to <strong>ALL IMAGES </strong> in cart</span></div>
-	
+
 		</div>
 		<div class="apply-btn">
         <button type="button"  class="btn btn-default apply_changes" id="" bg-id="" data-value="one" onclick="changebackground(this.value,{{$res->IntId}})" >APPLY CHANGES</button>
@@ -535,10 +560,8 @@
       </div>
     </div>
   </div>
-</div>	
+</div>
 @endforeach
-
-{{ !empty($checkloginuser) ? 'yes' : 'no'}}
 
 <script src="js/fox.jquery.js?v=0.1.97"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
@@ -564,25 +587,27 @@ $(document).on("click",".custom-button",function(){
 	var cvideoid = videoid.join(',');
 	var type = type.join(',');
 	var token=$('meta[name="csrf-token"]').attr('content');
-	$.ajax({     
+	$.ajax({
 		url: '/applycoupon',
-		type:"POST", 
+		type:"POST",
 		async: true,
-		dataType: 'json',		
+		dataType: 'json',
 		headers: {
 			'X-CSRF-TOKEN':token
-		},        
+		},
 		data:'couponcode='+couponcode+'&place='+place+'&_token='+token+'&videoid='+cvideoid+'&type='+type,
 		success:function(data){
-			
 			if(data.status == '201'){
-				$("#errorMessage").html('<div class=""><strong>INVALID COUPON DETAILS</strong> </div>');
+				$("#errorMessage").html('<div><strong>INVALID COUPON DETAILS</strong></div>');
 				myFunction();
 			}else if(data.status == '200'){
 				localStorage.setItem("coupon", couponcode);
-				$("#errorMessage").html('<div class=""><strong>COUPON APPLY SUCCESSFULLY</strong> </div>');
+				$("#errorMessage").html('<div><strong>COUPON APPLIED SUCCESSFULLY</strong></div>');
 				myFunction();
-			}
+
+                location.reload();
+            }
+
 		}
 	});
 });
