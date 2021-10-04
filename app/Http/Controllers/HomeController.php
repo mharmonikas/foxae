@@ -607,8 +607,8 @@ class HomeController extends Controller {
 
 	public function pricing(){
 		$msg = request()->get('page');
-		$monthly_response='';
-		$onetime_response='';
+		$monthly_response = '';
+		$onetime_response = '';
 		$package_type='';
 		$buyid = "";
 		$current_packageid='';
@@ -616,12 +616,12 @@ class HomeController extends Controller {
 		$package='';
 		$package_status='';
         $yarly_dis = '';
-        $coupon = Session::get('pricing-coupon') ? Session::get('pricing-coupon')['coupon'] : null;
-        $websiteWideCoupons =
+        $coupon = data_get(Session::get('pricing-coupon'), 'coupon');
+        $websiteWideCoupons = $this->getPricingWebsiteWideCoupons();
+		$managesite = DB::table('tbl_managesite')->where('txtsiteurl',$_SERVER['SERVER_NAME'])->first();
 
-		$managesite  = DB::table('tbl_managesite')->where('txtsiteurl',$_SERVER['SERVER_NAME'])->first();
 		if(!empty(Session::get('userid'))){
-            $packageavailable = DB::table('tbl_buypackage')->where('status','A')->where('package_userid',Session::get('userid'))->whereDate('package_expiredate','>',date('Y-m-d'))->get();
+            $packageavailable = DB::table('tbl_buypackage')->where('status','A')->where('package_userid', Session::get('userid'))->whereDate('package_expiredate','>',date('Y-m-d'))->get();
 
             if(!$packageavailable->isEmpty()){
                 $packageid ="";
@@ -658,31 +658,36 @@ class HomeController extends Controller {
             }
         } else {
             $monthly_response = DB::table('tbl_plan')->where('plan_type','M')->where('plan_status','A')->where('plan_siteid',$managesite->intmanagesiteid)->orderBy('plan_id', 'DESC')->get();
+
             foreach($monthly_response as $res){
-                $yarly_dis=$res->yearly_discount;
+                $yarly_dis = $res->yearly_discount;
             }
         }
 
 		if(!empty($packageid)){
 			$onetime_response = DB::table('tbl_plan')->where('plan_type','O')->where('plan_status','A')->where('plan_siteid',$managesite->intmanagesiteid)->orderBy('plan_id', 'DESC')->get();
-			$monthly_response = DB::table('tbl_plan')->where('plan_type','M')->where('plan_status','A')->where('plan_siteid',$managesite->intmanagesiteid)->orderBy('plan_id', 'DESC')->get();
+        }
 
-            foreach($monthly_response as &$res){
-                if($coupon) {
-                    $res->plan_price = $this->calculateDiscount($res->plan_price, $coupon);
-                }
+        $monthly_response = DB::table('tbl_plan')->where('plan_type','M')->where('plan_status','A')->where('plan_siteid',$managesite->intmanagesiteid)->orderBy('plan_id', 'DESC')->get();
 
-                $yarly_dis=$res->yearly_discount;
+        foreach($monthly_response as &$res){
+            $res->discountText = '';
+
+            if(count($websiteWideCoupons)) {
+                [$res->plan_price, $res->discountText] = $this->calculateWebsiteWideDiscounts($res->plan_price, $websiteWideCoupons);
             }
-		} else{
-			$monthly_response = DB::table('tbl_plan')->where('plan_type','M')->where('plan_status','A')->where('plan_siteid',$managesite->intmanagesiteid)->orderBy('plan_id', 'DESC')->get();
-			foreach($monthly_response as &$res){
-                if($coupon) {
-                    $res->plan_price = $this->calculateDiscount($res->plan_price, $coupon);
+
+            if($coupon) {
+                if($res->discountText !== '') {
+                    $res->discountText .="<br>";
                 }
-					$yarly_dis=$res->yearly_discount;
-				}
-		}
+
+                $res->plan_price = $this->calculateDiscount($res->plan_price, $coupon);
+                $res->discountText .= $coupon->discount_type == 'P' ? "Coupon ".$coupon->amount."% off" : sprintf("Coupon $%s off", $coupon->amount);
+            }
+
+            $yarly_dis = $res->yearly_discount;
+        }
 
 		return view('pricing', compact('monthly_response','onetime_response','managesite','msg','yarly_dis','package_type','buyid','current_packageid','package_subscription','package_status'));
 	}
@@ -2516,12 +2521,7 @@ class HomeController extends Controller {
                     $totalitems = count($response);
 
                     foreach($response as &$res){
-                        $res->discountText = '';
                         [$stock, $res->discountText] = $this->calculateWebsiteWideDiscounts($res->stock, $cartWebsiteWideCoupons);
-
-//                        if($cartWebsiteWideCoupons) {
-//                            $res->discountText = '50 % off';
-//                        }
 
                         $tiers = $coupon ? explode(',', $coupon->tier) : [];
                         if($coupon && in_array($res->content_category, $tiers)) {
@@ -3551,6 +3551,10 @@ class HomeController extends Controller {
         $discountText = '';
 
         foreach($websiteWideCoupons as $websiteWideCoupon) {
+            if($discountText !== '') {
+                $discountText .= '<br>';
+            }
+
             if($websiteWideCoupon->discount_type == 'P') {
                 $discount =  $discount - $itemPrice * $websiteWideCoupon->amount / 100;
                 $discountText .= "Coupon ".$websiteWideCoupon->amount.'% off';
@@ -3633,11 +3637,16 @@ class HomeController extends Controller {
      */
     protected function getCartWebsiteWideCoupons()
     {
-        return DB::table('tbl_discount')->where('type', 'W')->where('domain_id', $this->getDomainId())->where('status', 'A')->whereDate('end_date', '>=', now())->where('place', 'like', '%1%')->get();
+        return $this->websiteWideCoupons(1);
     }
 
     protected function getPricingWebsiteWideCoupons()
     {
-        return DB::table('tbl_discount')->where('type', 'W')->where('domain_id', $this->getDomainId())->where('status', 'A')->whereDate('end_date', '>=', now())->where('place', 'like', '%2%')->get();
+        return $this->websiteWideCoupons(2);
+    }
+
+    protected function websiteWideCoupons($place)
+    {
+        return DB::table('tbl_discount')->where('type', 'W')->where('domain_id', $this->getDomainId())->where('status', 'A')->whereDate('end_date', '>=', now())->where('place', 'like', '%'.$place.'%')->get();
     }
 }
