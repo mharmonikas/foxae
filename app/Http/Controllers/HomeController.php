@@ -2897,45 +2897,39 @@ class HomeController extends Controller {
 							}
 						}
 
-								$availablecount = $total_credits - $used_credits;
-								if($availablecount == 0){
-									$packageid = "";
-								}
+                        $availablecount = $total_credits - $used_credits;
+                        if($availablecount == 0){
+                            $packageid = "";
+                        }
 					}
 				if(!empty($packageid)){
 					 $stockinfo = DB::table('tbl_buypackagestock')->where('buypackage_id',$packageid)->where('plan_id',$buyid)->where('stocktype_id',$stock)->where('contentcat_id',$content)->first();
 
 					if($availablecount > 0){
 						$getdownloadres = DB::table('tbl_download')->where('user_id',Session::get('userid'))->where('video_id',$id)->where('site_id',$managesite->intmanagesiteid)->first();
-						if(!empty($getdownloadres)){
-							echo json_encode(array("response"=>'Done',"stock"=>((!empty($stockinfo->stock))?$stockinfo->stock:0),'instock'=>'alreadydownload',"available_stock"=>$availablecount));
 
-						}else{
-							echo json_encode(array("response"=>'Done',"stock"=>((!empty($stockinfo->stock))?$stockinfo->stock:0),'instock'=>'yes',"available_stock"=>$availablecount));
-
+                        if(!empty($getdownloadres)){
+							echo json_encode(["response"=>'Done',"stock"=>((!empty($stockinfo->stock))?$stockinfo->stock:0),'instock'=>'alreadydownload',"available_stock"=>$availablecount]);
+						} else {
+							echo json_encode(["response"=>'Done',"stock"=>((!empty($stockinfo->stock))?$stockinfo->stock:0),'instock'=>'yes',"available_stock"=>$availablecount]);
 						}
-					}else{
-						echo json_encode(array("response"=>'Done',"stock"=>0,'instock'=>'no',"available_stock"=>$availablecount));
-
+					} else {
+						echo json_encode(["response"=>'Done',"stock"=>0,'instock'=>'no',"available_stock"=>$availablecount]);
 					}
-				}else{
+				} else {
 					$getdownloadres = DB::table('tbl_download')->where('user_id',Session::get('userid'))->where('video_id',$id)->where('site_id',$managesite->intmanagesiteid)->first();
-						if(!empty($getdownloadres)){
-							echo json_encode(array("response"=>'Done',"stock"=>0,'instock'=>'alreadydownload',"available_stock"=>0));
-						}else{
-							echo json_encode(array("response"=>'Done',"stock"=>0,'instock'=>'no',"available_stock"=>0));
-						}
 
-
+                    if(!empty($getdownloadres)){
+                        echo json_encode(["response"=>'Done',"stock"=>0,'instock'=>'alreadydownload',"available_stock"=>0]);
+                    }else{
+                        echo json_encode(["response"=>'Done',"stock"=>0,'instock'=>'no',"available_stock"=>0]);
+                    }
 				}
-
-			}else{
-
-				echo json_encode(array("response"=>'Done',"stock"=>0,'instock'=>'no',"available_stock"=>0));
-
+			} else {
+				echo json_encode(["response"=>'Done',"stock"=>0,'instock'=>'no',"available_stock"=>0]);
 			}
         } else {
-			echo json_encode(array("response"=>'No'));
+			echo json_encode(["response"=>'No']);
         }
         exit;
     }
@@ -2993,7 +2987,7 @@ class HomeController extends Controller {
             $category='';
         }
 
-        if($response->EnumType=='I'){
+        if($response->EnumType=='I') {
             $data_type = "Image";
         } else {
             $data_type = "Video";
@@ -3004,8 +2998,7 @@ class HomeController extends Controller {
         if(!empty($size)){
             $diemension=$size[0].'x'.$size[1];
         }
-			// print_r($skintone);
-			// print_r($category);
+
         $incartlist =  DB::table('tbl_wishlist')->where('tbl_wishlist.videoid',$id)->where('tbl_wishlist.userid',$userid)->where('tbl_wishlist.siteid',$managesite->intmanagesiteid)->whereNotNull('status')->first();
 
         if (!empty($incartlist)) {
@@ -3087,7 +3080,7 @@ class HomeController extends Controller {
 		$this->checklogin();
 		$userid = Session::get('userid');
 		$managesite = DB::table('tbl_managesite')->where('txtsiteurl',$_SERVER['SERVER_NAME'])->first();
-		$response =  DB::table('tbl_favorites')->leftjoin('tbl_Video','tbl_favorites.fav_videoid','tbl_Video.IntId',)->where('tbl_favorites.fav_userid',$userid)->where('tbl_favorites.fav_siteid',$managesite->intmanagesiteid)->orderBy('fav_created_date','DESC')->paginate(10);
+		$response =  DB::table('tbl_favorites')->leftjoin('tbl_Video','tbl_favorites.fav_videoid','tbl_Video.IntId')->where('tbl_favorites.fav_userid',$userid)->where('tbl_favorites.fav_siteid',$managesite->intmanagesiteid)->orderBy('fav_created_date','DESC')->paginate(10);
 		$siteid=$managesite->intmanagesiteid;
 
 		return view('/user-favorites',compact('response','siteid'));

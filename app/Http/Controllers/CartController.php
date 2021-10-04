@@ -528,7 +528,7 @@ class CartController extends Controller {
         File::deleteDirectory($path);
         File::delete(public_path().'/'.$fileName);
 
-        $arr=explode(',',$request->downloadid);
+        $arr=explode(',', $request->downloadid);
 
         $packageavailable = DB::table('tbl_buypackage')
             ->where('status','A')
@@ -536,9 +536,9 @@ class CartController extends Controller {
             ->whereDate('package_expiredate', '>', date('Y-m-d'))
             ->get();
 
-        $cartvalue = $request->cartvalue;
+        $cartvalue = (int) $request->cartvalue;
 
-        $cartCreditsLeft = (int) $cartvalue;
+        $cartCreditsLeft = $cartvalue;
 
         foreach($packageavailable as &$package) {
             $creditsInCurrentPackage = $package->package_count - $package->package_download;
@@ -553,8 +553,7 @@ class CartController extends Controller {
                 $cartCreditsLeft = 0;
 
                 break;
-            }
-            else {
+            } else {
                 DB::table('tbl_buypackage')
                     ->where('package_id', $package->package_id)
                     ->update(['package_download' => $package->package_count]);
@@ -579,7 +578,7 @@ class CartController extends Controller {
 
                 $getdownloadresponse = DB::table('tbl_download')->where('user_id',Session::get('userid'))->where('video_id',$id)->first();
 
-                if($request->type=='direct') {
+                if($request->type == 'direct') {
                     $data = [
                         "video_id"=>$id,
                         "user_id"=>Session::get('userid'),
@@ -591,7 +590,7 @@ class CartController extends Controller {
 
                     $this->DownloadFileServer($id);
                 } else {
-                    $packageavailable = DB::table('tbl_buypackage')->where('status','A')->where('package_userid',Session::get('userid'))->whereDate('package_expiredate','>',date('Y-m-d'))->get();
+                    $packageavailable = DB::table('tbl_buypackage')->where('status','A')->where('package_userid', Session::get('userid'))->whereDate('package_expiredate','>',date('Y-m-d'))->get();
 
                     $videoinfo = DB::table('tbl_Video')->select('content_category','stock_category')->where('IntId',$id)->first();
 
@@ -599,7 +598,7 @@ class CartController extends Controller {
                         return 1;
                     }
 
-                    $packageid ="";
+                    $packageid = "";
                     $packageDownloadcount ="";
                     $buyid ="";
                     $pack_count ="";
@@ -607,54 +606,38 @@ class CartController extends Controller {
                     $onepackcreditcount=0;
                     $remainingcount=0;
 
-                    foreach($packageavailable as $pack){
-                        $onepackcreditcount = $pack->package_count - $pack->package_download;
+//                    foreach($packageavailable as $pack){
+//                        $onepackcreditcount = $pack->package_count - $pack->package_download;
+//
+//                        if($pack->package_download < $pack->package_count && $cartvalue <= $onepackcreditcount){
+//                            $availablecount += $pack->package_count;
+//                            $remainingcount += $pack->package_count - $pack->package_download;
+//
+//                            if(empty($packageid)){
+//                                $packageid = $pack->package_id;
+//                                $buyid = $pack->buy_id;
+//                                $packageDownloadcount = $pack->package_download;
+//                                $pack_count=$pack->package_count;
+//                            }
+//                        }
+//                    }
 
-                        if($pack->package_download < $pack->package_count && (int)$cartvalue <= $onepackcreditcount){
-                            $availablecount += $pack->package_count;
-                            $remainingcount += $pack->package_count - $pack->package_download;
+//                    if(!empty($packageid)){
+                        $stockinfo = DB::table('tbl_buypackagestock')->leftjoin('tbl_plan','tbl_plan.plan_id','tbl_buypackagestock.plan_id')->where('tbl_buypackagestock.buypackage_id', $packageid)->where('tbl_buypackagestock.plan_id', $buyid)->where('tbl_buypackagestock.stocktype_id', $videoinfo->stock_category)->where('tbl_buypackagestock.contentcat_id',$videoinfo->content_category)->first();
 
-                            if(empty($packageid)){
-                                $packageid = $pack->package_id;
-                                $buyid = $pack->buy_id;
-                                $packageDownloadcount = $pack->package_download;
-                                $pack_count=$pack->package_count;
-                            }
-                        }
-                    }
+//                        if(!empty($stockinfo)){
+                            $data = [
+                                "video_id" => $id,
+                                "user_id" => Session::get('userid'),
+                                "site_id" => $managesite->intmanagesiteid,
+                                "create_at" => date("Y-m-d H:i:s")
+                            ];
+                            $this->HomeModel->DownloadData($data);
+                            /* One Check pending Start date or end date  */
 
-                    if(!empty($packageid)){
-                        $stockinfo = DB::table('tbl_buypackagestock')->leftjoin('tbl_plan','tbl_plan.plan_id','tbl_buypackagestock.plan_id')->where('tbl_buypackagestock.buypackage_id',$packageid)->where('tbl_buypackagestock.plan_id',$buyid)->where('tbl_buypackagestock.stocktype_id',$videoinfo->stock_category)->where('tbl_buypackagestock.contentcat_id',$videoinfo->content_category)->first();
-
-                        if(!empty($stockinfo)){
-                            if($cartCreditsLeft === 0){
-                                $creditrate = $stockinfo->stock;
-
-                                if($remainingcount>=$creditrate){
-                                    $data = [
-                                        "video_id"=>$id,
-                                        "user_id"=>Session::get('userid'),
-                                        "site_id"=>$managesite->intmanagesiteid,
-                                        "create_at"=>date("Y-m-d H:i:s")
-                                    ];
-                                    $this->HomeModel->DownloadData($data);
-                                    /* One Check pending Start date or end date  */
-
-                                    $this->DownloadFileServer($id);
-                                }
-
-                            } else {
-                                $data = [
-                                    "video_id"=>$id,
-                                    "user_id"=>Session::get('userid'),
-                                    "site_id"=>$managesite->intmanagesiteid,
-                                    "create_at"=>date("Y-m-d H:i:s")
-                                ];
-                                $this->HomeModel->DownloadData($data);
-                                $this->DownloadFileServer($id);
-                            }
-                        }
-                    }
+                            $this->DownloadFileServer($id);
+//                        }
+//                    }
                 }
             }
         }
@@ -778,11 +761,11 @@ class CartController extends Controller {
 	 //  $tmp = imageResize($im2,$size[0],$size[1]);
         //        imagepng($tmp,'images/'. $newFileName. ".png");
 	//$img->resize($size[0],$size[1], function ($constraint) {$constraint->aspectRatio();})->save('images/1608539999-1.png');
-	$im = imagecreatefrompng('images/1608539999.png');
+        $im = imagecreatefrompng('images/1608539999.png');
 	$marge_right = 0;
-		$marge_bottom = 0;
-		$sx = imagesx($stamp);
-		$sy = imagesy($stamp);
+    $marge_bottom = 0;
+    $sx = imagesx($stamp);
+    $sy = imagesy($stamp);
 
 // Copy the stamp image onto our photo using the margin offsets and the photo
 // width to calculate positioning of the stamp.
