@@ -25,42 +25,27 @@ class CouponController extends Controller {
 		->whereIn('place', [$place])
 		->first();
 
-		if(!empty($coupon)) {
-			if($coupon->number_of_uses){
-                $userCoupons = DB::table('users_coupons')->where('coupon_id', $coupon->id)->where('user_id', Session::get('userid'))->get();
+        $userCoupons = DB::table('users_coupons')->where('coupon_id', $coupon->id)->where('user_id', Session::get('userid'))->get();
 
-                if($coupon->type == 'O' && $coupon->number_of_uses > 1) {
-                    $code = '201';
-                }
+        $code = '201';
 
-				else if($userCoupons->count() >= $coupon->number_of_uses){
-					$code = '201';
-				} else {
-                    Session::put('cart-coupon', [
-                        'user_id' => Session::get('userid'),
-                        'coupon_id' => $coupon->id,
-                        'coupon' => $coupon,
-                    ]);
+        if($coupon) {
+            if ($coupon->type == 'O' && $userCoupons->count() > 1) {
+                $code = '201';
+            }
 
-					$code = '200';
-				}
-
-			} else {
+            else if (!$coupon->number_of_uses || $userCoupons->count() < $coupon->number_of_uses) {
                 Session::put('cart-coupon', [
                     'user_id' => Session::get('userid'),
                     'coupon_id' => $coupon->id,
                     'coupon' => $coupon,
                 ]);
 
-				$code = '200';
-			}
+                $code = '200';
+            }
+        }
 
-		}else {
-			$code = '201';
-		}
-
-		$result = array('status' => $code,'data' => $coupon);
-		return response()->json($result);
+		return response()->json(['status' => $code,'data' => $coupon]);
 	}
 
 
@@ -83,27 +68,16 @@ class CouponController extends Controller {
             ->whereIn('domain_id', [$siteInfo->intmanagesiteid])
             ->first();
 
-		if(!empty($coupon)) {
-			if(!empty($coupon->number_of_uses)){
-				$count_of_use = DB::table('tbl_discount_use')->where('id',$coupon->id)->where('user_id',$user_id)->count();
-                $userCoupons = DB::table('users_coupons')->where('coupon_id',$coupon->id)->where('user_id', Session::get('userid'))->get();
+        $userCoupons = DB::table('users_coupons')->where('coupon_id',$coupon->id)->where('user_id', Session::get('userid'))->get();
 
-                if($coupon->type == 'O' && $coupon->number_of_uses > 1) {
-                    $code = '201';
-                }
+        $code = '201';
 
-				else if($userCoupons->count() > (int)$coupon->number_of_uses){
-					$code = '201';
-				} else {
-                    Session::put('pricing-coupon', [
-                        'user_id' => Session::get('userid'),
-                        'coupon_id' => $coupon->id,
-                        'coupon' => $coupon,
-                    ]);
+        if($coupon) {
+            if ($coupon->type == 'O' && $userCoupons->count() > 1) {
+                $code = '201';
+            }
 
-					$code = '200';
-				}
-			} else {
+            else if (!$coupon->number_of_uses || $userCoupons->count() < $coupon->number_of_uses) {
                 Session::put('pricing-coupon', [
                     'user_id' => Session::get('userid'),
                     'coupon_id' => $coupon->id,
@@ -111,10 +85,8 @@ class CouponController extends Controller {
                 ]);
 
                 $code = '200';
-			}
-		} else {
-			$code = '201';
-		}
+            }
+        }
 
 		return response()->json(['status' => $code,'data' => $coupon]);
 	}
