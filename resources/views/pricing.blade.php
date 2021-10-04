@@ -165,7 +165,6 @@
 
                                     <div class="pricing_titles">
                                         <p>{{$res->plan_title}} @if($res->plan_id==$current_packageid && $package_type=='Y')<span class="active-span">- ACTIVE PLAN</span> @endif</p>
-
                                     </div>
 
 
@@ -179,7 +178,6 @@
                                         </div>
                                     @endif
                                 </div>
-
 
                                 <div class="pricing_main no_border tap_anywhere" data-id="{{$res->plan_id}}">
                                     <p class="msg-line">Tap anywhere on the plan to choose</p>
@@ -216,11 +214,7 @@
                         </div>
                     </div>
 
-
-
-
                     <div id="Monthly" class="tabcontent" style="display: none;">
-
                         @php  $j=0;    @endphp
                         @foreach($monthly_response as $res)
                             @php
@@ -233,14 +227,12 @@
                                 <input type="hidden" id="plan-info" value="{{$current_packageid}}" data-id="{{$package_type}}">
                             @endif
 
-
                             <div class="pricing_main bg_section trans_{{$res->plan_id}} @if($res->plan_title=='Standard Plan'){{'standard'}}@elseif($res->plan_title=='Premium Plan'){{'premium'}}@elseif($res->plan_title=='Deluxe Plan'){{'deluxe'}}@else{{'basic'}}@endif @if($res->plan_id==$current_packageid && $package_type=='M') @if($package_status=='A' && $package_subscription=='Y') active_package @endif @endif " id="{{'M'}}{{'-'}}{{$res->plan_id}}">
 
                                 <div class="pricing_titles">
                                     <p>{{$res->plan_title}} @if($res->plan_id==$current_packageid && $package_type=='M')<span class="active-span">- ACTIVE PLAN</span> @endif</p>
 
                                 </div>
-
 
                                 <div class="download_sections @if($res->plan_id==$current_packageid && $package_type=='M')@if($package_status=='A' && $package_subscription=='Y'){{'show'}}@else{{'hide'}}@endif @endif" id="{{'monthly-active-'}}{{$res->plan_id}}" >
                                     <p>ACTIVE PLAN</p>
@@ -282,9 +274,6 @@
                             @endphp
                         @endforeach
                     </div>
-
-
-
                 @endif
 
                 <div class="custom-price-apply">
@@ -301,19 +290,15 @@
                 <div class="pricing_button" id="btn-show" style="display: none;">
                     <a href="javascript:void(0)" class="btn-setting open-form">CONFIRM YOUR SELECTION</a>
                 </div>
-
             </form>
         </div>
     </div>
-</div>
-</div>
 </div>
 
 
 <script src="js/price.js?v=0.0.5"></script>
 
 <script>
-
     $(document).on("click",".custom-button-price",function(){
         var uniqueid=$("#uniqueid").val();
 
@@ -335,28 +320,18 @@
             },
             data:'couponcode='+couponcode+'&place='+place+'&_token='+token+'&surl='+surl,
             success:function(data){
-
                 if(data.status == '201'){
-                    localStorage.setItem("coupon_price", '');
                     $("#errorMessage").html('<div><strong>INVALID COUPON DETAILS</strong></div>');
                     myFunction();
-                }else if(data.status == '200'){
-                    localStorage.setItem("coupon_price", couponcode);
+                } else if(data.status == '200'){
                     $("#errorMessage").html('<div><strong>COUPON APPLIED SUCCESSFULLY</strong></div>');
                     myFunction();
-                }
 
-                location.reload();
+                    location.reload();
+                }
             }
         });
     });
-
-    $(document).ready(function(){
-        if(localStorage.getItem("coupon_price") != '') {
-            $('#apply_coupon_price').val(localStorage.getItem("coupon"));
-        }
-    });
-
 </script>
 
 @include('footer')
