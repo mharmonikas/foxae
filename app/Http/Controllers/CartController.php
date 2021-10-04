@@ -576,69 +576,15 @@ class CartController extends Controller {
 
                 $id = Crypt::decryptString($arr[$i]);
 
-                $getdownloadresponse = DB::table('tbl_download')->where('user_id',Session::get('userid'))->where('video_id',$id)->first();
+                $data = [
+                    "video_id" => $id,
+                    "user_id" => Session::get('userid'),
+                    "site_id" => $managesite->intmanagesiteid,
+                    "create_at" => date("Y-m-d H:i:s")
+                ];
+                $this->HomeModel->DownloadData($data);
 
-                if($request->type == 'direct') {
-                    $data = [
-                        "video_id"=>$id,
-                        "user_id"=>Session::get('userid'),
-                        "site_id"=>$managesite->intmanagesiteid,
-                        "create_at"=>date("Y-m-d H:i:s")
-                    ];
-
-                    $this->HomeModel->DownloadData($data);
-
-                    $this->DownloadFileServer($id);
-                } else {
-                    $packageavailable = DB::table('tbl_buypackage')->where('status','A')->where('package_userid', Session::get('userid'))->whereDate('package_expiredate','>',date('Y-m-d'))->get();
-
-                    $videoinfo = DB::table('tbl_Video')->select('content_category','stock_category')->where('IntId',$id)->first();
-
-                    if($packageavailable->isEmpty()){
-                        return 1;
-                    }
-
-                    $packageid = "";
-                    $packageDownloadcount ="";
-                    $buyid ="";
-                    $pack_count ="";
-                    $availablecount=0;
-                    $onepackcreditcount=0;
-                    $remainingcount=0;
-
-//                    foreach($packageavailable as $pack){
-//                        $onepackcreditcount = $pack->package_count - $pack->package_download;
-//
-//                        if($pack->package_download < $pack->package_count && $cartvalue <= $onepackcreditcount){
-//                            $availablecount += $pack->package_count;
-//                            $remainingcount += $pack->package_count - $pack->package_download;
-//
-//                            if(empty($packageid)){
-//                                $packageid = $pack->package_id;
-//                                $buyid = $pack->buy_id;
-//                                $packageDownloadcount = $pack->package_download;
-//                                $pack_count=$pack->package_count;
-//                            }
-//                        }
-//                    }
-
-//                    if(!empty($packageid)){
-                        $stockinfo = DB::table('tbl_buypackagestock')->leftjoin('tbl_plan','tbl_plan.plan_id','tbl_buypackagestock.plan_id')->where('tbl_buypackagestock.buypackage_id', $packageid)->where('tbl_buypackagestock.plan_id', $buyid)->where('tbl_buypackagestock.stocktype_id', $videoinfo->stock_category)->where('tbl_buypackagestock.contentcat_id',$videoinfo->content_category)->first();
-
-//                        if(!empty($stockinfo)){
-                            $data = [
-                                "video_id" => $id,
-                                "user_id" => Session::get('userid'),
-                                "site_id" => $managesite->intmanagesiteid,
-                                "create_at" => date("Y-m-d H:i:s")
-                            ];
-                            $this->HomeModel->DownloadData($data);
-                            /* One Check pending Start date or end date  */
-
-                            $this->DownloadFileServer($id);
-//                        }
-//                    }
-                }
+                $this->DownloadFileServer($id);
             }
         }
     }
