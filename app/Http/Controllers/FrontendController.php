@@ -7,18 +7,12 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Session;
 class FrontendController extends BaseController {
-	public function __construct() {
-
-
-    }
-
 	public function index(){
         $userdetail = '';
 	   	$package = '';
-		if(!empty(Session::get('userid'))){
-			$userid=Session::get('userid');
-			$userdetail = DB::table('tbluser')->where('intuserid',$userid)->first();
-			$packageavailable = DB::table('tbl_buypackage')->where('package_userid',$userid)->whereDate('package_expiredate','>',date('Y-m-d'))->get();
+		if($userid = Session::get('userid')){
+			$userdetail = DB::table('tbluser')->where('intuserid', $userid)->first();
+			$packageavailable = DB::table('tbl_buypackage')->where('package_userid',$userid)->whereDate('package_expiredate','>', date('Y-m-d'))->get();
 
 			foreach($packageavailable as $packageavailables){
 				if ($packageavailables->package_download < $packageavailables->package_count) {
@@ -26,10 +20,11 @@ class FrontendController extends BaseController {
 				}
 			}
 		}
-		$alltags = DB::table('tbl_MasterTag')->select('tbl_MasterTag.IntId','tbl_MasterTag.VchColumnType','tbl_MasterTag.VchTitle',DB::raw('group_concat(tbl_Tagtype.vchTitle ORDER BY sorting_order Asc) as tagTitle,group_concat(tbl_Tagtype.IntId ORDER BY sorting_order Asc) as tagid'))->join('tbl_Tagtype', 'tbl_Tagtype.VchTypeID', '=', 'tbl_MasterTag.IntId')->groupBy('tbl_Tagtype.VchTypeID')->get();
+
+		$alltags = DB::table('tbl_MasterTag')->select('tbl_MasterTag.IntId','tbl_MasterTag.VchColumnType','tbl_MasterTag.VchTitle', DB::raw('group_concat(tbl_Tagtype.vchTitle ORDER BY sorting_order Asc) as tagTitle,group_concat(tbl_Tagtype.IntId ORDER BY sorting_order Asc) as tagid'))->join('tbl_Tagtype', 'tbl_Tagtype.VchTypeID', '=', 'tbl_MasterTag.IntId')->groupBy('tbl_Tagtype.VchTypeID')->get();
 
 		$Plans = DB::table('tbl_plan')->where('plan_status','A')->get();
-		$managesite = DB::table('tbl_managesite')->where('txtsiteurl','dev.fox-ae.com')->first();
+		$managesite = DB::table('tbl_managesite')->where('txtsiteurl', $_SERVER['SERVER_NAME'])->first();
 		$tblthemesetting = DB::table('tbl_themesetting')->select('*')->where('Intsiteid',$managesite->intmanagesiteid)->first();
 
 		return view('homepage',compact('tblthemesetting','managesite','userdetail','Plans','package'))->with('alltags', $alltags);
