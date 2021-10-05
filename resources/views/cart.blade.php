@@ -381,17 +381,20 @@
 															</div>
 															<span class="cart-hide-on-desktop">
 																@php
-																if(empty($checkloginuser)){
-																	$price=$late_res->stock/$late_res->conversion_rate;
-																}
-															@endphp
+                                                                    if(empty($checkloginuser)){
+                                                                        $price=$late_res->stock/$late_res->conversion_rate;
+                                                                    }
+															    @endphp
 
-															@if(!empty($checkloginuser))
-															@if(!empty($late_res->stock)){{$late_res->stock}} Credits @else 0 Credit @endif @else $ {{number_format($price, 2)}} @endif
+                                                                @if(!empty($checkloginuser))
+                                                                    {{$late_res->stock ?? 0}} Credits
+                                                                @else
+                                                                    $ {{number_format($price, 2)}}
+                                                                @endif
 															</span>
 														</div>
 
-													<div class="cnrflash-for-mobile cart-hide-on-desktop">
+													    <div class="cnrflash-for-mobile cart-hide-on-desktop">
 														@if($late_res->content_category=='1')
 															<div class="cnrflash">
 																<div class="cnrflash-inner first second standard">
@@ -419,11 +422,14 @@
 															</div>
 														@endif
 
-													</div>
+                                                    </div>
 
-
-													@if($late_res->EnumType=='I')<img src="/resize1/showimage/{{ $late_res->IntId }}/{{$siteid}}/{{ $late_res->VchResizeimage}}/?={{ $late_res->intsetdefault}}" height="60px" width="100px" class="cart-img-size">@else <img src="/resize2/showimage/{{$late_res->IntId}}/{{$late_res->siteid}}/{{$late_res->VchVideothumbnail}}/?=16" height="60px" width="100px"> @endif
-													</div>
+													    @if($late_res->EnumType=='I')
+                                                            <img src="/resize1/showimage/{{ $late_res->IntId }}/{{$siteid}}/{{ $late_res->VchResizeimage}}/?={{ $late_res->intsetdefault}}" height="60px" width="100px" class="cart-img-size">
+                                                        @else
+                                                            <img src="/resize2/showimage/{{$late_res->IntId}}/{{$late_res->siteid}}/{{$late_res->VchVideothumbnail}}/?=16" height="60px" width="100px">
+                                                        @endif
+                                                    </div>
 												</td>
 
 												<td class="cart-text-center cart-hide-on-mobile"><h5 class="cart-hide-on-mobile">{{$late_res->VchTitle}}</h5>
@@ -601,7 +607,6 @@ $(document).on("click",".custom-button",function(){
 				$("#errorMessage").html('<div><strong>INVALID COUPON DETAILS</strong></div>');
 				myFunction();
 			}else if(data.status == '200'){
-				localStorage.setItem("coupon", couponcode);
 				$("#errorMessage").html('<div><strong>COUPON APPLIED SUCCESSFULLY</strong></div>');
 				myFunction();
 
@@ -610,11 +615,5 @@ $(document).on("click",".custom-button",function(){
 
 		}
 	});
-});
-
-$(document).ready(function(){
-	if(localStorage.getItem("coupon") != '') {
-		$('#apply_coupon').val(localStorage.getItem("coupon"));
-	}
 });
 </script>
