@@ -17,12 +17,8 @@ ul.video-parts li a i.fa.fa-heart-o, ul.video-parts li a i.fa.fa-heart {
     background: #0000;
     color: #e27d06;
 }
-
-
-
-
 </style>
-  
+
 <link rel="stylesheet" href="/css/fox.css?v=0.0.1">
 <script src="js/fox.jquery.js?v=0.1.97"></script>
  <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
@@ -51,13 +47,13 @@ ul.video-parts li a i.fa.fa-heart-o, ul.video-parts li a i.fa.fa-heart {
 		<div class="iconsdsf">
 			<ul>
 				@foreach ($alltags as $allcategory)
-				<?php 
+				<?php
 				$myalltagid = explode(',',$allcategory->tagid);
 				$myallcategorytag = explode(',',$allcategory->tagTitle);
 				$totalitems = count(explode(',',$allcategory->tagTitle));
 				?>
 				@if ($allcategory->IntId == 1)
-				<?php 
+				<?php
 				for($i=0;$i<$totalitems;$i++){ ?>
 					<li>
 					<label class="check-box-container"><?php echo $myallcategorytag[$i];?>
@@ -65,14 +61,14 @@ ul.video-parts li a i.fa.fa-heart-o, ul.video-parts li a i.fa.fa-heart {
 					<span class="checkmark"></span>
 					</label>
 					</li>
-				<?php } ?>		
+				<?php } ?>
 				@else
 					<li>
-					<div class="image-icon"> 
-					<div class="dropdown dropdownlabel"> 
+					<div class="image-icon">
+					<div class="dropdown dropdownlabel">
 					<select class="racecategory" category="<?php echo $allcategory->VchColumnType; ?>">
 					<option value="">Select Your <?php echo $allcategory->VchTitle; ?></option>
-					<?php 
+					<?php
 					for($i=0;$i<$totalitems;$i++){
 					?>
 					<option value="<?php echo $myalltagid[$i];  ?>"><?php echo $myallcategorytag[$i];  ?></option>
@@ -80,7 +76,7 @@ ul.video-parts li a i.fa.fa-heart-o, ul.video-parts li a i.fa.fa-heart {
 					</select>
 					</div>
 					</div>
-					</li>  
+					</li>
 				@endif
 				@endforeach
 			</ul>
@@ -111,37 +107,37 @@ ul.video-parts li a i.fa.fa-heart-o, ul.video-parts li a i.fa.fa-heart {
 	<div class="banner-image1">
 		<div class="fluid-container" style="position:relative;">
 			<div class="myloadercontainer">
-				<div class="loder_innes">   
-					<div class="loaderview1">     
+				<div class="loder_innes">
+					<div class="loaderview1">
 						<img src="images/{{$tblthemesetting->gificon}}" alt="img" style="width:auto;height:130px;">
 					</div>
-				</div> 	
+				</div>
 			</div>
-		
+
 		<div class="row suggesstion-row">
 			<ul class="keyword" ng-if="showkeyword">
 				Did You Mean:<li ng-repeat="tpname in allkeyword" ng-click="selectautosearch(tpname.title);">@{{tpname.title}}<span>,</span></li>
 			</ul>
 		</div>
 		<div class="row content" style="min-height:500px; padding:0 5px;margin:0 !important;">
-		<input type="hidden" value="@if(!empty($package)){{'yes'}}@else{{'no'}} @endif" data-value="@if(!empty($package)){{$package->package_count-$package->package_download}}@endif" id="package-detail">	
+		<input type="hidden" value="@if(!empty($package)){{'yes'}}@else{{'no'}} @endif" data-value="@if(!empty($package)){{$package->package_count-$package->package_download}}@endif" id="package-detail">
 		<input type="hidden" value="" ng-if="tpname.downloadstatus=='out-download'" id="download">
 		<input type="hidden" value="" ng-if="tpname.downloadstatus=='in-download'" id="redownload">
-		
+
 			<ul class="video-parts">
 				<li class="inner-parts" ng-repeat="tpname in allvideo">
-				
+
 				<div class="btn-model @{{tpname.IntId}}_content" ng-if="tpname.applied_bg==''" data-name="@{{tpname.VchTitle}}" data-tags="@{{tpname.videotags}}"  data-image="/showimage/@{{tpname.IntId}}/{{$managesite->intmanagesiteid}}/@{{tpname.VchVideoName}}?=@{{tpname.intsetdefault}}" data-id="@{{tpname.productid}}" data-imgtype="@{{tpname.content_category}}" data-category="@{{tpname.stock_category}}" data-seo="@{{tpname.seo_url}}" data-type="@{{tpname.EnumType}}" data-folder="@{{tpname.VchFolderPath}}" data-download="@{{tpname.downloadstatus}}" cart-status="@{{tpname.cartstatus}}"fav-status="@{{tpname.favoritesstatus}}" video-id="@{{tpname.IntId}}" transparent-status="@{{tpname.transparent}}" >
-				
-					<div class="hover-play-icon group1" ng-if="tpname.EnumType=='V'"   > 
-					<img src="{{ asset('images') }}/{{$tblthemesetting->vchvideoicon}}" alt="img"> 
+
+					<div class="hover-play-icon group1" ng-if="tpname.EnumType=='V'"   >
+					<img src="{{ asset('images') }}/{{$tblthemesetting->vchvideoicon}}" alt="img">
 					</div>
 					<div class="proper_fit" ng-if="tpname.EnumUploadType=='W'">
-					
+
 					<div class="cnrflash" ng-if="tpname.content_category=='1'">
 						<div class="cnrflash-inner first second standard" ng-if="tpname.stock_category=='1'">
 							<span  class="cnrflash-label">Standard</span>
-							
+
 						</div>
 						<div class="cnrflash-inner first second custom" ng-if="tpname.stock_category=='2'">
 							<span  class="cnrflash-label">Custom</span>
@@ -158,55 +154,53 @@ ul.video-parts li a i.fa.fa-heart-o, ul.video-parts li a i.fa.fa-heart {
 					<div class="cnrflash " ng-if="tpname.content_category=='3'">
 						<div class="cnrflash-inner first second ultra_premium" ng-if="tpname.stock_category=='1'">
 							<span  class="cnrflash-label">Deluxe</span>
-							
+
 						</div>
 						<div class="cnrflash-inner first second custom" ng-if="tpname.stock_category=='2'">
 							<span  class="cnrflash-label">Custom</span>
 						</div>
 					</div>
-					
-					
+
+
 						<span class="colorwhite" style="color:#fff;">@{{tpname.VchTitle}}</span>
 							<a ng-if="tpname.EnumType=='I'" class="group1">
-
-
 								<div class="image"  ng-if="tpname.Vchcustomthumbnail!=''">
-									<img ng-if="tpname.Vchcustomthumbnail!=''" src="/@{{tpname.VchFolderPath}}/@{{tpname.Vchcustomthumbnail}}" > 
+									<img ng-if="tpname.Vchcustomthumbnail!=''" src="/@{{tpname.VchFolderPath}}/@{{tpname.Vchcustomthumbnail}}" >
 								</div>
 
 								<div class="image" ng-if="tpname.Vchcustomthumbnail==''">
-									<img ng-if="tpname.vchcacheimages==''" src="/resize1/showimage/@{{tpname.IntId}}/{{$managesite->intmanagesiteid}}/@{{tpname.VchResizeimage}}/?=@{{tpname.intsetdefault}}" > 
+									<img ng-if="tpname.vchcacheimages==''" src="/resize1/showimage/@{{tpname.IntId}}/{{$managesite->intmanagesiteid}}/@{{tpname.VchResizeimage}}/?=@{{tpname.intsetdefault}}" >
 
-									<img ng-if="tpname.vchcacheimages!=''" src="/resize1/showimage/@{{tpname.IntId}}/{{$managesite->intmanagesiteid}}/@{{tpname.VchResizeimage}}/?=@{{tpname.intsetdefault}}" class="content-image" > 
+									<img ng-if="tpname.vchcacheimages!=''" src="/resize1/showimage/@{{tpname.IntId}}/{{$managesite->intmanagesiteid}}/@{{tpname.VchResizeimage}}/?=@{{tpname.intsetdefault}}" class="content-image" >
 								</div>
 
-							</a> 
+							</a>
 
 							<a href="@{{tpname.VchFolderPath}}/@{{tpname.VchVideothumbnail}}" ng-if="tpname.EnumType=='V'" >
 								<div class="image" ng-if="tpname.Vchcustomthumbnail!=''" >
-								<!--<img ng-if="tpname.Vchcustomthumbnail!=''" src="@{{tpname.VchFolderPath}}/@{{tpname.Vchcustomthumbnail}}" >--> 
-									<img ng-if="tpname.Vchcustomthumbnail!=''" src="/resize2/showimage/@{{tpname.IntId}}/{{$managesite->intmanagesiteid}}/@{{tpname.Vchcustomthumbnail}}/?={{rand(10,100)}}" > 
+								<!--<img ng-if="tpname.Vchcustomthumbnail!=''" src="@{{tpname.VchFolderPath}}/@{{tpname.Vchcustomthumbnail}}" >-->
+									<img ng-if="tpname.Vchcustomthumbnail!=''" src="/resize2/showimage/@{{tpname.IntId}}/{{$managesite->intmanagesiteid}}/@{{tpname.Vchcustomthumbnail}}/?={{rand(10,100)}}" >
 								</div>
 								<div class="image" ng-if="tpname.Vchcustomthumbnail==''">
 					 			<!--<img ng-if="tpname.Vchcustomthumbnail==''" src="@{{tpname.VchFolderPath}}/@{{tpname.VchVideothumbnail}}"> -->
 
-									<img ng-if="tpname.Vchcustomthumbnail==''" src="/resize2/showimage/@{{tpname.IntId}}/{{$managesite->intmanagesiteid}}/@{{tpname.VchVideothumbnail}}/?={{rand(10,100)}}"> 
+									<img ng-if="tpname.Vchcustomthumbnail==''" src="/resize2/showimage/@{{tpname.IntId}}/{{$managesite->intmanagesiteid}}/@{{tpname.VchVideothumbnail}}/?={{rand(10,100)}}">
 								</div>
 							</a>
 					</div>
 					</div>
-					
+
 								<div class="btn-model" ng-if="tpname.applied_bg!= ''" data-name="@{{tpname.VchTitle}}" data-tags="@{{tpname.videotags}}"  data-image="showimg/@{{tpname.userid}}/@{{tpname.imgname}}" data-id="@{{tpname.productid}}" data-imgtype="@{{tpname.content_category}}" data-category="@{{tpname.stock_category}}" data-seo="@{{tpname.seo_url}}" data-type="@{{tpname.EnumType}}" data-folder="@{{tpname.VchFolderPath}}" data-download="@{{tpname.downloadstatus}}" cart-status="@{{tpname.cartstatus}}"fav-status="@{{tpname.favoritesstatus}}" video-id="@{{tpname.IntId}}" transparent-status="@{{tpname.transparent}}" applied-bg="@{{tpname.applied_bg}}">
-				
-					<div class="hover-play-icon group1" ng-if="tpname.EnumType=='V'"   > 
-					<img src="{{ asset('images') }}/{{$tblthemesetting->vchvideoicon}}" alt="img"> 
+
+					<div class="hover-play-icon group1" ng-if="tpname.EnumType=='V'"   >
+					<img src="{{ asset('images') }}/{{$tblthemesetting->vchvideoicon}}" alt="img">
 					</div>
 					<div class="proper_fit" ng-if="tpname.EnumUploadType=='W'">
-					
+
 					<div class="cnrflash" ng-if="tpname.content_category=='1'">
 						<div class="cnrflash-inner first second standard" ng-if="tpname.stock_category=='1'">
 							<span  class="cnrflash-label">Standard</span>
-							
+
 						</div>
 						<div class="cnrflash-inner first second custom" ng-if="tpname.stock_category=='2'">
 							<span  class="cnrflash-label">Custom</span>
@@ -223,7 +217,7 @@ ul.video-parts li a i.fa.fa-heart-o, ul.video-parts li a i.fa.fa-heart {
 					<div class="cnrflash " ng-if="tpname.content_category=='3'">
 						<div class="cnrflash-inner first second ultra_premium" ng-if="tpname.stock_category=='1'">
 							<span  class="cnrflash-label">Deluxe</span>
-							
+
 						</div>
 						<div class="cnrflash-inner first second custom" ng-if="tpname.stock_category=='2'">
 							<span  class="cnrflash-label">Custom</span>
@@ -234,45 +228,45 @@ ul.video-parts li a i.fa.fa-heart-o, ul.video-parts li a i.fa.fa-heart {
 
 
 								<div class="image"  ng-if="tpname.Vchcustomthumbnail!=''">
-									<img ng-if="tpname.Vchcustomthumbnail!=''" src="/@{{tpname.VchFolderPath}}/@{{tpname.Vchcustomthumbnail}}" > 
+									<img ng-if="tpname.Vchcustomthumbnail!=''" src="/@{{tpname.VchFolderPath}}/@{{tpname.Vchcustomthumbnail}}" >
 								</div>
 
 								<div class="image" ng-if="tpname.Vchcustomthumbnail==''">
-									<img ng-if="tpname.vchcacheimages==''" src="/resize1/showimage/@{{tpname.IntId}}/{{$managesite->intmanagesiteid}}/@{{tpname.VchResizeimage}}/?=@{{tpname.intsetdefault}}" > 
+									<img ng-if="tpname.vchcacheimages==''" src="/resize1/showimage/@{{tpname.IntId}}/{{$managesite->intmanagesiteid}}/@{{tpname.VchResizeimage}}/?=@{{tpname.intsetdefault}}" >
 
-									<img ng-if="tpname.vchcacheimages!=''" src="/resize1/showimage/@{{tpname.IntId}}/{{$managesite->intmanagesiteid}}/@{{tpname.VchResizeimage}}/?=@{{tpname.intsetdefault}}" class="content-image" > 
+									<img ng-if="tpname.vchcacheimages!=''" src="/resize1/showimage/@{{tpname.IntId}}/{{$managesite->intmanagesiteid}}/@{{tpname.VchResizeimage}}/?=@{{tpname.intsetdefault}}" class="content-image" >
 								</div>
 
-							</a> 
+							</a>
 
 							<a href="@{{tpname.VchFolderPath}}/@{{tpname.VchVideothumbnail}}" ng-if="tpname.EnumType=='V'" >
 								<div class="image" ng-if="tpname.Vchcustomthumbnail!=''" >
-								<!--<img ng-if="tpname.Vchcustomthumbnail!=''" src="@{{tpname.VchFolderPath}}/@{{tpname.Vchcustomthumbnail}}" >--> 
-									<img ng-if="tpname.Vchcustomthumbnail!=''" src="/resize2/showimage/@{{tpname.IntId}}/{{$managesite->intmanagesiteid}}/@{{tpname.Vchcustomthumbnail}}/?={{rand(10,100)}}" > 
+								<!--<img ng-if="tpname.Vchcustomthumbnail!=''" src="@{{tpname.VchFolderPath}}/@{{tpname.Vchcustomthumbnail}}" >-->
+									<img ng-if="tpname.Vchcustomthumbnail!=''" src="/resize2/showimage/@{{tpname.IntId}}/{{$managesite->intmanagesiteid}}/@{{tpname.Vchcustomthumbnail}}/?={{rand(10,100)}}" >
 								</div>
 								<div class="image" ng-if="tpname.Vchcustomthumbnail==''">
 					 			<!--<img ng-if="tpname.Vchcustomthumbnail==''" src="@{{tpname.VchFolderPath}}/@{{tpname.VchVideothumbnail}}"> -->
 
-									<img ng-if="tpname.Vchcustomthumbnail==''" src="/resize2/showimage/@{{tpname.IntId}}/{{$managesite->intmanagesiteid}}/@{{tpname.VchVideothumbnail}}/?={{rand(10,100)}}"> 
+									<img ng-if="tpname.Vchcustomthumbnail==''" src="/resize2/showimage/@{{tpname.IntId}}/{{$managesite->intmanagesiteid}}/@{{tpname.VchVideothumbnail}}/?={{rand(10,100)}}">
 								</div>
 							</a>
 					</div>
 					</div>
-					<!--	
-					<a href="javascript:void(0)" id="download_@{{tpname.IntId}}" class="btn-download btn-setting" data-val="@{{tpname.productid}}">Download</a>
-				
-					<a href="javascript:void(0)" ng-if="tpname.downloadstatus=='in-download'" id="redownload_@{{tpname.IntId}}" class="cart-btn btn-redownload btn-setting in-download" data-val="@{{tpname.productid}}">Download</a> 
 					<!--
-					<a  href="javascript:void(0)" id="favorites_@{{tpname.IntId}}" data-value="@{{tpname.productid}}" class="btn-favorites" data-toggle="tooltip" data-status="@{{tpname.favoritesstatus}}" data-placement="right" title="Add to Collection" > <i class="@{{tpname.favoriteshtml}}" aria-hidden="true"></i> </a> 
+					<a href="javascript:void(0)" id="download_@{{tpname.IntId}}" class="btn-download btn-setting" data-val="@{{tpname.productid}}">Download</a>
+
+					<a href="javascript:void(0)" ng-if="tpname.downloadstatus=='in-download'" id="redownload_@{{tpname.IntId}}" class="cart-btn btn-redownload btn-setting in-download" data-val="@{{tpname.productid}}">Download</a>
+
+					<a  href="javascript:void(0)" id="favorites_@{{tpname.IntId}}" data-value="@{{tpname.productid}}" class="btn-favorites" data-toggle="tooltip" data-status="@{{tpname.favoritesstatus}}" data-placement="right" title="Add to Collection" > <i class="@{{tpname.favoriteshtml}}" aria-hidden="true"></i> </a>
 					<a ng-if="tpname.downloadstatus=='out-download'" href="javascript:void(0)" id="addToCart_@{{tpname.IntId}}" class="btn-wishlist btn-setting" data-value="@{{tpname.productid}}"  data-status="@{{tpname.cartstatus}}"><i class="@{{tpname.carthtml}}" aria-hidden="true"></i></a>
 					<a ng-if="tpname.downloadstatus=='in-download'" href="javascript:void(0)" id="download_@{{tpname.IntId}}" class="cart-btn btn-download btn-setting" data-val="@{{tpname.productid}}">Download</a>
 					-->
-					
+
 					<a ng-if="tpname.stock_category=='1'" href="javascript:void(0)" id="addToCart_@{{tpname.IntId}}" class="cart-btn btn-wishlist btn-setting" data-value="@{{tpname.productid}}"  data-status="@{{tpname.cartstatus}}">@{{tpname.carthtml}}</a>
-					
+
 					<a ng-if="tpname.stock_category=='2'" href="javascript:void(0)" id="addToCart_@{{tpname.IntId}}" class="cart-btn btn-wishlist btn-setting stock-btn" data-value="@{{tpname.productid}}"  data-status="@{{tpname.cartstatus}}">@{{tpname.carthtml}}</a>
-						
-				</li> 
+
+				</li>
 			</ul>
 		</div>
 		<pagination total-items="totalItems"  ng-change="pageChanged(currentPage)" ng-model="currentPage" max-size="maxSize" class="pagination" boundary-links="true" rotate="false" num-pages="numPages" items-per-page="itemsPerPage"></pagination>
@@ -319,7 +313,7 @@ $(document).ready(function(){
 	$("#errorMessage").html('<div class=""><strong>Password changed successfully</strong> </div>');
 				myFunction();
 });
-<?php } ?> 
+<?php } ?>
 
 $('.searchplaceholder').click(function() {
   $(this).siblings('input').focus();
@@ -337,7 +331,7 @@ $('.form-control').blur();
 
 
 
-/* 
+/*
 $(document).ready(function(){
 	var $this = $('#searchkeyword').val;
 	//alert($this);
