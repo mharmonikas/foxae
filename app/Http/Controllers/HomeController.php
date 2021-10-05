@@ -3632,9 +3632,6 @@ class HomeController extends Controller {
         return $siteInfo->intmanagesiteid;
     }
 
-    /**
-     * @return mixed
-     */
     protected function getCartWebsiteWideCoupons()
     {
         return $this->websiteWideCoupons(1);
