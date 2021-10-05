@@ -3647,6 +3647,14 @@ class HomeController extends Controller {
 
     protected function websiteWideCoupons($place)
     {
-        return DB::table('tbl_discount')->where('type', 'W')->where('domain_id', $this->getDomainId())->where('status', 'A')->whereDate('end_date', '>=', now())->where('place', 'like', '%'.$place.'%')->get();
+        return DB::table('tbl_discount')
+            ->where('type', 'W')
+            ->where(function ($query) {
+                $query->where('domain_id', $this->getDomainId())->orWhere('domain_id', 'A');
+            })
+            ->where('status', 'A')
+            ->whereDate('end_date', '>=', now())
+            ->where('place', 'like', '%'.$place.'%')
+            ->get();
     }
 }
