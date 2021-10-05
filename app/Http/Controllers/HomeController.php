@@ -644,7 +644,6 @@ class HomeController extends Controller {
 
                     if($pack->package_download < $pack->package_count && empty($packageid)){
                         $package=$pack;
-                        //$package_type=$pack->package_type;
                         $packageid = $pack->package_id;
                         $buyid = $pack->buy_id;
                     }
@@ -835,11 +834,7 @@ class HomeController extends Controller {
                         $cartcredit += $res->stock;
                     }
 
-                    // if(!empty($res->conversion_rate)){
-                    //	$cartvalue =$cartcredit/$res->conversion_rate;
-                    // } else {
-                        $cartvalue =$cartcredit;
-                    // }
+                    $cartvalue = $cartcredit;
                 }
             } else {
                 $response = DB::table('tbl_wishlist')->select('tblstock.*','tbl_plan.*','tbl_wishlist.*','tbl_Video.*','tbl_Videotagrelations.VchVideoId',DB::raw("(Select GROUP_CONCAT(np.VchSearchcategorytitle SEPARATOR ', ') from tbl_SearchcategoryVideoRelationship as np where np.IntVideoID = tbl_Video.IntId) as videotags "))
@@ -904,7 +899,6 @@ class HomeController extends Controller {
                     } else {
                         $cartvalue =$cartcredit/$res->conversion_rate;
                     }
-                    //$cartvalue =$cartcredit/$res->conversion_rate;
                 } else {
                     $cartvalue=0;
                 }
@@ -1009,13 +1003,11 @@ class HomeController extends Controller {
 
                         if(!empty($getdownloadresponse)) {
                             foreach($packageavailable as $packageavailables){
-                            //$packcount=$packageavailables->package_count;
                                 $packagedownload=$packageavailables->package_download;
-                                    if($packageavailables->package_download < $packageavailables->package_count){
-                                     $package=$packageavailables->package_count-$packagedownload;
-                                    // echo $package;
-                                        //exit;
-                                    }
+
+                                if($packageavailables->package_download < $packageavailables->package_count){
+                                 $package=$packageavailables->package_count-$packagedownload;
+                                }
                             }
                         } else {
                             foreach($packageavailable as $packageavailables){
@@ -1110,15 +1102,6 @@ class HomeController extends Controller {
 
                     if(!empty($stockinfo)){
                         if($stockinfo->stock > 0){
-                            /* echo '<pre>';
-                            print_r($videoinfo);
-                            echo $videoinfo->stock_category."<br>";
-                            echo $videoinfo->content_category."<br>";
-                            //echo $videoinfo->stock."<br>";
-                            echo $stockinfo->stock;
-                            echo 'Yes';
-                            exit;
-                             */
                             $data = [
                                 "video_id"=>$id,
                                 "user_id"=>Session::get('userid'),
@@ -1126,20 +1109,15 @@ class HomeController extends Controller {
                                 "create_at"=>date("Y-m-d H:i:s")
                             ];
                             $this->HomeModel->DownloadData($data);
-                        /* One Check pending Start date or end date  */
+                            /* One Check pending Start date or end date  */
 
                             $datapackage = [
                                 "package_download" => $packageDownloadcount + $stockinfo->stock / $stockinfo->conversion_rate
                             ];
                             DB::table('tbl_buypackage')->where('package_id', $packageid)->update($datapackage);
 
-                            // $stockupdate = [
-                                // "stock" =>  ($stockinfo->stock-1)
-                            // ];
-                            // DB::table('tbl_buypackagestock')->where('intid', $stockinfo->intid)->update($stockupdate);
-
                             $this->DownloadFileServer2($id);
-                        }else{
+                        } else {
                             echo 'No Stock available';
                         }
                     } else {
@@ -1157,7 +1135,6 @@ class HomeController extends Controller {
                         DB::table('tbl_buypackage')->where('package_id', $packageid)->update($datapackage);
                         $this->DownloadFileServer2($id);
                     }
-                    //$this->RemoveFromWishlist($id);
                 }
 			}
 		}
@@ -1360,24 +1337,6 @@ class HomeController extends Controller {
          echo"<pre>";
          print_r($invoice);
          exit;
-
-		// Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
-		// $response = \Stripe\Subscription::update(
-			  // 'sub_J5yM5QUyPL7l0X'
-			// );
-			// $response = $response->jsonSerialize();
-		// print_r($response);
-
-		// $subscription = \Stripe\Subscription::create([
-							  // 'customer' => 'stripeToken',
-							  // 'items' => [
-								// [
-								  // 'plan' => '1'
-
-								// ],
-							  // ],
-							// ]);
-							// print_r($subscription);
 	}
 
 	public function payment(Request $request) {
@@ -1618,32 +1577,7 @@ class HomeController extends Controller {
                             "user_id"=>Session::get('userid'),
                             "create_at"=>date('Y-m-d H:i:s')
                         ];
-                /* 		$getpackage = DB::table('tbl_buypackage')->where('package_userid',Session::get('userid'))->where('status','A')->where('package_type','!=','O')->whereDate('package_expiredate','>',date('Y-m-d'))->get();
 
-                            $package='';
-                            $package_id='';
-
-                        foreach($getpackage as $packageavailables){
-                            //if($packageavailables->package_download < $packageavailables->package_count){
-                                if(empty($package_id)){
-                                $package=$packageavailables;
-                                $package_id = $packageavailables->package_id;
-                                }
-                            //}
-                        }
-
-
-
-                    if(!empty($package_id)){
-                        $updatepackagedata = [
-
-                        'package_count'=>$package->package_count + $getplan->plan_download,
-
-
-                    ];
-
-
-                    }else{ */
                         $packagedata = [
                         'buy_id'=>$packageid,
                         'package_name'=>$getplan->plan_name,
@@ -1655,12 +1589,6 @@ class HomeController extends Controller {
                         "package_type"=>$buy_type,
                         'create_at'=>date('Y-m-d H:i:s')
                     ];
-
-
-                    //}
-
-                    // print_r($packagedata);
-                    // exit;
                     }
 
                     $paymentlastid = $this->HomeModel->paymentinfo_insert($paymentdata);
@@ -1713,10 +1641,7 @@ class HomeController extends Controller {
                         if(!empty($request->old_packageid)){
 
                             $buypackageinfo = DB::table('tbl_buypackage')->where('package_userid',Session::get('userid'))
-                            //->where('buy_id',$request->old_packageid)
                             ->where('package_subscription','Y')->where('status','A')->get();
-                            // print_r($buypackageinfo);
-                            // exit;
                             if(!empty($buypackageinfo)){
                                 foreach($buypackageinfo as $buyinfos){
                                     $id=$buyinfos->package_id;
@@ -2690,23 +2615,14 @@ class HomeController extends Controller {
                     $buyIds[] = $package->buy_id;
 
                     if($creditsInCurrentPackage >= $cartCreditsLeft){
-//                        DB::table('tbl_buypackage')
-//                            ->where('package_id', $package->package_id)
-//                            ->update(['package_download' => $package->package_download + $cartCreditsLeft]);
-
                         $cartCreditsLeft = 0;
-
                         break;
                     }
-
-//                    DB::table('tbl_buypackage')
-//                        ->where('package_id', $package->package_id)
-//                        ->update(['package_download' => $package->package_count]);
 
                     $cartCreditsLeft = $cartCreditsLeft - $creditsInCurrentPackage;
                 }
 
-                if($cartCreditsLeft !== 0) {
+                if ($cartCreditsLeft !== 0) {
                     return 1;
                 }
 			}
@@ -2739,7 +2655,6 @@ class HomeController extends Controller {
                                 ->get();
 
                             if($stockinfos->count()){
-                                // $real_stockvalue=$stockinfo->stock/$planinfo->conversion_rate;
                                 foreach($stockinfos as $stockinfo) {
                                     $real_stockvalue = $stockinfo->stock;
 
@@ -3364,7 +3279,6 @@ class HomeController extends Controller {
                  exec("composite -dissolve ".$vchtransparency."% -gravity center -geometry '".$dst_width."'x'".$dst_height."'+".$marge_right."+".$marge_bottom." '".$stamp2."' '".$imgfullpath."' '".$tempreurnimgpath."'");
                  exec("convert $tempreurnimgpath -resize 50% $tempreurnimgpath");
                  exec("convert -strip -interlace Plane -gaussian-blur 0.05 -quality 85% $tempreurnimgpath $reurnimgpath");
-                  //exec("convert $tempreurnimgpath -define png:compression-filter=5 -define png:compression-level=9 -define png:compression-strategy=1 -interlace None -resize 50% $reurnimgpath");
                  if (file_exists($tempreurnimgpath))
                    {
                       unlink($tempreurnimgpath);
