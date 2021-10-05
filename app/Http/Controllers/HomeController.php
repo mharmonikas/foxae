@@ -2605,10 +2605,15 @@ class HomeController extends Controller {
             }
 		}
 
-        $expensive_plan = DB::table('tbl_plan')->select('*')->where('plan_siteid',$managesite->intmanagesiteid)->where('plan_type','M')->orderBy('plan_price', 'desc')->first();
-        $yearly_discount = $expensive_plan->plan_price * $expensive_plan->yearly_discount / 100;
-        $calculatedDis = $expensive_plan->plan_price - $yearly_discount;
-        $pricepercredit = $expensive_plan->plan_download / $calculatedDis;
+        $expensive_plan = DB::table('tbl_plan')->where('plan_siteid', $managesite->intmanagesiteid)->where('plan_type','M')->orderBy('plan_price', 'desc')->first();
+        $pricepercredit = 1;
+
+        if($expensive_plan) {
+            $yearly_discount = $expensive_plan->plan_price * $expensive_plan->yearly_discount / 100;
+            $calculatedDis = $expensive_plan->plan_price - $yearly_discount;
+            $pricepercredit = $expensive_plan->plan_download / $calculatedDis;
+        }
+
         $cartcreditvalue = $cartcredit / $pricepercredit;
         $saveuptoamount = abs($cartvalue -  $cartcreditvalue);
         $myPlan = DB::table('tbl_plan')->where('plan_id',$packageid)->where('plan_status','A')->first();
@@ -2652,8 +2657,8 @@ class HomeController extends Controller {
         $buyIds = [];
 
         if($request->type=='direct'){
-            $totalCountImage=0;
-			$cartcount=0;
+            $totalCountImage = 0;
+			$cartcount = 0;
 			foreach($response as $res){
                 $getdownloadres = DB::table('tbl_download')->where('user_id',Session::get('userid'))->where('video_id',$res->videoid)->where('site_id',$managesite->intmanagesiteid)->first();
 				$videoinfo = DB::table('tbl_Video')->select('content_category','stock_category','VchFolderPath','VchVideoName')->where('IntId',$res->videoid)->first();
