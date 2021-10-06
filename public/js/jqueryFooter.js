@@ -1,13 +1,13 @@
 //
 //    This file is derived from the javascript portion of the drag-zoom example
-//    at the web site: 
+//    at the web site:
 //     https://stackoverflow.com/questions/35252249/move-drag-pan-and-zoom-object-image-or-div-in-pure-js
 //
 
 
 
 
-// $(document).on("mousedown",".inner-parts a",function(){	
+// $(document).on("mousedown",".inner-parts a",function(){
           // window.open("/i/"+$(this).attr('data-seo'),'_newtab');
       // }
 // })
@@ -23,13 +23,13 @@ $(".close_icon").on("tap", function() {
 
 $(document).ready(function () {
 	$( document ).on( "doubletap", "#bigimagesize", function() {
-		
+
 		//alert('helo');
-		
+
 	  "use strict";
      var $src = $(this).attr("src");
      var image_title = $('.bigimagename-3').text();
-	
+
         $(".showed").fadeIn();
         $(".img-show img").attr("src", $src);
         $(".image-title").text(image_title);
@@ -50,27 +50,27 @@ $(document).ready(function () {
 	  });
 	});
  $(function() {
-		$(document).on("mousedown",".btn-model a",function(){	
+		$(document).on("mousedown",".btn-model a",function(){
 		   localStorage.setItem("seo_url", $(this).attr('data-seo'));
 		});
         $.contextMenu({
-            selector: '.btn-model a', 
+            selector: '.btn-model a',
             callback: function(key, options) {
 			window.open("/i/"+localStorage.getItem("seo_url"),'_blank');
-       
+
             },
             items: {
                 "edit": {name: "Open in new tab" }
             }
         });
-		$(document).on("mousedown",".btn-model",function(){	
+		$(document).on("mousedown",".btn-model",function(){
 		   localStorage.setItem("seo_url", $(this).attr('data-seo'));
 		});
 		$.contextMenu({
-            selector: '.btn-model', 
+            selector: '.btn-model',
             callback: function(key, options) {
 			window.open("/i/"+localStorage.getItem("seo_url"),'_blank');
-       
+
             },
             items: {
                 "edit": {name: "Open in new tab" }
@@ -78,9 +78,9 @@ $(document).ready(function () {
         });
 });
 function download_detail(id){
-	
-	
-	
+
+
+
 }
 
 function openForm2(formname2) {
@@ -100,27 +100,27 @@ function openbigForm() {
 }
 
 function closebigForm() {
-	
+
 	$('video').trigger('pause');
   document.getElementById("bigimg").style.display = "none";
   $('.homepage').removeClass('freeze');
 }
 var videoID = $('#videoID');
-function setPlaySpeed(speed) { 
+function setPlaySpeed(speed) {
   videoID.playbackRate = speed;
-} 
+}
 var videoID2 = document.getElementById("fvideoID");
-function setPlaySpeed2(speed) { 
+function setPlaySpeed2(speed) {
   videoID2.playbackRate = speed;
 }
 $(document).ready(function(){
   $(".info-advance-search").click(function(){
-	
+
     $(".iconsdsf").toggleClass("show");
 	if($(this).find("span").text() == '+'){
-		$(this).find("span").text('-'); 
+		$(this).find("span").text('-');
 	}else{
-		$(this).find("span").text('+'); 
+		$(this).find("span").text('+');
 	}
   });
 });
@@ -132,15 +132,15 @@ function openNav() {
 function closeNav() {
   document.getElementById("mySidenav").style.width = "0";
 }
- 
+
 $(document).on("click",".btn-download",function(event){
 	event.preventDefault();
-	
+
 	var pack=$("#package-detail").val();
 	var value=$("#package-detail").attr('data-value');
 	var uniqueid=$("#uniqueid").val();
 	if(uniqueid == ""){
-	
+
 		openForm('signin');
 		document.body.scrollTop = 0;
 					document.documentElement.scrollTop = 0;
@@ -163,20 +163,20 @@ $(document).on("click",".btn-download",function(event){
 $(document).on("click",".btn-redownload",function(){
 	$("#productid").val($(this).attr('data-val'));
 	downloadinfo('no');
-	
+
 });
 
 $("#download-image").click(function(){
-	
+
 	var downloadstatus=$("#downloadstatus").val();
 	if(downloadstatus == 1){
 		downloadinfo('yes');
 		return false;
 	}
 	var pack=$("#package-detail").val();
-	
+
 	var value=$("#package-detail").attr('data-value');
-	
+
 	if(value == "" || value ==0){
 		openNav();
 		return false;
@@ -194,44 +194,44 @@ $(".unsubscribe").click(function(){
 //if (confirm('Are you sure you want to cancel the subscription.')) {
 var value=$(this).attr('data-value');
 var token=$('meta[name="csrf-token"]').attr('content');
-	$.ajax({     
+	$.ajax({
 		url: '/unsubscribe-pack',
-		type:"POST", 
+		type:"POST",
 		async: true,
-        dataType: 'json',		
+        dataType: 'json',
 		headers: {
 			'X-CSRF-TOKEN':token
-		},        
+		},
 		data:'packid='+value+'&_token='+token,
-		success:function(data){ 
+		success:function(data){
 			  $("#unsubscribe_"+data.packid).remove();
 			  $('#subscripition_'+data.packid).val('Subscription Cancel');
 			   location.reload();
 			}
 		});
 	//}
-}); 
-function downloadinfo(status){ 
+});
+function downloadinfo(status){
 	var agree = $("#agree").val();
 	if(status == 'yes'){ if($("#agree").is(':checked')){ }else{ $("#content-agree").css("color","red"); setTimeout(function(){ $("#content-agree").css("color","black");  }, 3000); return false; } }
 	var productnid = $("#productid").val();
 
 	var token=$('meta[name="csrf-token"]').attr('content');
-	$.ajax({     
+	$.ajax({
 		url: '/download',
-		type:"POST", 
+		type:"POST",
 		async: true,
-        dataType: 'json',		
+        dataType: 'json',
 		headers: {
 			'X-CSRF-TOKEN':token
-		},        
+		},
 		data:'id='+productnid+'&_token='+token,
-		success:function(data){ 
-	
+		success:function(data){
+
 			if(data.response == 'done'){
 				$('#package-detail').val(data.val);
-				
-				$("#download_"+data.id).html('<i class="fa fa-check-circle" aria-hidden="true"></i>'); 
+
+				$("#download_"+data.id).html('<i class="fa fa-check-circle" aria-hidden="true"></i>');
 				$("#download_"+data.id).removeClass('btn-download');
 				$("#download_"+data.id).addClass('btn-redownload');
 				//.
@@ -269,7 +269,7 @@ function downloadinfo(status){
 				openNav()
 			}
 		}
-	}); 
+	});
 }
 
 
@@ -284,14 +284,14 @@ $(document).on("click",".btn-wishlist",function(event){
 	event.stopImmediatePropagation();
 	var uniqueid=$("#uniqueid").val();
 	// if(uniqueid == ""){
-	
+
 		// openForm('signin');
 		// document.body.scrollTop = 0;
 		// document.documentElement.scrollTop = 0;
 		// return false;
 	// }
 	  var x = document.getElementById("errorMessage");
-	    x.className = x.className.replace("show", "hide"); 
+	    x.className = x.className.replace("show", "hide");
 		$("#errorMessage").empty();
 	var wid = $(this).attr('data-value');
 	var pid = $(this).attr('id');
@@ -317,30 +317,30 @@ $(document).on("click",".btn-wishlist",function(event){
 		changehtml1 = "<a id='"+pid+"' class='btn-wishlist' data-value='"+productnid+"'  data-status='"+changestatus+"'><svg width='33' height='33' viewBox='0 0 33 33' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M16.5 12.375C17.2563 12.375 17.875 11.7563 17.875 11V8.25H20.625C21.3813 8.25 22 7.63125 22 6.875C22 6.11875 21.3813 5.5 20.625 5.5H17.875V2.75C17.875 1.99375 17.2563 1.375 16.5 1.375C15.7437 1.375 15.125 1.99375 15.125 2.75V5.5H12.375C11.6187 5.5 11 6.11875 11 6.875C11 7.63125 11.6187 8.25 12.375 8.25H15.125V11C15.125 11.7563 15.7437 12.375 16.5 12.375ZM9.625 24.75C8.1125 24.75 6.88875 25.9875 6.88875 27.5C6.88875 29.0125 8.1125 30.25 9.625 30.25C11.1375 30.25 12.375 29.0125 12.375 27.5C12.375 25.9875 11.1375 24.75 9.625 24.75ZM23.375 24.75C21.8625 24.75 20.6388 25.9875 20.6388 27.5C20.6388 29.0125 21.8625 30.25 23.375 30.25C24.8875 30.25 26.125 29.0125 26.125 27.5C26.125 25.9875 24.8875 24.75 23.375 24.75ZM11.1375 17.875H21.3813C22.4125 17.875 23.32 17.3113 23.7875 16.4588L28.435 8.03C28.8062 7.37 28.5588 6.53125 27.8988 6.16C27.2388 5.8025 26.4 6.03625 26.0425 6.69625L21.3813 15.125H11.7287L6.2425 3.53375C6.0225 3.0525 5.5275 2.75 5.005 2.75H2.75C1.99375 2.75 1.375 3.36875 1.375 4.125C1.375 4.88125 1.99375 5.5 2.75 5.5H4.125L9.075 15.9363L7.21875 19.2913C6.215 21.1338 7.535 23.375 9.625 23.375H24.75C25.5063 23.375 26.125 22.7563 26.125 22C26.125 21.2438 25.5063 20.625 24.75 20.625H9.625L11.1375 17.875Z' fill='#5B5C5C'/></svg></a><p>Add to cart</p>";
 		addtocart_status = "REMOVED FROM CART!";
 	}
-	
-	
-		$.ajax({     
+
+
+		$.ajax({
 			url: '/wishlist',
-			type:"POST", 
+			type:"POST",
 			async: true,
-			dataType: 'json',	
-			
+			dataType: 'json',
+
 			headers: {
 				'X-CSRF-TOKEN':token
-			},        
-			data:'id='+productnid+'&_token='+token+'&cartstatus='+cartstatus, 
-			success:function(data){ 
-				
+			},
+			data:'id='+productnid+'&_token='+token+'&cartstatus='+cartstatus,
+			success:function(data){
+
 				if(data.response=='1'){
-					
+
 					$("#availablecredit").empty();
 					$("#incart-credit").empty();
 					$("#cartcount").html(data.cart_icon+'<span>'+data.count+'</span>');
 					$("#errorMessage").html('<div class=""><strong>'+addtocart_status+'</strong> </div>');
 					if(data.cartvalue!=''){
-				$("#availablecredit").html('<span class="title-head">Available: </span><span><b>'+data.availablecount+' Credits</b></span>'); 
+				$("#availablecredit").html('<span class="title-head">Available: </span><span><b>'+data.availablecount+' Credits</b></span>');
 					}
-					
+
 				if(data.count > 0){
 						  $(".homepage-popup").addClass("show");
 						  $('.homepage-popup').removeClass("hide");
@@ -353,7 +353,7 @@ $(document).on("click",".btn-wishlist",function(event){
 					if(uniqueid == ""){
 						var val=data.cartvalue;
 						var cartvalue='$'+val.toFixed(2);
-						
+
 					}else{
 						if(data.packageid!=''){
 							var cartvalue=data.cartvalue+' Credits';
@@ -362,8 +362,8 @@ $(document).on("click",".btn-wishlist",function(event){
 							var cartvalue='$'+val.toFixed(2);
 						}
 					}
-						
-					$("#incart-credit").html('<span class="title-head">In Cart&nbsp;('+data.count+' items): </span><span><b>'+cartvalue+'</b></span>');   
+
+					$("#incart-credit").html('<span class="title-head">In Cart&nbsp;('+data.count+' items): </span><span><b>'+cartvalue+'</b></span>');
 					//}
 //console.log(vproductid+"_content");
 					$("#"+pid).attr('data-status',changestatus);
@@ -371,30 +371,30 @@ $(document).on("click",".btn-wishlist",function(event){
 					$("#"+pid).html(changehtml);
 					$("#add-cartli").html(changehtml1);
 						myFunction();
-			
+
 				}else if(data.response=='2'){
-					$('#exampleModal').modal('show'); 
-					
-					
+					$('#exampleModal').modal('show');
+
+
 				}
-				
-				
+
+
 			}
-		}); 
+		});
 });
 
 
 $(document).on("click",".btn-favorites",function(){
 	var uniqueid=$("#uniqueid").val();
 	if(uniqueid == ""){
-	$('#exampleModal').modal('show'); 
-	
+	$('#exampleModal').modal('show');
+
 		// openForm('signin');
 		// document.body.scrollTop = 0;
 					// document.documentElement.scrollTop = 0;
 		return false;
 	}
-	
+
 	var wid = $(this).attr('data-value');
 	var pid = $(this).attr('id');
 	$("#productid").val($(this).attr('data-value'));
@@ -415,58 +415,58 @@ $(document).on("click",".btn-favorites",function(){
 		addtocart_status = "Removed from favorites successfully";
 		carttitle = "Add to Collection";
 	}
-	
-	
-		$.ajax({     
+
+
+		$.ajax({
 			url: '/favorites',
-			type:"POST", 
+			type:"POST",
 			async: true,
-			dataType: 'json',		
+			dataType: 'json',
 			headers: {
 				'X-CSRF-TOKEN':token
-			},        
+			},
 			data:'id='+productnid+'&_token='+token+'&cartstatus='+cartstatus,
-			success:function(data){ 
+			success:function(data){
 				if(data.response=='1'){
-				
+
 					$("#errorMessage").html('<div class=""><strong>'+addtocart_status+'</strong> </div>');
 					$("#"+pid).attr('data-status',changestatus);
 					$("#"+pid).attr('title',carttitle);
 					$("#"+pid).html(changehtml);
 					myFunction();
 				}else if(data.response=='2'){
-					$('#exampleModal').modal('show'); 
-					
-					
+					$('#exampleModal').modal('show');
+
+
 				}
 			}
-		}); 
+		});
 });
 
 
 $(".cart-login").click(function(){
 	openForm('signin')
 	 document.body.scrollTop = 0;
-	document.documentElement.scrollTop = 0;	  
-	  
+	document.documentElement.scrollTop = 0;
+
 });
 $(".resend").click(function(){
 var token=$('meta[name="csrf-token"]').attr('content');
-	$.ajax({     
+	$.ajax({
 		url: '/resend_email',
-		type:"POST", 
-		async: true,	
+		type:"POST",
+		async: true,
 		headers: {
 			'X-CSRF-TOKEN':token
-		},        
+		},
 		data:'_token='+token,
-		success:function(data){ 
+		success:function(data){
 				$("#errorMessage").html('<div class=""><strong>Email has been sent in your email. If you not receive email please check in spam folder  </strong> </div>');
 				myFunction();
 			}
 		});
-	
-}); 
+
+});
 $(document).ready(function(){
   $('[data-toggle="tooltip"]').tooltip();
 });
@@ -476,7 +476,7 @@ $(document).ready(function(){
 // });
 
  function openForm3(formname) {
-  
+
   if(formname == 'signup'){
 		$(".btn-refresh").click();
 		$("#exampleModal").modal("hide");
@@ -492,22 +492,22 @@ $(document).ready(function(){
   		// document.getElementById('signinModal').style.display = "block";
   		// document.getElementById('signupModal').style.display = "none";
   		//document.getElementsById('forgot_form').style.display = "none";
-		
+
   }else if(formname == 'forgot'){
   		$("#exampleModal").modal("hide");
 		$("#signupModal").modal("hide");
 		$("#forgotModal").modal("show");
-		
+
   }
 
-} 
+}
 
 function CopyFunction() {
   var copyText = document.getElementById("myInput");
   copyText.select();
   copyText.setSelectionRange(0, 99999);
   document.execCommand("copy");
-  
+
   var tooltip = document.getElementById("myTooltip");
   tooltip.innerHTML = "Copied: Successfully" ;
 }
@@ -515,7 +515,7 @@ function CopyFunction() {
 function outFunc() {
   var tooltip = document.getElementById("myTooltip");
   tooltip.innerHTML = "Copy to clipboard";
-}	
+}
 function closeCopy(){
 	$(".share-link").css("display","none");
 }
@@ -526,9 +526,9 @@ function showCopy(){
 
 
 function change_background(bg,vid,event){
-$('.myloadercontainer2').css("display", "block"); 
+$('.myloadercontainer2').css("display", "block");
 	var token=$('meta[name="csrf-token"]').attr('content');
-	
+
 	if(vid!=''){
 		var id=vid;
 	}else{
@@ -536,56 +536,56 @@ $('.myloadercontainer2').css("display", "block");
 	}
 		var src='';
 		 $("#backgroundnavbarDropdown").dropdown('toggle');
-		
 
-				$.ajax({ 
+
+				$.ajax({
 						url: '/cart-background',
-						type:"GET", 
+						type:"GET",
 						async: true,
-						dataType: 'json',		
+						dataType: 'json',
 						 beforeSend: function(){
 						},
 						headers: {
 							'X-CSRF-TOKEN':token
-						},        
+						},
 						data:'src='+src+'&_token='+token+'&img='+bg+'&id='+id,
 						success:function(data){
-							
+
 							var appliedbg=data.apllied_bg.toUpperCase();
-								
-								setTimeout(function(){ 
+
+								setTimeout(function(){
 								if(event=='onclick'){
-								
+
 									$("#errorMessage").html('<div class=""><strong>Background changed to '+data.apllied_bg+'</strong> </div>');
 									myFunction();
-								}  }, 3500); 
-								
+								}  }, 3500);
+
 								$('#bigimagesize').on('load', function(){
 									$(".myloadercontainer2").css("display", "none");
 								});
-								
+
 								if(data){
 									$("#bigimagesize").attr("src",'/'+data.url);
 									$("#alldetail_"+id).attr("data-image",'/'+data.url);
-									
+
 								if(id!=''){
 									$("#bigimagesize_"+id).attr("src",'/'+data.url);
 								}
-								
+
 								$("#background-effect_"+id).text(appliedbg+' BACKGROUND');
-								
+
 								$("#appliedbg_"+id).text(data.apllied_bg+' Background');
-								
-							
+
+
 								}
-							
-							
+
+
 						}
-						
+
 					});
-	
-		
-	
+
+
+
 }
 $('.passwordplaceholder').click(function() {
   $(this).siblings('input').focus();

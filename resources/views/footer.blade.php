@@ -34,9 +34,9 @@ $managesite = HomeController::managesite2();
 		</div>
 		<div class="footer-bottom">
 		<ul>
-			<li><a href="/privacypolicy">Privacy Policy  </a></li>	
+			<li><a href="/privacypolicy">Privacy Policy  </a></li>
 			<li><a href="/termscondition">Term & Conditions  </a></li>
-		</ul>			
+		</ul>
 		</div>
 	</div>
 </div>
@@ -50,7 +50,7 @@ $managesite = HomeController::managesite2();
 			<p>it's simple. Your image start downloading once you choose your plan. Our worry-free standard license covers the most common use of this image.</p>
 			<h4 style="font-size:13px">Value-priced annual plans</h4>
 			<p>Save with an annual plan. charged monthly.</p>
-			
+
 			<div class="free_sec">
 				<p><span>free</span></p><p><strong>Ready To Purchase</strong></p>
 			</div>
@@ -70,13 +70,13 @@ $managesite = HomeController::managesite2();
 					</li>
 				@endif
 			@endforeach
-			
+
 		</ul>
 		<p style="clear: both; font-size:13px;">*Billed monthly for one year. Early cancellation fee may apply.</p>
-	  
+
 		<ul class="pricing-list-sidebar border_sec">
 			<h3>One Time Purchase</h3>
-		@foreach($Plans  as $plansecond)	
+		@foreach($Plans  as $plansecond)
 			@if($plansecond->plan_purchase == 'O')
 			<li style="clear: both" class="">
 				<input type="radio" class="plisting" id="f-{{$plansecond->plan_id}}" name="packageid" value="{{$plansecond->plan_id}}" required>
@@ -84,12 +84,12 @@ $managesite = HomeController::managesite2();
 				<p class="plan-descrption">{{ $plansecond->plan_description }}</p></label>
 				<div class="check"></div>
 				<span for="f-price" class="plan-price">$ {{$plansecond->plan_price / $plansecond->plan_download}} <br><small>par image</small></span>
-			</li>	
+			</li>
 			@endif
-		@endforeach 	
-				
+		@endforeach
+
 		</ul>
-		
+
 		<div class="buy_button">
 			<button type="submit" class="btn-cart">buy and download</button>
 		</div>
@@ -103,7 +103,7 @@ $managesite = HomeController::managesite2();
 	<div class="row uppr bgpopup-color">
 		<div class="col-md-12">
 			<div class="pop-heading">
-			<div class="rlt-key hide-on-mobile"></div>	
+			<div class="rlt-key hide-on-mobile"></div>
 				<h3 class="bigimagename hide-on-mobile">Image Name</h3>
 				<div class="title_close">
 					<span class="close_icon" onclick="closebigForm()">&#10005;</span>
@@ -113,28 +113,28 @@ $managesite = HomeController::managesite2();
 			<p class="bigimagename-p hide-on-desktop">Double-tap on the image to zoom</p>
 			<div class="image-center">
 				 <div class="myloadercontainer2" id="loader">
-				<div class="loder_innes">   
-					<div class="loaderview1">     
+				<div class="loder_innes">
+					<div class="loaderview1">
 						<img src="/images/{{$managesite->gificon}}" alt="img"  style="width:auto !important;height:130px;">
 					</div>
-				</div> 	  
+				</div>
 			</div>
 			<div class="imgs-setup" id="imagepart">
 				<div class="share-middle">
-					<span id="image-desc" class="image-desc"> </span> 
+					<span id="image-desc" class="image-desc"> </span>
 					<!--<img src="/img/share-apple.png" onclick="showCopy()">-->
 				</div>
 					<div class="bigimgcontainer" id="zoom-container" >
 					<!--	<input type="checkbox" id="zoomCheck">
 						<label for="zoomCheck">-->
-							<img src=""  id="bigimagesize" onload="loadImage()" ondragstart="return false" >
-					<!--	</label>--> 
+							<img src="" id="bigimagesize" onload="loadImage()" ondragstart="return false" >
+					<!--	</label>-->
 					</div>
-					
-				
+
+
 <button class="" id="zoomin"><svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="33" viewBox="0 0 24 24" width="33"><g><g><rect fill="none" height="33" width="33" y="0"/></g></g><g><g><path d="M11.5,8.5h-1v-1c0-0.55-0.45-1-1-1s-1,0.45-1,1v1h-1c-0.55,0-1,0.45-1,1c0,0.55,0.45,1,1,1h1v1c0,0.55,0.45,1,1,1 s1-0.45,1-1v-1h1c0.55,0,1-0.45,1-1C12.5,8.95,12.05,8.5,11.5,8.5z"/><path d="M14.73,13.31c1.13-1.55,1.63-3.58,0.98-5.74c-0.68-2.23-2.57-3.98-4.85-4.44C6.21,2.2,2.2,6.22,3.14,10.86 c0.46,2.29,2.21,4.18,4.44,4.85c2.16,0.65,4.19,0.15,5.74-0.98l5.56,5.56c0.39,0.39,1.02,0.39,1.41,0l0,0 c0.39-0.39,0.39-1.02,0-1.41L14.73,13.31z M9.5,14C7.01,14,5,11.99,5,9.5S7.01,5,9.5,5S14,7.01,14,9.5S11.99,14,9.5,14z"/></g></g></svg></button>
 <button class="hide-btn" id="zoomout"><svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="33" viewBox="0 0 24 24" width="33"><g><g><rect fill="none" height="33" width="33" y="0"/></g></g><g><g><path d="M11,8.5H8c-0.55,0-1,0.45-1,1c0,0.55,0.45,1,1,1h3c0.55,0,1-0.45,1-1C12,8.95,11.55,8.5,11,8.5z"/><path d="M14.73,13.31c1.13-1.55,1.63-3.58,0.98-5.74c-0.68-2.23-2.57-3.98-4.85-4.44C6.21,2.2,2.2,6.22,3.14,10.86 c0.46,2.29,2.21,4.18,4.44,4.85c2.16,0.65,4.19,0.15,5.74-0.98l5.56,5.56c0.39,0.39,1.02,0.39,1.41,0l0,0 c0.39-0.39,0.39-1.02,0-1.41L14.73,13.31z M9.5,14C7.01,14,5,11.99,5,9.5S7.01,5,9.5,5S14,7.01,14,9.5S11.99,14,9.5,14z"/></g></g></svg></button>
-				</div> 
+				</div>
 
 				<div class="imgs-setup" id="videopart">
 				<div class="share-middle">
@@ -146,9 +146,9 @@ $managesite = HomeController::managesite2();
 							Your browser does not support the video tag.
 						</video>
 					</div>
-				</div> 
-				
-				<div class="share-link" style="display:none;"> 
+				</div>
+
+				<div class="share-link" style="display:none;">
 					<div class="copy-text">
 					<input type="text" value="Hello World" id="myInput" readonly >
 						<div class="tooltips">
@@ -161,46 +161,46 @@ $managesite = HomeController::managesite2();
 							<span>&#x2715; </span>
 						</div>
 					</div>
-				</div>	
+				</div>
 			</div>
 			<div class="pop-footer">
 				<div class="img-btm hide-on-mobile">
 					<p>Not quite what you are looking for?</p>
 					<a href="/custom">Request Custom Graphics</a>
-				</div> 
-				<div class="rlt-key hide-on-desktop"></div>	
+				</div>
+				<div class="rlt-key hide-on-desktop"></div>
 				<div class="main-icon">
 					<ul>
 						<li id="add-cartli">
-							
-							
+
+
 						</li>
-						<li id="add-favli"> 
-							
+						<li id="add-favli">
+
 						</li>
-						
+
 						<li class="popup-dropdown link-list" id="share-list">
-							
+
 						</li>
 						<li class="popup-dropdown background-list" id="background-list">
-						
+
 						</li>
 						<li class="popup-dropdown info-list" id="info-list">
-					
+
 						</li>
 					</ul>
 				</div>
-				
+
 				<div class="pop-heading hide-on-desktop">
 				<div class="img-btm ">
 					<p>Not quite what you are looking for? </p>
 					<a href="/custom">Request Custom Graphics</a>
-				</div> 
+				</div>
 			</div>
 			<div class="img-btm login-text" id="login-link">
-				
-					
-				</div> 
+
+
+				</div>
 			</div>
 		</div>
 
@@ -220,7 +220,7 @@ $managesite = HomeController::managesite2();
   <div class="modal-dialog modal-lg login-modal signup-modal checkoutModal billing-form" role="document">
     <div class="modal-content">
 		<div class="modal-header">
-       
+
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -228,7 +228,7 @@ $managesite = HomeController::managesite2();
       <div class="modal-body">
 				<div class="container-fluid">
 	<div class="checkout-container">
-		
+
 		<form class="method_sec creditly-card-form" method="post" data-stripe-publishable-key="{{ $getapidetail->stripe_key }}" data-cc-on-file="false" autocomplete="off" >
 		<input type="hidden" id="old_packageid" name="old_packageid" value="">
 		<input type="hidden" id="old_packagetype" name="old_packagetype" value="">
@@ -289,8 +289,8 @@ $managesite = HomeController::managesite2();
 					</div>
 				</div>
 			</div>
-			
-		</div>	
+
+		</div>
 			<div class="col-md-7 summary">
 			<h6>Payment Method</h6>
 			<div class="method border">
@@ -305,7 +305,7 @@ $managesite = HomeController::managesite2();
 				<div class="form-group">
 					<label for="text" class="col-sm-12 col-form-label">Credit Card Number <span>*</span></label>
 					<input type="text" class="form-control credit credit-card-number" name="cardnumber" id="cardnumber" inputmode="numeric" autocomplete="cc-number" autocompletetype="cc-number" x-autocompletetype="cc-number" placeholder="&#149;&#149;&#149;&#149; &#149;&#149;&#149;&#149; &#149;&#149;&#149;&#149; &#149;&#149;&#149;&#149;">
-					<div class="pay_img">	
+					<div class="pay_img">
 					<img src="/public/img/payment.png">
 					</div>
 				</div>
@@ -321,14 +321,14 @@ $managesite = HomeController::managesite2();
 					<div class="form-group col-md-4" style="margin-bottom: 30px;">
 						<label for="text" class="col-sm-12 col-form-label">CVV <span>*</span></label>
 						<input type="text" class="form-control security-code" id="cvv" name="cvv" placeholder="123" placeholder="&#149;&#149;&#149;" required>
-						<div class="pay_img credit_im">	
+						<div class="pay_img credit_im">
 						<img src="/public/img/credit_card.png">
 						</div>
 					</div>
 				</div>
 				<div class="card-type"></div>
-			</div>	
-			
+			</div>
+
 			<div class="order-summary">
 				<div class="order-inner">
 				<h6>Order Summary</h6>
@@ -344,15 +344,15 @@ $managesite = HomeController::managesite2();
 						</div>
 						<div class="order_pay">
 							<p id="plan-price"><strong>$0.14 / Month</strong></p>
-							
+
 							<div class="custom-discount" style="display:none">
-						
+
 							</div>
 						</div>
-						
-						
+
+
 					</div>
-			
+
 			</div>
 			</div>
 		</div>
@@ -377,45 +377,45 @@ $managesite = HomeController::managesite2();
 					<p>
 					Thanks for being awesome,<br> we hope you enjoy your purchase!</p>
 			</div>
-		</div>		
+		</div>
 </div>
       </div>
-      
+
     </div>
   </div>
 </div>
 
-   <!-- confirm-----modal-dialog --> 
-    <div class="modal fade confirm-modal apply-modal" tabindexrole="dialog" id="custom-modal">  
-                        <div class="modal-dialog modal-sm" role="document">  
-                            <div class="modal-content">  
-                                <!-- modal-body -->  
-                                <div class="modal-body" id="modal-body"></div>  
-                                <!-- modal-footer -->  
+   <!-- confirm-----modal-dialog -->
+    <div class="modal fade confirm-modal apply-modal" tabindexrole="dialog" id="custom-modal">
+                        <div class="modal-dialog modal-sm" role="document">
+                            <div class="modal-content">
+                                <!-- modal-body -->
+                                <div class="modal-body" id="modal-body"></div>
+                                <!-- modal-footer -->
                                 <div class="modal-footer" id="modal-footer">
 									<button type="button" class="btn btn-default" id="ok-btn">Yes</button>
 									<button type="button" class="btn btn-default" id="no-btn">No</button>
 									<button type="button" class="btn btn-default" id="cancel-btn">Cancel</button>
-								</div>  
-                            </div>  
-                        </div>  
-                    </div>  
+								</div>
+                            </div>
+                        </div>
+                    </div>
 
-    <div class="modal fade confirm-modal apply-modal" tabindexrole="dialog" id="changeplan-modal">  
-                        <div class="modal-dialog modal-sm" role="document">  
-                            <div class="modal-content">  
-                                <!-- modal-body -->  
+    <div class="modal fade confirm-modal apply-modal" tabindexrole="dialog" id="changeplan-modal">
+                        <div class="modal-dialog modal-sm" role="document">
+                            <div class="modal-content">
+                                <!-- modal-body -->
                                 <div class="modal-body">Plan change will occur on the next planned payment.
-		Do you want to proceed? </div>  
-                                <!-- modal-footer -->  
+		Do you want to proceed? </div>
+                                <!-- modal-footer -->
                                 <div class="modal-footer" id="modal-footer">
 									<button type="button" class="btn btn-default" id="plan-ok-btn">Yes</button>
 									<button type="button" class="btn btn-default" id="plan-no-btn">No</button>
-									 
-								</div>  
-                            </div>  
-                        </div>  
-                    </div>  
+
+								</div>
+                            </div>
+                        </div>
+                    </div>
 
 
 
@@ -458,12 +458,12 @@ $(document).ready(function(){
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js" integrity="sha512-0bEtK0USNd96MnO4XhH8jhv3nyRF0eK87pJke6pkYf3cM0uDIhNJy9ltuzqgypoIFXw3JSuiy04tVk4AjpZdZw==" crossorigin="anonymous"></script>
 
-<script type="text/javascript" src="/js/imgViewer2.js"></script>	
+<script type="text/javascript" src="/js/imgViewer2.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 
 <script src="/js/jqueryFooter.js?v=0.0.1"></script>
 
- </div>	
+ </div>
  </body>
-</html> 
+</html>

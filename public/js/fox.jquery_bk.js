@@ -321,6 +321,7 @@ app.controller('customersCtrl', function ($scope, $http) {
 		var name = $(this).attr('data-name');
 		var tags = $(this).attr('data-tags');
 		var productid = $(this).attr('data-id');
+
 		if(datatype == "V"){
 			var path = "/"+$(this).attr('data-folder')+"/"+currentsiteid+"/watermark.mp4"
 			$("#imagepart").css("display","none");
@@ -328,7 +329,7 @@ app.controller('customersCtrl', function ($scope, $http) {
 			$("#newvideo").html('<source src="'+path+'"  type="video/mp4">');
 			$(".bigimagename").text(name);
 
-		}else if(datatype == "I"){
+		} else if(datatype == "I") {
 			$("#imagepart").css("display","block");
 			$("#videopart").css("display","none");
 
@@ -340,19 +341,12 @@ app.controller('customersCtrl', function ($scope, $http) {
 
 		   $('#zoomCheck').prop('checked', false);
 			var img = $(this).attr('data-image');
-
-
-
 			$(".bigimagename").text(name);
-
-
-
 			var res = img.replace("%20", "W3Schools")
 			$("#bigimagesize").attr("src",res);
 		}
 
 		$("#productid").val(productid);
-
 
 		if(tags == ""){
 				var taglisting = [];
@@ -386,7 +380,6 @@ $(document).ready(function () {
     $(this).toggleClass('non-active');
 })
 });
-;
 
 var getUrlParameter = function getUrlParameter(sParam) {
 	var sPageURL = window.location.search.substring(1),
