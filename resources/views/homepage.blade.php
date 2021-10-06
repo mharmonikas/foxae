@@ -165,32 +165,32 @@
                         <a ng-if="tpname.EnumType=='I'" class="group1">
 								<div class="image" ng-if="tpname.Vchcustomthumbnail!=''">
 									<img ng-if="tpname.Vchcustomthumbnail!=''" src="/@{{tpname.VchFolderPath}}/@{{tpname.Vchcustomthumbnail}}" >
-								</div>
+{{--                                    <img ng-if="tpname.Vchcustomthumbnail!=''" src="@{{tpname.vchcacheimages}}">--}}
+                                </div>
 
 								<div class="image" ng-if="tpname.Vchcustomthumbnail==''">
-									<img ng-if="tpname.vchcacheimages==''" src="/resize1/showimage/@{{tpname.IntId}}/{{$managesite->intmanagesiteid}}/@{{tpname.VchResizeimage}}/?=@{{tpname.intsetdefault}}" >
+                                    <img ng-if="tpname.vchcacheimages==''" src="/resize1/showimage/@{{tpname.IntId}}/{{$managesite->intmanagesiteid}}/@{{tpname.VchResizeimage}}/?=@{{tpname.intsetdefault}}" >
+{{--                                    <img ng-if="tpname.vchcacheimages==''" src="@{{tpname.vchcacheimages}}">--}}
 
-									<img ng-if="tpname.vchcacheimages!=''" src="/resize1/showimage/@{{tpname.IntId}}/{{$managesite->intmanagesiteid}}/@{{tpname.VchResizeimage}}/?=@{{tpname.intsetdefault}}" class="content-image" >
-								</div>
+                                    <img ng-if="tpname.vchcacheimages!=''" src="/resize1/showimage/@{{tpname.IntId}}/{{$managesite->intmanagesiteid}}/@{{tpname.VchResizeimage}}/?=@{{tpname.intsetdefault}}" class="content-image" >
+{{--                                    <img ng-if="tpname.vchcacheimages!=''" src="@{{tpname.vchcacheimages}}">--}}
+                                </div>
 
 							</a>
                         <a href="@{{tpname.VchFolderPath}}/@{{tpname.VchVideothumbnail}}" ng-if="tpname.EnumType=='V'" >
                             <div class="image" ng-if="tpname.Vchcustomthumbnail!=''" >
                             <!--<img ng-if="tpname.Vchcustomthumbnail!=''" src="@{{tpname.VchFolderPath}}/@{{tpname.Vchcustomthumbnail}}" >-->
                                 <img ng-if="tpname.Vchcustomthumbnail!=''" src="/resize2/showimage/@{{tpname.IntId}}/{{$managesite->intmanagesiteid}}/@{{tpname.Vchcustomthumbnail}}/?={{rand(10,100)}}" >
-{{--                                <img ng-if="tpname.Vchcustomthumbnail!=''" src="@{{tpname.vchcacheimages}}" >--}}
                             </div>
                             <div class="image" ng-if="tpname.Vchcustomthumbnail==''">
                             <!--<img ng-if="tpname.Vchcustomthumbnail==''" src="@{{tpname.VchFolderPath}}/@{{tpname.VchVideothumbnail}}"> -->
                                 <img ng-if="tpname.Vchcustomthumbnail==''" src="/resize2/showimage/@{{tpname.IntId}}/{{$managesite->intmanagesiteid}}/@{{tpname.VchVideothumbnail}}/?={{rand(10,100)}}">
-{{--                                <img ng-if="tpname.Vchcustomthumbnail==''" src="@{{tpname.vchcacheimages}}" >--}}
                             </div>
                         </a>
 					</div>
                 </div>
 
-								<div class="btn-model" ng-if="tpname.applied_bg!= ''" data-name="@{{tpname.VchTitle}}" data-tags="@{{tpname.videotags}}"  data-image="showimg/@{{tpname.userid}}/@{{tpname.imgname}}" data-id="@{{tpname.productid}}" data-imgtype="@{{tpname.content_category}}" data-category="@{{tpname.stock_category}}" data-seo="@{{tpname.seo_url}}" data-type="@{{tpname.EnumType}}" data-folder="@{{tpname.VchFolderPath}}" data-download="@{{tpname.downloadstatus}}" cart-status="@{{tpname.cartstatus}}"fav-status="@{{tpname.favoritesstatus}}" video-id="@{{tpname.IntId}}" transparent-status="@{{tpname.transparent}}" applied-bg="@{{tpname.applied_bg}}">
-
+                <div class="btn-model" ng-if="tpname.applied_bg!= ''" data-name="@{{tpname.VchTitle}}" data-tags="@{{tpname.videotags}}"  data-image="showimg/@{{tpname.userid}}/@{{tpname.imgname}}" data-id="@{{tpname.productid}}" data-imgtype="@{{tpname.content_category}}" data-category="@{{tpname.stock_category}}" data-seo="@{{tpname.seo_url}}" data-type="@{{tpname.EnumType}}" data-folder="@{{tpname.VchFolderPath}}" data-download="@{{tpname.downloadstatus}}" cart-status="@{{tpname.cartstatus}}"fav-status="@{{tpname.favoritesstatus}}" video-id="@{{tpname.IntId}}" transparent-status="@{{tpname.transparent}}" applied-bg="@{{tpname.applied_bg}}">
 					<div class="hover-play-icon group1" ng-if="tpname.EnumType=='V'"   >
 					<img src="{{ asset('images') }}/{{$tblthemesetting->vchvideoicon}}" alt="img">
 					</div>
