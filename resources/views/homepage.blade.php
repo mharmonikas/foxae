@@ -1,29 +1,30 @@
 @include('header')
 <style>
+    li.inner-parts.ng-scope:hover a.btn-favorites {
+        padding: 7px 15px;
+        border-radius: 7px;
+        color: #fff !important;
+        font-size: 17px;
+        font-weight: 700;
+        bottom: 0px;
+        position: absolute;
+        display: flex;
+        margin-left: 38%;
+        margin-top: 8%;
+    }
 
-li.inner-parts.ng-scope:hover a.btn-favorites {
-    padding: 7px 15px;
-    border-radius: 7px;
-    color: #fff !important;
-    font-size: 17px;
-    font-weight: 700;
-    bottom: 0px;
-    position: absolute;
-    display: flex;
-    margin-left: 38%;
-    margin-top: 8%;
-}
-ul.video-parts li a i.fa.fa-heart-o, ul.video-parts li a i.fa.fa-heart {
-    background: #0000;
-    color: #e27d06;
-}
+    ul.video-parts li a i.fa.fa-heart-o, ul.video-parts li a i.fa.fa-heart {
+        background: #0000;
+        color: #e27d06;
+    }
 </style>
 
 <link rel="stylesheet" href="/css/fox.css?v=0.0.1">
 <script src="js/fox.jquery.js?v=0.1.97"></script>
- <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <div class="container">
-	<input type="hidden" id="currentsiteid" value="<?php echo $managesite->intmanagesiteid;?>" >
+	<input type="hidden" id="currentsiteid" value="<?php echo $managesite->intmanagesiteid;?>">
+
 	<div class="title" id="myHeader">
 		<h5>@{{totalItems}} Item (s)</h5>
 		<form>
@@ -38,7 +39,9 @@ ul.video-parts li a i.fa.fa-heart-o, ul.video-parts li a i.fa.fa-heart {
 		</form>
 	</div>
 </div>
+
 </section >
+
 <section class="navigation-bar" onClick="closelist()">
 	<div class="container">
 		<div class="advance_s">
@@ -47,37 +50,37 @@ ul.video-parts li a i.fa.fa-heart-o, ul.video-parts li a i.fa.fa-heart {
 		<div class="iconsdsf">
 			<ul>
 				@foreach ($alltags as $allcategory)
-				<?php
-				$myalltagid = explode(',',$allcategory->tagid);
-				$myallcategorytag = explode(',',$allcategory->tagTitle);
-				$totalitems = count(explode(',',$allcategory->tagTitle));
-				?>
-				@if ($allcategory->IntId == 1)
-				<?php
-				for($i=0;$i<$totalitems;$i++){ ?>
-					<li>
-					<label class="check-box-container"><?php echo $myallcategorytag[$i];?>
-					<input type="checkbox"  class="racecategory" category="<?php echo $allcategory->VchColumnType; ?>"  ng-model="gender<?php echo $myalltagid[$i];  ?>" id="box-<?php echo $myalltagid[$i];  ?>" ng-click="changegeneder(gender<?php echo $myalltagid[$i];  ?>,<?php echo $myalltagid[$i];  ?>)" value="<?php echo $myalltagid[$i];  ?>">
-					<span class="checkmark"></span>
-					</label>
-					</li>
-				<?php } ?>
-				@else
-					<li>
-					<div class="image-icon">
-					<div class="dropdown dropdownlabel">
-					<select class="racecategory" category="<?php echo $allcategory->VchColumnType; ?>">
-					<option value="">Select Your <?php echo $allcategory->VchTitle; ?></option>
-					<?php
-					for($i=0;$i<$totalitems;$i++){
-					?>
-					<option value="<?php echo $myalltagid[$i];  ?>"><?php echo $myallcategorytag[$i];  ?></option>
-					<?php } ?>
-					</select>
-					</div>
-					</div>
-					</li>
-				@endif
+				    <?php
+                        $myalltagid = explode(',',$allcategory->tagid);
+                        $myallcategorytag = explode(',',$allcategory->tagTitle);
+                        $totalitems = count(explode(',',$allcategory->tagTitle));
+                    ?>
+                    @if ($allcategory->IntId == 1)
+                    <?php
+                    for($i=0;$i<$totalitems;$i++){ ?>
+                        <li>
+                        <label class="check-box-container"><?php echo $myallcategorytag[$i];?>
+                        <input type="checkbox"  class="racecategory" category="<?php echo $allcategory->VchColumnType; ?>"  ng-model="gender<?php echo $myalltagid[$i];  ?>" id="box-<?php echo $myalltagid[$i];  ?>" ng-click="changegeneder(gender<?php echo $myalltagid[$i];  ?>,<?php echo $myalltagid[$i];  ?>)" value="<?php echo $myalltagid[$i];  ?>">
+                        <span class="checkmark"></span>
+                        </label>
+                        </li>
+                    <?php } ?>
+                    @else
+                        <li>
+                        <div class="image-icon">
+                        <div class="dropdown dropdownlabel">
+                        <select class="racecategory" category="<?php echo $allcategory->VchColumnType; ?>">
+                        <option value="">Select Your <?php echo $allcategory->VchTitle; ?></option>
+                        <?php
+                        for($i=0;$i<$totalitems;$i++){
+                        ?>
+                        <option value="<?php echo $myalltagid[$i];  ?>"><?php echo $myallcategorytag[$i];  ?></option>
+                        <?php } ?>
+                        </select>
+                        </div>
+                        </div>
+                        </li>
+                    @endif
 				@endforeach
 			</ul>
 			<div class="video">
@@ -103,6 +106,7 @@ ul.video-parts li a i.fa.fa-heart-o, ul.video-parts li a i.fa.fa-heart {
 
 	</div>
 </section>
+
 <section class="banner-image" onClick="closelist()">
 	<div class="banner-image1">
 		<div class="fluid-container" style="position:relative;">
@@ -128,43 +132,38 @@ ul.video-parts li a i.fa.fa-heart-o, ul.video-parts li a i.fa.fa-heart {
 				<li class="inner-parts" ng-repeat="tpname in allvideo">
 
 				<div class="btn-model @{{tpname.IntId}}_content" ng-if="tpname.applied_bg==''" data-name="@{{tpname.VchTitle}}" data-tags="@{{tpname.videotags}}"  data-image="/showimage/@{{tpname.IntId}}/{{$managesite->intmanagesiteid}}/@{{tpname.VchVideoName}}?=@{{tpname.intsetdefault}}" data-id="@{{tpname.productid}}" data-imgtype="@{{tpname.content_category}}" data-category="@{{tpname.stock_category}}" data-seo="@{{tpname.seo_url}}" data-type="@{{tpname.EnumType}}" data-folder="@{{tpname.VchFolderPath}}" data-download="@{{tpname.downloadstatus}}" cart-status="@{{tpname.cartstatus}}"fav-status="@{{tpname.favoritesstatus}}" video-id="@{{tpname.IntId}}" transparent-status="@{{tpname.transparent}}" >
-
 					<div class="hover-play-icon group1" ng-if="tpname.EnumType=='V'"   >
-					<img src="{{ asset('images') }}/{{$tblthemesetting->vchvideoicon}}" alt="img">
+					    <img src="{{ asset('images') }}/{{$tblthemesetting->vchvideoicon}}" alt="img">
 					</div>
 					<div class="proper_fit" ng-if="tpname.EnumUploadType=='W'">
+                        <div class="cnrflash" ng-if="tpname.content_category=='1'">
+                            <div class="cnrflash-inner first second standard" ng-if="tpname.stock_category=='1'">
+                                <span  class="cnrflash-label">Standard</span>
+                            </div>
+                            <div class="cnrflash-inner first second custom" ng-if="tpname.stock_category=='2'">
+                                <span  class="cnrflash-label">Custom</span>
+                            </div>
+                        </div>
+                        <div class="cnrflash" ng-if="tpname.content_category=='2'">
+                            <div class="cnrflash-inner first second premium" ng-if="tpname.stock_category=='1'">
+                                <span  class="cnrflash-label">Premium</span>
+                            </div>
+                            <div class="cnrflash-inner first second custom" ng-if="tpname.stock_category=='2'">
+                                <span  class="cnrflash-label">Custom</span>
+                            </div>
+                        </div>
+                        <div class="cnrflash " ng-if="tpname.content_category=='3'">
+                            <div class="cnrflash-inner first second ultra_premium" ng-if="tpname.stock_category=='1'">
+                                <span  class="cnrflash-label">Deluxe</span>
 
-					<div class="cnrflash" ng-if="tpname.content_category=='1'">
-						<div class="cnrflash-inner first second standard" ng-if="tpname.stock_category=='1'">
-							<span  class="cnrflash-label">Standard</span>
-
-						</div>
-						<div class="cnrflash-inner first second custom" ng-if="tpname.stock_category=='2'">
-							<span  class="cnrflash-label">Custom</span>
-						</div>
-					</div>
-					<div class="cnrflash" ng-if="tpname.content_category=='2'">
-						<div class="cnrflash-inner first second premium" ng-if="tpname.stock_category=='1'">
-							<span  class="cnrflash-label">Premium</span>
-						</div>
-						<div class="cnrflash-inner first second custom" ng-if="tpname.stock_category=='2'">
-							<span  class="cnrflash-label">Custom</span>
-						</div>
-					</div>
-					<div class="cnrflash " ng-if="tpname.content_category=='3'">
-						<div class="cnrflash-inner first second ultra_premium" ng-if="tpname.stock_category=='1'">
-							<span  class="cnrflash-label">Deluxe</span>
-
-						</div>
-						<div class="cnrflash-inner first second custom" ng-if="tpname.stock_category=='2'">
-							<span  class="cnrflash-label">Custom</span>
-						</div>
-					</div>
-
-
-						<span class="colorwhite" style="color:#fff;">@{{tpname.VchTitle}}</span>
-							<a ng-if="tpname.EnumType=='I'" class="group1">
-								<div class="image"  ng-if="tpname.Vchcustomthumbnail!=''">
+                            </div>
+                            <div class="cnrflash-inner first second custom" ng-if="tpname.stock_category=='2'">
+                                <span  class="cnrflash-label">Custom</span>
+                            </div>
+                        </div>
+                        <span class="colorwhite" style="color:#fff;">@{{tpname.VchTitle}}</span>
+                        <a ng-if="tpname.EnumType=='I'" class="group1">
+								<div class="image" ng-if="tpname.Vchcustomthumbnail!=''">
 									<img ng-if="tpname.Vchcustomthumbnail!=''" src="/@{{tpname.VchFolderPath}}/@{{tpname.Vchcustomthumbnail}}" >
 								</div>
 
@@ -175,20 +174,20 @@ ul.video-parts li a i.fa.fa-heart-o, ul.video-parts li a i.fa.fa-heart {
 								</div>
 
 							</a>
-
-							<a href="@{{tpname.VchFolderPath}}/@{{tpname.VchVideothumbnail}}" ng-if="tpname.EnumType=='V'" >
-								<div class="image" ng-if="tpname.Vchcustomthumbnail!=''" >
-								<!--<img ng-if="tpname.Vchcustomthumbnail!=''" src="@{{tpname.VchFolderPath}}/@{{tpname.Vchcustomthumbnail}}" >-->
-									<img ng-if="tpname.Vchcustomthumbnail!=''" src="/resize2/showimage/@{{tpname.IntId}}/{{$managesite->intmanagesiteid}}/@{{tpname.Vchcustomthumbnail}}/?={{rand(10,100)}}" >
-								</div>
-								<div class="image" ng-if="tpname.Vchcustomthumbnail==''">
-					 			<!--<img ng-if="tpname.Vchcustomthumbnail==''" src="@{{tpname.VchFolderPath}}/@{{tpname.VchVideothumbnail}}"> -->
-
-									<img ng-if="tpname.Vchcustomthumbnail==''" src="/resize2/showimage/@{{tpname.IntId}}/{{$managesite->intmanagesiteid}}/@{{tpname.VchVideothumbnail}}/?={{rand(10,100)}}">
-								</div>
-							</a>
+                        <a href="@{{tpname.VchFolderPath}}/@{{tpname.VchVideothumbnail}}" ng-if="tpname.EnumType=='V'" >
+                            <div class="image" ng-if="tpname.Vchcustomthumbnail!=''" >
+                            <!--<img ng-if="tpname.Vchcustomthumbnail!=''" src="@{{tpname.VchFolderPath}}/@{{tpname.Vchcustomthumbnail}}" >-->
+                                <img ng-if="tpname.Vchcustomthumbnail!=''" src="/resize2/showimage/@{{tpname.IntId}}/{{$managesite->intmanagesiteid}}/@{{tpname.Vchcustomthumbnail}}/?={{rand(10,100)}}" >
+{{--                                <img ng-if="tpname.Vchcustomthumbnail!=''" src="@{{tpname.vchcacheimages}}" >--}}
+                            </div>
+                            <div class="image" ng-if="tpname.Vchcustomthumbnail==''">
+                            <!--<img ng-if="tpname.Vchcustomthumbnail==''" src="@{{tpname.VchFolderPath}}/@{{tpname.VchVideothumbnail}}"> -->
+                                <img ng-if="tpname.Vchcustomthumbnail==''" src="/resize2/showimage/@{{tpname.IntId}}/{{$managesite->intmanagesiteid}}/@{{tpname.VchVideothumbnail}}/?={{rand(10,100)}}">
+{{--                                <img ng-if="tpname.Vchcustomthumbnail==''" src="@{{tpname.vchcacheimages}}" >--}}
+                            </div>
+                        </a>
 					</div>
-					</div>
+                </div>
 
 								<div class="btn-model" ng-if="tpname.applied_bg!= ''" data-name="@{{tpname.VchTitle}}" data-tags="@{{tpname.videotags}}"  data-image="showimg/@{{tpname.userid}}/@{{tpname.imgname}}" data-id="@{{tpname.productid}}" data-imgtype="@{{tpname.content_category}}" data-category="@{{tpname.stock_category}}" data-seo="@{{tpname.seo_url}}" data-type="@{{tpname.EnumType}}" data-folder="@{{tpname.VchFolderPath}}" data-download="@{{tpname.downloadstatus}}" cart-status="@{{tpname.cartstatus}}"fav-status="@{{tpname.favoritesstatus}}" video-id="@{{tpname.IntId}}" transparent-status="@{{tpname.transparent}}" applied-bg="@{{tpname.applied_bg}}">
 
@@ -276,9 +275,6 @@ ul.video-parts li a i.fa.fa-heart-o, ul.video-parts li a i.fa.fa-heart {
 
 </section>
 
-
-
-
 <!-- Login Register or Download popup -->
 @include('footer')
 
@@ -290,52 +286,47 @@ $( document ).on( "doubletap", "#bigimagesize", function() {
 
 });
 }); */
-window.onscroll = function() {my_Functionss()};
+    window.onscroll = function() {my_Functionss()};
 
-var header = document.getElementById("myHeader");
-var sticky = 250;
-
-
-
-function my_Functionss() {
-	//alert(window.pageYOffset);
-  if (window.pageYOffset > sticky) {
-    header.classList.add("sticky");
-  } else {
-    header.classList.remove("sticky");
-  }
-}
+    var header = document.getElementById("myHeader");
+    var sticky = 250;
 
 
 
-<?php if(!empty(Session::has('changepassword'))){ ?>
-$(document).ready(function(){
-	$("#errorMessage").html('<div class=""><strong>Password changed successfully</strong> </div>');
-				myFunction();
-});
-<?php } ?>
+    function my_Functionss() {
+        //alert(window.pageYOffset);
+      if (window.pageYOffset > sticky) {
+        header.classList.add("sticky");
+      } else {
+        header.classList.remove("sticky");
+      }
+    }
 
-$('.searchplaceholder').click(function() {
-  $(this).siblings('input').focus();
-});
-$('.form-control').focus(function() {
-  $(this).siblings('.searchplaceholder').hide();
-});
-$('.form-control').blur(function() {
-  var $this = $(this);
-  //alert($this);
-  if ($this.val().length == 0)
-    $(this).siblings('.searchplaceholder').show();
-});
-$('.form-control').blur();
+    <?php if(!empty(Session::has('changepassword'))){ ?>
+        $(document).ready(function(){
+            $("#errorMessage").html('<div class=""><strong>Password changed successfully</strong> </div>');
+                        myFunction();
+        });
+    <?php } ?>
 
-
-
-/*
-$(document).ready(function(){
-	var $this = $('#searchkeyword').val;
-	//alert($this);
-  if ($this.val().length == 0)
-    $(this).siblings('.searchplaceholder').show();
-}); */
+    $('.searchplaceholder').click(function() {
+      $(this).siblings('input').focus();
+    });
+    $('.form-control').focus(function() {
+      $(this).siblings('.searchplaceholder').hide();
+    });
+    $('.form-control').blur(function() {
+      var $this = $(this);
+      //alert($this);
+      if ($this.val().length == 0)
+        $(this).siblings('.searchplaceholder').show();
+    });
+    $('.form-control').blur();
+    /*
+    $(document).ready(function(){
+        var $this = $('#searchkeyword').val;
+        //alert($this);
+      if ($this.val().length == 0)
+        $(this).siblings('.searchplaceholder').show();
+    }); */
 </script>
