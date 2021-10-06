@@ -10,11 +10,12 @@ use Session;
 class MyajaxController extends Controller {
     public function index(){
         $servername = $_SERVER['SERVER_NAME'];
+
         $selectserver = DB::table('tbl_managesite')->where('txtsiteurl',$servername)->first();
 
-        $mygetallvideo = DB::table('tbl_Video')->select(DB::raw('COUNT(DISTINCT(tbl_Video.Intid)) AS totalvideo'),'parentserachingcategory.VchSearchcategorytitle','tbl_SearchgroupVideoRelationship.VchSearchgrouptitle','tbl_Video.VchTitle','p.VchCategoryTitle')->leftJoin('tbl_Videotagrelations', 'tbl_Video.IntId', '=', 'tbl_Videotagrelations.VchVideoId')->leftJoin('tbl_SearchcategoryVideoRelationship as parentserachingcategory', 'tbl_Video.IntId', '=', 'parentserachingcategory.IntVideoID')->leftJoin('tbl_SearchgroupVideoRelationship', 'tbl_Video.IntId', '=', 'tbl_SearchgroupVideoRelationship.IntVideoID')->leftJoin('tbl_Searchcategory as p', 'parentserachingcategory.IntCategorid', '=', 'p.IntParent')->leftJoin('tbl_group', 'tbl_SearchgroupVideoRelationship.Intgroupid', '=', 'tbl_group.intgroupid');
+        $mygetallvideo = DB::table('tbl_Video')->select(DB::raw('COUNT(DISTINCT(tbl_Video.Intid)) AS totalvideo'), 'parentserachingcategory.VchSearchcategorytitle','tbl_SearchgroupVideoRelationship.VchSearchgrouptitle','tbl_Video.VchTitle','p.VchCategoryTitle')->leftJoin('tbl_Videotagrelations', 'tbl_Video.IntId', '=', 'tbl_Videotagrelations.VchVideoId')->leftJoin('tbl_SearchcategoryVideoRelationship as parentserachingcategory', 'tbl_Video.IntId', '=', 'parentserachingcategory.IntVideoID')->leftJoin('tbl_SearchgroupVideoRelationship', 'tbl_Video.IntId', '=', 'tbl_SearchgroupVideoRelationship.IntVideoID')->leftJoin('tbl_Searchcategory as p', 'parentserachingcategory.IntCategorid', '=', 'p.IntParent')->leftJoin('tbl_group', 'tbl_SearchgroupVideoRelationship.Intgroupid', '=', 'tbl_group.intgroupid');
 
-        $getallvideo = DB::table('tbl_Video')->select('tbl_Video.*','tbl_Videotagrelations.VchVideoId',DB::raw("(Select GROUP_CONCAT(np.VchSearchcategorytitle SEPARATOR ', ') from tbl_SearchcategoryVideoRelationship as np where np.IntVideoID = tbl_Video.IntId ORDER BY RAND() LIMIT 4) as videotags "))->leftJoin('tbl_Videotagrelations', 'tbl_Video.IntId', '=', 'tbl_Videotagrelations.VchVideoId');
+        $getallvideo = DB::table('tbl_Video')->select('tbl_Video.*','tbl_Videotagrelations.VchVideoId', DB::raw("(Select GROUP_CONCAT(np.VchSearchcategorytitle SEPARATOR ', ') from tbl_SearchcategoryVideoRelationship as np where np.IntVideoID = tbl_Video.IntId ORDER BY RAND() LIMIT 4) as videotags "))->leftJoin('tbl_Videotagrelations', 'tbl_Video.IntId', '=', 'tbl_Videotagrelations.VchVideoId');
 
 //        if(request()->get('racetag')){
 //            if($_GET['racetag'] != "" && $_GET['racetag'] != 0 ){
@@ -48,14 +49,15 @@ class MyajaxController extends Controller {
         }
 
         if($searchtext = request()->get('searchtext')) {
-             $msearch ="";
-                if(!empty($subcategory)){
+            $msearch = '';
 
-                    foreach($subcategory as $skey=>$svalue){
-                        $msearch .= " (parentserachingcategory.VchSearchcategorytitle like '%$svalue%') or ";
-                    }
+            if(!empty($subcategory)){
 
+                foreach($subcategory as $svalue){
+                    $msearch .= " (parentserachingcategory.VchSearchcategorytitle like '%$svalue%') or ";
                 }
+
+            }
                 //(parentserachingcategory.VchSearchcategorytitle like '%$searchtext%') or
             $getallvideo = $getallvideo->whereRaw("
             ($msearch (tbl_Video.VchTitle like '%$searchtext%') or (tbl_Searchcategory.VchCategoryTitle like '%$searchtext%') or (tbl_SearchgroupVideoRelationship.VchSearchgrouptitle like '%$searchtext%'))");
@@ -106,54 +108,28 @@ class MyajaxController extends Controller {
 
             $userid = Session::get('userid') ?? Session::getId();
 
-            $incartlist =  DB::table('tbl_wishlist')->where('tbl_wishlist.videoid',$tumbvideo->IntId)->where('tbl_wishlist.userid',$userid)->where('tbl_wishlist.siteid',$selectserver->intmanagesiteid)->whereNotNull('status')->first();
 
             if ($userid) {
-                if (!empty($incartlist)) {
-                    $tumbvideo->cartstatus = 'out-cart';
-                    $tumbvideo->carthtml = 'Remove';
-                    $tumbvideo->userid = $userid;
-                    $tumbvideo->imgname = $incartlist->img_name;
+                $incartlist =  DB::table('tbl_wishlist')->where('tbl_wishlist.videoid',$tumbvideo->IntId)->where('tbl_wishlist.userid',$userid)->where('tbl_wishlist.siteid',$selectserver->intmanagesiteid)->whereNotNull('status')->first();
+                $indownloadlist =  DB::table('tbl_download')->where('tbl_download.video_id',$tumbvideo->IntId)->where('tbl_download.user_id',$userid)->where('tbl_download.site_id',$selectserver->intmanagesiteid)->first();
+                $infavoriteslist =  DB::table('tbl_favorites')->where('tbl_favorites.fav_videoid',$tumbvideo->IntId)->where('tbl_favorites.fav_userid',$userid)->where('tbl_favorites.fav_siteid',$selectserver->intmanagesiteid)->first();
 
-                    if(!empty($incartlist->applied_bg)){
-                        $tumbvideo->applied_bg = $incartlist->applied_bg;
-                    } else {
-                        $tumbvideo->applied_bg = '';
-                    }
-                } else {
-                    $tumbvideo->cartstatus = 'in-cart';
-                    $tumbvideo->carthtml = 'Add to Cart';
-                    $tumbvideo->userid = $userid;
-                    $tumbvideo->imgname = '';
-                    $tumbvideo->applied_bg = '';
-                }
+                $tumbvideo->favoritesstatus = $infavoriteslist ? 'in-favorites' : 'out-favorites';
+                $tumbvideo->favoriteshtml = $infavoriteslist ? 'fa fa-heart' : 'fa fa-heart-o';
+                $tumbvideo->downloadstatus = $indownloadlist ? 'in-download' : 'out-download';
+
+                $tumbvideo->cartstatus = $incartlist ? 'out-cart' : 'in-cart';
+                $tumbvideo->carthtml = $incartlist ? 'Remove' : 'Add to Cart';
+                $tumbvideo->userid = $userid;
+                $tumbvideo->imgname = data_get($incartlist, 'img_name', '');
+                $tumbvideo->applied_bg = data_get($incartlist, 'applied_bg', '');
             } else {
                 $tumbvideo->cartstatus = 'in-cart';
                 $tumbvideo->carthtml = 'Add to Cart';
                 $tumbvideo->userid = '';
                 $tumbvideo->imgname = '';
                 $tumbvideo->applied_bg = '';
-            }
 
-            if(!empty($userid)) {
-                $indownloadlist =  DB::table('tbl_download')->where('tbl_download.video_id',$tumbvideo->IntId)->where('tbl_download.user_id',$userid)->where('tbl_download.site_id',$selectserver->intmanagesiteid)->first();
-
-                $infavoriteslist =  DB::table('tbl_favorites')->where('tbl_favorites.fav_videoid',$tumbvideo->IntId)->where('tbl_favorites.fav_userid',$userid)->where('tbl_favorites.fav_siteid',$selectserver->intmanagesiteid)->first();
-
-                if (!empty($infavoriteslist)) {
-                    $tumbvideo->favoritesstatus = 'in-favorites';
-                    $tumbvideo->favoriteshtml = 'fa fa-heart';
-                }else{
-                    $tumbvideo->favoritesstatus = 'out-favorites';
-                    $tumbvideo->favoriteshtml = 'fa fa-heart-o';
-                }
-
-                if (!empty($indownloadlist)) {
-                    $tumbvideo->downloadstatus = 'in-download';
-                } else {
-                    $tumbvideo->downloadstatus = 'out-download';
-                }
-            } else {
                 $tumbvideo->downloadstatus = 'out-download';
                 $tumbvideo->favoritesstatus = 'in-favorites';
                 $tumbvideo->favoriteshtml = 'fa fa-heart-o';
