@@ -9,7 +9,7 @@
 		  <link rel="stylesheet" href="/css/colorbox.css">
 	 	<script src="js/angular.js"></script>
 	   <script src="js/main.js"></script>
-	 
+
 	   <script src="js/bootstrapui.js"></script>
 	   <link rel="stylesheet" href="/css/app.css">
         <link rel="stylesheet" href="{{ asset('/css/fontendcustomise.css') }}">
@@ -27,7 +27,7 @@
   background-color: #fff !important;
   box-shadow: 10px 10px;
   display:none;
- 
+
   left: 0;
   position: absolute;
   top: 0;
@@ -70,7 +70,7 @@
     position: absolute;
     right: 2%;
     text-align: center;
-  
+
     width: 2%;
     bottom: 8%;
 }
@@ -87,7 +87,7 @@
 	height: 100%;
 }
 /*Checkboxes styles*/
-input[type="checkbox"] { display: none; } 
+input[type="checkbox"] { display: none; }
 
 input[type="checkbox"] + label {
   display: block;
@@ -114,7 +114,7 @@ input[type="checkbox"] + label {
 	border-radius: 3px;
 	position: absolute;
 	z-index: 999;
-	
+
 }
 .innercontentmodel {
   height: 100%;
@@ -195,7 +195,7 @@ input[type="checkbox"]:checked + label:before {
 	width: 100%;
 	height: 700px;
 	margin: auto;
-	left: 0; 
+	left: 0;
 	right: 0;
 	text-align: center;
 	z-index: 99;
@@ -234,7 +234,7 @@ input[type="checkbox"]:checked + label:before {
 	margin: 10px 11px 15px;
 	border-radius: 5px;
 	box-shadow: -1px -2px 10px 3px rgba(228,108,61,.4);
-} 
+}
 .hover-play-icon img {
 	text-align: center;
 	width: 55px;
@@ -268,8 +268,8 @@ input[type="checkbox"]:checked + label:before {
 }
 .inner-parts.ng-scope .hover-play-icon {
 	opacity: 1;
-	
-	
+
+
 	border-radius: 5px;
 }
 
@@ -442,7 +442,7 @@ span.colorwhite.ng-binding {
     padding-top: 8px;
 }
 .divmaincontent {
-     margin-top: 0; 
+     margin-top: 0;
 }
 .video-parts .inner-parts {
     min-height: 225px;
@@ -455,7 +455,7 @@ span.colorwhite.ng-binding {
 }
 .form-control.gray {
     border-color: #fff;
-} 
+}
 @media only screen and (max-width: 991px) {
 .dropdown {
      margin-top: 7px;
@@ -508,9 +508,9 @@ video#fvideoID {
 </style>
 	 <script>
 	 var app = angular.module('myApp', ['ui.bootstrap']);
-	 
+
  app.controller('customersCtrl', function($scope, $http) {
-	 
+
 	 $scope.showkeyword = false;
   var currentpagepagination = 1;
 	$scope.searchkeyword = '';
@@ -519,29 +519,29 @@ video#fvideoID {
     $scope.currentPage = pageNo;
  };
   $scope.pageChanged = function() {
-	 $('.myloadercontainer').fadeIn();	  
+	 $('.myloadercontainer').fadeIn();
 	var limit = $scope.currentPage-1;
 	var searchkeyword = $('#searchkeyword').val();
 	var type = $('.racecategory1').val();
 	limit = limit*10;
-	currentpagepagination = $scope.currentPage; 
+	currentpagepagination = $scope.currentPage;
     var allfilter = [];
 $('.racecategory').each(function(){
-var categoryid = $(this).attr('category');	
- var checktype = $(this).attr("type"); 	
+var categoryid = $(this).attr('category');
+ var checktype = $(this).attr("type");
 if(checktype=="checkbox"){
-if($(this).prop('checked') == true){	
+if($(this).prop('checked') == true){
 allfilter.push({tagtype:$(this).val(),category:categoryid});
-}	
+}
 }else {
 if($(this).val()!=''){
-allfilter.push({tagtype:$(this).val(),category:categoryid});	
+allfilter.push({tagtype:$(this).val(),category:categoryid});
 }
 }
 });
-var myJSON = JSON.stringify(allfilter); 
-$http.get('/getallvideo?_token = <?php echo csrf_token() ?>&type='+type+'&searchtext='+searchkeyword+'&startlimit='+limit+'&category=1&Tagid='+myJSON).then(successCallback, errorCallback);   
- 
+var myJSON = JSON.stringify(allfilter);
+$http.get('/getallvideo?_token = <?php echo csrf_token() ?>&type='+type+'&searchtext='+searchkeyword+'&startlimit='+limit+'&category=1&Tagid='+myJSON).then(successCallback, errorCallback);
+
  };
 $scope.setItemsPerPage = function(num) {
  $scope.itemsPerPage = num;
@@ -555,7 +555,7 @@ $scope.setItemsPerPage = function(num) {
  $http.get('/getallvideo?_token = <?php echo csrf_token() ?>&startlimit=0').then(successCallback, errorCallback);
 function successCallback(response){
 	 $scope.showkeyword = false;
-$('.myloadercontainer').fadeOut(300);	
+$('.myloadercontainer').fadeOut(300);
 if(response.data.allvideo==''){
 	var keyword = $('#searchkeyword').val();
  $http.get('/getallkeywords?_token = <?php echo csrf_token() ?>&startlimit=0&keyword='+keyword).then(successCallback2, errorCallback2);
@@ -567,9 +567,9 @@ if(response.data.allvideo==''){
   $scope.totalItems = response.data.totalvideo;
   $scope.currentPage = currentpagepagination;
   $scope.itemsPerPage = 10;
-  $scope.maxSize = 10; 
+  $scope.maxSize = 10;
   count++;
-   
+
 }
 function successCallback2(response){
   console.log(response.data);
@@ -578,13 +578,13 @@ function successCallback2(response){
   $scope.allkeyword = Object.assign({}, response.data);
   }else {
 	   $scope.showkeyword = false;
-	  
+
   }
  }
 function successCallback1(response){
   console.log(response.data);
   $scope.allsearch = Object.assign({}, response.data);
-  
+
 }
 function errorCallback2(error){
 }
@@ -592,79 +592,79 @@ function errorCallback(error){
 }
 
 $scope.searchvideo = function(searchkeyword,event) {
-	
+
 	var type = $('.racecategory1').val();
 	var allfilter = [];
 	$('.racecategory').each(function(){
-var categoryid = $(this).attr('category');	
- var checktype = $(this).attr("type"); 	
+var categoryid = $(this).attr('category');
+ var checktype = $(this).attr("type");
 if(checktype=="checkbox"){
 
-if($(this).prop('checked') == true){	
+if($(this).prop('checked') == true){
 allfilter.push({tagtype:$(this).val(),category:categoryid});
-}	
+}
 }else {
 if($(this).val()!=''){
-allfilter.push({tagtype:$(this).val(),category:categoryid});	
+allfilter.push({tagtype:$(this).val(),category:categoryid});
 }
 }
 });
-var myJSON = JSON.stringify(allfilter); 	
-	
-	
-	
+var myJSON = JSON.stringify(allfilter);
+
+
+
 	if(searchkeyword!=''){
 	var keyCode = event.which || event.keyCode;
     if (keyCode === 13) {
 		$scope.allsearch = '';
-        $http.get('/getallvideo?_token = <?php echo csrf_token() ?>&type='+type+'&category=1&Tagid='+myJSON+'&searchtext='+searchkeyword+'&startlimit=0').then(successCallback, errorCallback); 
+        $http.get('/getallvideo?_token = <?php echo csrf_token() ?>&type='+type+'&category=1&Tagid='+myJSON+'&searchtext='+searchkeyword+'&startlimit=0').then(successCallback, errorCallback);
     }else {
    $http.get('/getkeywords?_token = <?php echo csrf_token() ?>&type='+type+'&category=1&Tagid='+myJSON+'&searchtext='+searchkeyword+'&startlimit=0').then(successCallback1, errorCallback);
-   $http.get('/getallvideo?_token = <?php echo csrf_token() ?>&type='+type+'&category=1&Tagid='+myJSON+'&searchtext='+searchkeyword+'&startlimit=0').then(successCallback, errorCallback); 
+   $http.get('/getallvideo?_token = <?php echo csrf_token() ?>&type='+type+'&category=1&Tagid='+myJSON+'&searchtext='+searchkeyword+'&startlimit=0').then(successCallback, errorCallback);
 	}
 	}else {
 		$scope.allsearch = '';
-		$http.get('/getallvideo?_token = <?php echo csrf_token() ?>&type='+type+'&category=1&Tagid='+myJSON+'&startlimit=0').then(successCallback, errorCallback); 
-	}	
+		$http.get('/getallvideo?_token = <?php echo csrf_token() ?>&type='+type+'&category=1&Tagid='+myJSON+'&startlimit=0').then(successCallback, errorCallback);
+	}
 };
- 
+
  $('.racecategory').change(function(){
 	 var type = $('.racecategory1').val();
-	 var checktype = $(this).attr("type");  
+	 var checktype = $(this).attr("type");
 	 if(checktype=="checkbox"){
 	$('.racecategory').not(this).prop('checked', false);
 	 }
 	 var allfilter = [];
 $('.racecategory').each(function(){
-var categoryid = $(this).attr('category');	
- var checktype = $(this).attr("type"); 	
+var categoryid = $(this).attr('category');
+ var checktype = $(this).attr("type");
 if(checktype=="checkbox"){
 
-if($(this).prop('checked') == true){	
+if($(this).prop('checked') == true){
 allfilter.push({tagtype:$(this).val(),category:categoryid});
-}	
+}
 }else {
 if($(this).val()!=''){
-allfilter.push({tagtype:$(this).val(),category:categoryid});	
+allfilter.push({tagtype:$(this).val(),category:categoryid});
 }
 }
 });
-var myJSON = JSON.stringify(allfilter); 
+var myJSON = JSON.stringify(allfilter);
 var searchtitle = $('#searchkeyword').val();
-$http.get('/getallvideo?_token = <?php echo csrf_token() ?>&type='+type+'&category=1&Tagid='+myJSON+'&startlimit=0&searchtext='+searchtitle).then(successCallback, errorCallback);	
+$http.get('/getallvideo?_token = <?php echo csrf_token() ?>&type='+type+'&category=1&Tagid='+myJSON+'&startlimit=0&searchtext='+searchtitle).then(successCallback, errorCallback);
   });
   $scope.selectautosearch = function(title,sucategory){
 
 	if(sucategory!=null){
-	var searchtitle = title+" "+sucategory;	
+	var searchtitle = title+" "+sucategory;
 	$('#searchkeyword').val(title+" "+sucategory);
 	}else {
-		var searchtitle = title;	
+		var searchtitle = title;
 		$('#searchkeyword').val(title);
 	}
 	$scope.allsearch = '';
 	$http.get('/getallvideo?_token = <?php echo csrf_token() ?>&searchtext='+searchtitle+'&startlimit=0').then(successCallback, errorCallback);
-} 
+}
   $scope.showvideo=function(videoname,videopath,type,uploadtype,vchgoogledrivelink){
 	  if(uploadtype=='W'){
 	  if(type=='V'){
@@ -680,8 +680,8 @@ $http.get('/getallvideo?_token = <?php echo csrf_token() ?>&type='+type+'&catego
 		  var newdrivelink = vchgoogledrivelink.split("https://drive.google.com/file/d/");
 		var myvideonameid = newdrivelink[1].split("/preview");
 		alert(myvideonameid[0]);
-		 $scope.videoname =  "https://drive.google.com/uc?authuser=0&id="+myvideonameid[0]+"&export=download";  
-		  
+		 $scope.videoname =  "https://drive.google.com/uc?authuser=0&id="+myvideonameid[0]+"&export=download";
+
 		var video = document.getElementById('fvideoID');
        video.load();
        video.play();
@@ -690,48 +690,48 @@ $http.get('/getallvideo?_token = <?php echo csrf_token() ?>&type='+type+'&catego
 	 	setTimeout(function(){
 		$('.videoplayermodel1').fadeIn();
 	    }, 2000); */
-		   
+
 	  }
   }
- 
-  
+
+
   $scope.changetype = function(valuesofdropdown){
 	 var type = valuesofdropdown;
-	 
+
 	  var allfilter = [];
 $('.racecategory').each(function(){
-var categoryid = $(this).attr('category');	
- var checktype = $(this).attr("type"); 	
+var categoryid = $(this).attr('category');
+ var checktype = $(this).attr("type");
 if(checktype=="checkbox"){
 
-if($(this).prop('checked') == true){	
+if($(this).prop('checked') == true){
 allfilter.push({tagtype:$(this).val(),category:categoryid});
-}	
+}
 }else {
 if($(this).val()!=''){
-allfilter.push({tagtype:$(this).val(),category:categoryid});	
+allfilter.push({tagtype:$(this).val(),category:categoryid});
 }
 }
 });
-var myJSON = JSON.stringify(allfilter); 
+var myJSON = JSON.stringify(allfilter);
 var searchtitle = $('#searchkeyword').val();
 $http.get('/getallvideo?_token = <?php echo csrf_token() ?>&type='+type+'&category=1&Tagid='+myJSON+'&startlimit=0&searchtext='+searchtitle).then(successCallback, errorCallback);
 
   }
   $('.closebutton').click(function(){
-	
+
 	 $scope.videoname =  '';
 	  $scope.videopath =  '';
    var video = document.getElementById('videoID');
     video.load();
-	
+
 	$('.videoplayermodel').fadeOut();
-	  
+
   });
  $('.closediv1').click(function(){
 	$('#iframe').attr('src', '');
 	$('.videoplayermodel1').fadeOut();
-	  
+
   });
   $('.homepage').on("click",".group1",function(){
   $(this).colorbox({width:"90%", height:"90%",innerWidth:'100%', innerHeight:'100%'});
@@ -741,10 +741,10 @@ $http.get('/getallvideo?_token = <?php echo csrf_token() ?>&type='+type+'&catego
 
  </head>
     <body class="homepage" ng-app="myApp" ng-controller="customersCtrl">
-	
-	
+
+
  	<div class="main-container top-view">
-<section class="main">  
+<section class="main">
 			<div class="container logo">
 			<img src="{{ asset('images/logo.jpg') }}" alt="logo">
 			</div>
@@ -757,7 +757,7 @@ $http.get('/getallvideo?_token = <?php echo csrf_token() ?>&type='+type+'&catego
 	  <ul class="searchresult">
 	  <li ng-repeat="tpname in allsearch" ng-click="selectautosearch(tpname.VchCategoryTitle,tpname.childcategory);">@{{tpname.VchCategoryTitle}}  @{{tpname.childcategory}}</li>
 	  </ul>
-	
+
       <button class="btn btn-outline" type="submit"><img src="{{ asset('images/search.png') }}" alt="image">
       </button>
 	    </div>
@@ -770,30 +770,30 @@ $http.get('/getallvideo?_token = <?php echo csrf_token() ?>&type='+type+'&catego
 <div class="iconsdsf">
 <ul>
 @foreach ($alltags as $allcategory)
-<?php 
+<?php
  $myalltagid = explode(',',$allcategory->tagid);
  $myallcategorytag = explode(',',$allcategory->tagTitle);
  $totalitems = count(explode(',',$allcategory->tagTitle));
 ?>
 @if ($allcategory->IntId == 1)
-	<?php 
+	<?php
         for($i=0;$i<$totalitems;$i++){ ?>
 
-  <li class="check-view"> 
-<input type="checkbox" class="racecategory" category="<?php echo $allcategory->VchColumnType; ?>"  ng-model="gender<?php echo $myalltagid[$i];  ?>" id="box-<?php echo $myalltagid[$i];  ?>" ng-click="changegeneder(gender<?php echo $myalltagid[$i];  ?>,<?php echo $myalltagid[$i];  ?>)" value="<?php echo $myalltagid[$i];  ?>"> 
+  <li class="check-view">
+<input type="checkbox" class="racecategory" category="<?php echo $allcategory->VchColumnType; ?>"  ng-model="gender<?php echo $myalltagid[$i];  ?>" id="box-<?php echo $myalltagid[$i];  ?>" ng-click="changegeneder(gender<?php echo $myalltagid[$i];  ?>,<?php echo $myalltagid[$i];  ?>)" value="<?php echo $myalltagid[$i];  ?>">
   <label for="box-<?php echo $myalltagid[$i];  ?>">
   <?php echo $myallcategorytag[$i];?>
   </label>
   </li>
-<?php } ?>		
+<?php } ?>
 @else
 	   <li>
-     <div class="image-icon"> 
+     <div class="image-icon">
 	 <div class="dropdown"> {{$allcategory->VchTitle}}
 	 <img src="{{ asset('images/dropdown.png') }}" alt="image">
    <select class="racecategory" category="<?php echo $allcategory->VchColumnType; ?>">
     <option value="">Select Your <?php echo $allcategory->VchTitle; ?></option>
-   <?php 
+   <?php
  for($i=0;$i<$totalitems;$i++){
 		 ?>
 	 <option value="<?php echo $myalltagid[$i];  ?>"><?php echo $myallcategorytag[$i];  ?></option>
@@ -801,13 +801,13 @@ $http.get('/getallvideo?_token = <?php echo csrf_token() ?>&type='+type+'&catego
 	 </select>
 		</div>
 		</div>
-		 </li>  
-		 
-		 
-		 
-		 
-		 
-		 
+		 </li>
+
+
+
+
+
+
 @endif
 @endforeach
 </ul>
@@ -816,10 +816,10 @@ $http.get('/getallvideo?_token = <?php echo csrf_token() ?>&type='+type+'&catego
   	 <option value="">select</option>
    <option value="I">Image</option>
 	 <option value="V">Video</option>
-	 
+
 	 </select>
 	 </div>
-	 
+
  </div>
 
  </div>
@@ -828,49 +828,49 @@ $http.get('/getallvideo?_token = <?php echo csrf_token() ?>&type='+type+'&catego
 <div class="banner-image1">
 	<div class="container" style="position:relative;">
 	<div class="myloadercontainer">
-	<div class="loaderview1">     
+	<div class="loaderview1">
 		<img src="{{ asset('images/loader11.gif') }}" alt="img" style="width:300px;height:300px;">
-	</div> 
+	</div>
 	</div>
 	<div class="row">
-	
+
 	<ul class="keyword" ng-if="showkeyword">
 	Do You Mean :
 	<li ng-repeat="tpname in allkeyword" ng-click="selectautosearch(tpname.title);">@{{tpname.title}}</li>
 	</ul>
 	</div>
 	<div class="row" style="min-height:500px;">
-	
+
 		<ul class="video-parts">
 		<li class="inner-parts"  ng-repeat="tpname in allvideo" ng-click="showvideo(tpname.VchVideoName,tpname.VchFolderPath,tpname.EnumType,tpname.EnumUploadType,tpname.vchgoogledrivelink)">
-		 <div class="hover-play-icon" ng-if="tpname.EnumType=='V'"> 
+		 <div class="hover-play-icon" ng-if="tpname.EnumType=='V'">
 			<img src="{{ asset('images/play-icon.png') }}" alt="img">
 			</div>
 			<div class="proper_fit" ng-if="tpname.EnumUploadType=='W'">
 			 <span class="colorwhite" style="color:#fff;">@{{tpname.VchTitle}}</span>
 			 <a href="@{{tpname.VchFolderPath}}/@{{tpname.VchVideothumbnail}}" ng-if="tpname.EnumType=='I'" class="group1">
-				<img src="@{{tpname.VchFolderPath}}/@{{tpname.VchVideothumbnail}}"> 
+				<img src="@{{tpname.VchFolderPath}}/@{{tpname.VchVideothumbnail}}">
 				</a>
-				
+
 				<a href="@{{tpname.VchFolderPath}}/@{{tpname.VchVideothumbnail}}" ng-if="tpname.EnumType=='V'">
-				<img src="@{{tpname.VchFolderPath}}/@{{tpname.VchVideothumbnail}}"> 
+				<img src="@{{tpname.VchFolderPath}}/@{{tpname.VchVideothumbnail}}">
 				</a>
 				</div>
-				
+
 				<div class="proper_fit" ng-if="tpname.EnumUploadType=='G'" ng-click="iframevideo(tpname.vchgoogledrivelink);">
 			 <span class="colorwhite" style="color:#fff;">@{{tpname.VchTitle}}</span>
 			 <a href="@{{tpname.VchVideothumbnail}}"  class="group1">
-				<img src="@{{tpname.VchVideothumbnail}}"> 
+				<img src="@{{tpname.VchVideothumbnail}}">
 				</a>
-				
-				
+
+
 				</div>
-				
-				</li> 
+
+				</li>
 		</ul>
 	</div>
  <pagination total-items="totalItems"  ng-change="pageChanged(currentPage)" ng-model="currentPage" max-size="maxSize" class="pagination" boundary-links="true" rotate="false" num-pages="numPages" items-per-page="itemsPerPage"></pagination>
- 
+
 </div>
 </div>
 </div>
@@ -887,9 +887,9 @@ $http.get('/getallvideo?_token = <?php echo csrf_token() ?>&type='+type+'&catego
 	<div class="closediv">
 	<a href="javascript:void(0);" class="closebutton">X</a>
 	</div>
-</div>	
 </div>
-</div> 
+</div>
+</div>
 	<div class="videoplayermodel1">
 	<div class="mainconatinerdiv">
 	<div class="divmaincontent">
@@ -899,18 +899,18 @@ $http.get('/getallvideo?_token = <?php echo csrf_token() ?>&type='+type+'&catego
 			  Your browser does not support the video tag.
 				</video>
   <!--  <iframe id="iframe" src="@{{vchgoogledrivelink}}" width="100%" height="100%">
-  
+
   </iframe>  -->
 	<div class="closediv1">
-	
+
 	<a href="javascript:void(0);" class="closebutton">X</a>
 	</div>
-</div>	
 </div>
-</div> 
+</div>
+</div>
 
-  
-  
-</div>	
+
+
+</div>
  </body>
-</html> 
+</html>

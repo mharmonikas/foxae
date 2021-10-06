@@ -163,20 +163,20 @@
                         </div>
                         <span class="colorwhite" style="color:#fff;">@{{tpname.VchTitle}}</span>
                         <a ng-if="tpname.EnumType=='I'" class="group1">
-								<div class="image" ng-if="tpname.Vchcustomthumbnail!=''">
-									<img ng-if="tpname.Vchcustomthumbnail!=''" src="/@{{tpname.VchFolderPath}}/@{{tpname.Vchcustomthumbnail}}" >
+                            <div class="image" ng-if="tpname.Vchcustomthumbnail!=''">
+                                <img ng-if="tpname.Vchcustomthumbnail!=''" src="/@{{tpname.VchFolderPath}}/@{{tpname.Vchcustomthumbnail}}" >
 {{--                                    <img ng-if="tpname.Vchcustomthumbnail!=''" src="@{{tpname.vchcacheimages}}">--}}
-                                </div>
+                            </div>
 
-								<div class="image" ng-if="tpname.Vchcustomthumbnail==''">
-                                    <img ng-if="tpname.vchcacheimages==''" src="/resize1/showimage/@{{tpname.IntId}}/{{$managesite->intmanagesiteid}}/@{{tpname.VchResizeimage}}/?=@{{tpname.intsetdefault}}" >
+                            <div class="image" ng-if="tpname.Vchcustomthumbnail==''">
+                                <img ng-if="tpname.vchcacheimages==''" src="/resize1/showimage/@{{tpname.IntId}}/{{$managesite->intmanagesiteid}}/@{{tpname.VchResizeimage}}/?=@{{tpname.intsetdefault}}" >
 {{--                                    <img ng-if="tpname.vchcacheimages==''" src="@{{tpname.vchcacheimages}}">--}}
 
-                                    <img ng-if="tpname.vchcacheimages!=''" src="/resize1/showimage/@{{tpname.IntId}}/{{$managesite->intmanagesiteid}}/@{{tpname.VchResizeimage}}/?=@{{tpname.intsetdefault}}" class="content-image" >
+                                <img ng-if="tpname.vchcacheimages!=''" src="/resize1/showimage/@{{tpname.IntId}}/{{$managesite->intmanagesiteid}}/@{{tpname.VchResizeimage}}/?=@{{tpname.intsetdefault}}" class="content-image" >
 {{--                                    <img ng-if="tpname.vchcacheimages!=''" src="@{{tpname.vchcacheimages}}">--}}
-                                </div>
+                            </div>
+                        </a>
 
-							</a>
                         <a href="@{{tpname.VchFolderPath}}/@{{tpname.VchVideothumbnail}}" ng-if="tpname.EnumType=='V'" >
                             <div class="image" ng-if="tpname.Vchcustomthumbnail!=''" >
                             <!--<img ng-if="tpname.Vchcustomthumbnail!=''" src="@{{tpname.VchFolderPath}}/@{{tpname.Vchcustomthumbnail}}" >-->

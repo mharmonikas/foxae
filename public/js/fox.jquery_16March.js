@@ -60,7 +60,7 @@ app.controller('customersCtrl', function ($scope, $http) {
 	};
 	$scope.setItemsPerPage = function (num) {
 		$scope.itemsPerPage = num;
-		$scope.currentPage = 1; 
+		$scope.currentPage = 1;
 	}
 	var showitemperpage = $('.showitemperpage').val();
 	var offest = showitemperpage;
@@ -213,7 +213,7 @@ app.controller('customersCtrl', function ($scope, $http) {
 		$http.get('/getallvideo?_token = <?php echo csrf_token() ?>&searchtext=' + searchtitle + '&showitemperpage=' + showitemperpage + '&startlimit=0').then(successCallback, errorCallback);
 	}
 	$scope.showvideo = function (videoname, videopath, type, uploadtype, vchgoogledrivelink) {
-		
+
 		var currentsiteid = $("#currentsiteid").val();
 		if (uploadtype == 'W') {
 			if (type == 'V') {
@@ -225,7 +225,7 @@ app.controller('customersCtrl', function ($scope, $http) {
 				video.play();
 			}
 		} else {
-			
+
 			if (type == 'V') {
 				$scope.videoname = 'watermark.mp4';
 				$scope.videopath = videopath+'/'+currentsiteid;
@@ -313,29 +313,30 @@ app.controller('customersCtrl', function ($scope, $http) {
 		var video = document.getElementById('fvideoID');
 		video.load();
 		$('.videoplayermodel1').fadeOut();
-
 	});
+
 	$('.homepage').on("click", ".group1", function () {
-		var currentsiteid = $("#currentsiteid").val();
+        var currentsiteid = $("#currentsiteid").val();
 		var datatype = $(this).attr("data-type");
 		var name = $(this).attr('data-name');
 		var tags = $(this).attr('data-tags');
 		var imgtype = $(this).attr('data-imgtype');
 		var productid = $(this).attr('data-id');
 		var credits = $('#package-detail').attr('data-value');
-		if(datatype == "V"){
+
+        if(datatype == "V"){
 			var path = "/"+$(this).attr('data-folder')+"/"+currentsiteid+"/watermark.mp4"
 			$("#imagepart").css("display","none");
 			$("#videopart").css("display","block");
 			$("#newvideo").html('<source src="'+path+'"  type="video/mp4">');
 			$(".bigimagename").text(name);
-			
-		}else if(datatype == "I"){
+
+		} else if(datatype == "I"){
 			$("#imagepart").css("display","block");
 			$("#videopart").css("display","none");
 			//alert(stylestatus);
 			//return false;
-			if(stylestatus == 'yes'){
+         if(stylestatus == 'yes'){
 				$(".btn-refresh").click();
 				document.getElementsByClassName('login_form')[0].style.display = "none";
 				document.getElementsByClassName('register_form')[0].style.display = "none";
@@ -343,26 +344,26 @@ app.controller('customersCtrl', function ($scope, $http) {
 			}
 		   $("#bigimagesize").removeClass("big-active");
 		   $("#bigimagesize").addClass("non-active");
-		   
+
 		   $('#zoomCheck').prop('checked', false);
 			var img = $(this).attr('data-image');
 			$(".bigimagename").text(name);
 			var res = img.replace("%20", "W3Schools")
 			$("#bigimagesize").attr("src",res);
 		}
-		
+
 		$("#productid").val(productid);
 		if(tags == ""){
 				var taglisting = [];
 			}else{
 				var taglisting = tags.split(",");
 			}
-	
+
 			var tag = "<span>Related keywords:</span>";
 			for(i=0; i<taglisting.length; i++){
 				tag += "<a href='/?s="+$.trim(taglisting[i])+"'>"+taglisting[i]+"</a>";
 			}
-		
+
 			if(taglisting.length == 0){
 				tag += "<a>No tags</a>";
 			}
@@ -378,28 +379,28 @@ app.controller('customersCtrl', function ($scope, $http) {
 					var imagetype='Ultra Premium';
 					$("#image-desc").html(imagetype);
 				}
-				
+
 			}
 			$("#credit-count").html(credits);
 		openbigForm();
-	
+
 	});
 });
 $(document).ready(function () {
 	var tech = getUrlParameter('s');
 	$("#searchkeyword").val(tech);
-	
+
 	$("#bigimagesize").draggable();
 	$('#bigimagesize').click(function(e) {
-		
+
 		 var elm = $(this);
     var xPos = elm.offset().left - e.pageX;
     var yPos = elm.offset().top - e.pageY;
 
     console.log(xPos, yPos);
-	
+
 		$(this).toggleClass('big-active').css({
-		'left': parseInt(xPos / 4), 
+		'left': parseInt(xPos / 4),
 		'top': parseInt(yPos / 4)
 	});
     $(this).toggleClass('non-active');
@@ -441,5 +442,5 @@ function closelist() {
 
 function disperlist() {
 	$(".searchresult").show();
-	
+
 }
