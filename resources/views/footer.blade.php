@@ -111,11 +111,11 @@ $managesite = HomeController::managesite2();
 			</div>
 			<h3 class="bigimagename bigimagename-3 hide-on-desktop">Image Name</h3>
 			<p class="bigimagename-p hide-on-desktop">Double-tap on the image to zoom</p>
-			<div class="image-center">
+			<div class="image-center" style="min-height: 400px !important;">
 				 <div class="myloadercontainer2" id="loader">
 				<div class="loder_innes">
 					<div class="loaderview1">
-						<img src="/images/{{$managesite->gificon}}" alt="img"  style="width:auto !important;height:130px;">
+						<img src="/images/{{$managesite->gificon}}" alt="img" style="width:auto !important;height:130px;">
 					</div>
 				</div>
 			</div>
