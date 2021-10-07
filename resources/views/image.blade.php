@@ -57,44 +57,40 @@ $explodeurl = explode("/",$_SERVER['REQUEST_URI']);
 			@if($response->EnumType == 'I')
 			<div class="imgs-setup" id="imagepart">
 				<div class="share-middle">
+                    @if($response->content_category=='1')
+                        @if($response->stock_category=='1')
 
-						@if($response->content_category=='1')
-							@if($response->stock_category=='1')
+                        <span id="image-desc" class="image-desc standard">
+                            Standard
+                        </span>
+                        @elseif($response->stock_category=='2')
+                            <span id="image-desc" class="image-desc custom">
+                            Custom
+                        </span>
+                        @endif
+                    @elseif($response->content_category=='2')
 
-							<span id="image-desc" class="image-desc standard">
-								Standard
-							</span>
-							@elseif($response->stock_category=='2')
-								<span id="image-desc" class="image-desc custom">
-								Custom
-							</span>
-							@endif
-						@elseif($response->content_category=='2')
+                    @if($response->stock_category=='1')
 
-						@if($response->stock_category=='1')
+                        <span id="image-desc" class="image-desc permium">
+                            Premium </span>
+                        @elseif($response->stock_category=='2')
+                            <span id="image-desc" class="image-desc custom">
+                            Custom
+                        </span>
+                    @endif
 
-							<span id="image-desc" class="image-desc permium">
-								Premium </span>
-							@elseif($response->stock_category=='2')
-								<span id="image-desc" class="image-desc custom">
-								Custom
-							</span>
-							@endif
+                    @elseif($response->content_category=='3')
+                        @if($response->stock_category=='1')
 
-						@elseif($response->content_category=='3')
-							@if($response->stock_category=='1')
-
-							<span id="image-desc" class="image-desc ultra_premium">
-								Deluxe </span>
-							@elseif($response->stock_category=='2')
-								<span id="image-desc" class="image-desc custom">
-								Custom
-							</span>
-							@endif
-
-						@endif
-
-
+                        <span id="image-desc" class="image-desc ultra_premium">
+                            Deluxe </span>
+                        @elseif($response->stock_category=='2')
+                            <span id="image-desc" class="image-desc custom">
+                            Custom
+                        </span>
+                        @endif
+                    @endif
 					<!--<img src="/img/share-apple.png" onclick="showCopy()">-->
 				</div>
 					<div class="bigimgcontainer" id="zoom-container" >

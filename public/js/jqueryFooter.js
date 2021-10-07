@@ -63,9 +63,11 @@ $(document).ready(function () {
                 "edit": {name: "Open in new tab" }
             }
         });
+
 		$(document).on("mousedown",".btn-model",function(){
 		   localStorage.setItem("seo_url", $(this).attr('data-seo'));
 		});
+
 		$.contextMenu({
             selector: '.btn-model',
             callback: function(key, options) {
@@ -96,7 +98,7 @@ function openForm2(formname2) {
 }
 
 function openbigForm() {
-  document.getElementById("bigimg").style.display = "block";
+  document.getElementById('bigimg').style.display = "block";
 }
 
 function closebigForm() {

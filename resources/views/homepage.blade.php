@@ -130,67 +130,66 @@
 
 			<ul class="video-parts">
 				<li class="inner-parts" ng-repeat="tpname in allvideo">
-
-				<div class="btn-model @{{tpname.IntId}}_content" ng-if="tpname.applied_bg==''" data-name="@{{tpname.VchTitle}}" data-tags="@{{tpname.videotags}}"  data-image="/showimage/@{{tpname.IntId}}/{{$managesite->intmanagesiteid}}/@{{tpname.VchVideoName}}?=@{{tpname.intsetdefault}}" data-id="@{{tpname.productid}}" data-imgtype="@{{tpname.content_category}}" data-category="@{{tpname.stock_category}}" data-seo="@{{tpname.seo_url}}" data-type="@{{tpname.EnumType}}" data-folder="@{{tpname.VchFolderPath}}" data-download="@{{tpname.downloadstatus}}" cart-status="@{{tpname.cartstatus}}"fav-status="@{{tpname.favoritesstatus}}" video-id="@{{tpname.IntId}}" transparent-status="@{{tpname.transparent}}" >
-					<div class="hover-play-icon group1" ng-if="tpname.EnumType=='V'"   >
-					    <img src="{{ asset('images') }}/{{$tblthemesetting->vchvideoicon}}" alt="img">
-					</div>
-					<div class="proper_fit" ng-if="tpname.EnumUploadType=='W'">
-                        <div class="cnrflash" ng-if="tpname.content_category=='1'">
-                            <div class="cnrflash-inner first second standard" ng-if="tpname.stock_category=='1'">
-                                <span  class="cnrflash-label">Standard</span>
-                            </div>
-                            <div class="cnrflash-inner first second custom" ng-if="tpname.stock_category=='2'">
-                                <span  class="cnrflash-label">Custom</span>
-                            </div>
+                    <div class="btn-model @{{tpname.IntId}}_content" ng-if="tpname.applied_bg==''" data-name="@{{tpname.VchTitle}}" data-tags="@{{tpname.videotags}}"  data-image="/showimage/@{{tpname.IntId}}/{{$managesite->intmanagesiteid}}/@{{tpname.VchVideoName}}?=@{{tpname.intsetdefault}}" data-id="@{{tpname.productid}}" data-imgtype="@{{tpname.content_category}}" data-category="@{{tpname.stock_category}}" data-seo="@{{tpname.seo_url}}" data-type="@{{tpname.EnumType}}" data-folder="@{{tpname.VchFolderPath}}" data-download="@{{tpname.downloadstatus}}" cart-status="@{{tpname.cartstatus}}"fav-status="@{{tpname.favoritesstatus}}" video-id="@{{tpname.IntId}}" transparent-status="@{{tpname.transparent}}" >
+                        <div class="hover-play-icon group1" ng-if="tpname.EnumType=='V'"   >
+                            <img src="{{ asset('images') }}/{{$tblthemesetting->vchvideoicon}}" alt="img">
                         </div>
-                        <div class="cnrflash" ng-if="tpname.content_category=='2'">
-                            <div class="cnrflash-inner first second premium" ng-if="tpname.stock_category=='1'">
-                                <span  class="cnrflash-label">Premium</span>
+                        <div class="proper_fit" ng-if="tpname.EnumUploadType=='W'">
+                            <div class="cnrflash" ng-if="tpname.content_category=='1'">
+                                <div class="cnrflash-inner first second standard" ng-if="tpname.stock_category=='1'">
+                                    <span  class="cnrflash-label">Standard</span>
+                                </div>
+                                <div class="cnrflash-inner first second custom" ng-if="tpname.stock_category=='2'">
+                                    <span  class="cnrflash-label">Custom</span>
+                                </div>
                             </div>
-                            <div class="cnrflash-inner first second custom" ng-if="tpname.stock_category=='2'">
-                                <span  class="cnrflash-label">Custom</span>
+                            <div class="cnrflash" ng-if="tpname.content_category=='2'">
+                                <div class="cnrflash-inner first second premium" ng-if="tpname.stock_category=='1'">
+                                    <span  class="cnrflash-label">Premium</span>
+                                </div>
+                                <div class="cnrflash-inner first second custom" ng-if="tpname.stock_category=='2'">
+                                    <span  class="cnrflash-label">Custom</span>
+                                </div>
                             </div>
+                            <div class="cnrflash " ng-if="tpname.content_category=='3'">
+                                <div class="cnrflash-inner first second ultra_premium" ng-if="tpname.stock_category=='1'">
+                                    <span  class="cnrflash-label">Deluxe</span>
+
+                                </div>
+                                <div class="cnrflash-inner first second custom" ng-if="tpname.stock_category=='2'">
+                                    <span  class="cnrflash-label">Custom</span>
+                                </div>
+                            </div>
+                            <span class="colorwhite" style="color:#fff;">@{{tpname.VchTitle}}</span>
+                            <a ng-if="tpname.EnumType=='I'" class="group1">
+                                <div class="image" ng-if="tpname.Vchcustomthumbnail!=''">
+                                    <img ng-if="tpname.Vchcustomthumbnail!=''" src="/@{{tpname.VchFolderPath}}/@{{tpname.Vchcustomthumbnail}}" >
+    {{--                                    <img ng-if="tpname.Vchcustomthumbnail!=''" src="@{{tpname.vchcacheimages}}">--}}
+                                </div>
+
+                                <div class="image" ng-if="tpname.Vchcustomthumbnail==''">
+                                    <img ng-if="tpname.vchcacheimages==''" src="/resize1/showimage/@{{tpname.IntId}}/{{$managesite->intmanagesiteid}}/@{{tpname.VchResizeimage}}/?=@{{tpname.intsetdefault}}" >
+    {{--                                    <img ng-if="tpname.vchcacheimages==''" src="@{{tpname.vchcacheimages}}">--}}
+
+                                    <img ng-if="tpname.vchcacheimages!=''" src="/resize1/showimage/@{{tpname.IntId}}/{{$managesite->intmanagesiteid}}/@{{tpname.VchResizeimage}}/?=@{{tpname.intsetdefault}}" class="content-image" >
+    {{--                                    <img ng-if="tpname.vchcacheimages!=''" src="@{{tpname.vchcacheimages}}">--}}
+                                </div>
+                            </a>
+
+                            <a href="@{{tpname.VchFolderPath}}/@{{tpname.VchVideothumbnail}}" ng-if="tpname.EnumType=='V'" >
+                                <div class="image" ng-if="tpname.Vchcustomthumbnail!=''" >
+                                <!--<img ng-if="tpname.Vchcustomthumbnail!=''" src="@{{tpname.VchFolderPath}}/@{{tpname.Vchcustomthumbnail}}" >-->
+                                    <img ng-if="tpname.Vchcustomthumbnail!=''" src="/resize2/showimage/@{{tpname.IntId}}/{{$managesite->intmanagesiteid}}/@{{tpname.Vchcustomthumbnail}}/?={{rand(10,100)}}" >
+                                </div>
+                                <div class="image" ng-if="tpname.Vchcustomthumbnail==''">
+                                <!--<img ng-if="tpname.Vchcustomthumbnail==''" src="@{{tpname.VchFolderPath}}/@{{tpname.VchVideothumbnail}}"> -->
+                                    <img ng-if="tpname.Vchcustomthumbnail==''" src="/resize2/showimage/@{{tpname.IntId}}/{{$managesite->intmanagesiteid}}/@{{tpname.VchVideothumbnail}}/?={{rand(10,100)}}">
+                                </div>
+                            </a>
                         </div>
-                        <div class="cnrflash " ng-if="tpname.content_category=='3'">
-                            <div class="cnrflash-inner first second ultra_premium" ng-if="tpname.stock_category=='1'">
-                                <span  class="cnrflash-label">Deluxe</span>
+                    </div>
 
-                            </div>
-                            <div class="cnrflash-inner first second custom" ng-if="tpname.stock_category=='2'">
-                                <span  class="cnrflash-label">Custom</span>
-                            </div>
-                        </div>
-                        <span class="colorwhite" style="color:#fff;">@{{tpname.VchTitle}}</span>
-                        <a ng-if="tpname.EnumType=='I'" class="group1">
-                            <div class="image" ng-if="tpname.Vchcustomthumbnail!=''">
-                                <img ng-if="tpname.Vchcustomthumbnail!=''" src="/@{{tpname.VchFolderPath}}/@{{tpname.Vchcustomthumbnail}}" >
-{{--                                    <img ng-if="tpname.Vchcustomthumbnail!=''" src="@{{tpname.vchcacheimages}}">--}}
-                            </div>
-
-                            <div class="image" ng-if="tpname.Vchcustomthumbnail==''">
-                                <img ng-if="tpname.vchcacheimages==''" src="/resize1/showimage/@{{tpname.IntId}}/{{$managesite->intmanagesiteid}}/@{{tpname.VchResizeimage}}/?=@{{tpname.intsetdefault}}" >
-{{--                                    <img ng-if="tpname.vchcacheimages==''" src="@{{tpname.vchcacheimages}}">--}}
-
-                                <img ng-if="tpname.vchcacheimages!=''" src="/resize1/showimage/@{{tpname.IntId}}/{{$managesite->intmanagesiteid}}/@{{tpname.VchResizeimage}}/?=@{{tpname.intsetdefault}}" class="content-image" >
-{{--                                    <img ng-if="tpname.vchcacheimages!=''" src="@{{tpname.vchcacheimages}}">--}}
-                            </div>
-                        </a>
-
-                        <a href="@{{tpname.VchFolderPath}}/@{{tpname.VchVideothumbnail}}" ng-if="tpname.EnumType=='V'" >
-                            <div class="image" ng-if="tpname.Vchcustomthumbnail!=''" >
-                            <!--<img ng-if="tpname.Vchcustomthumbnail!=''" src="@{{tpname.VchFolderPath}}/@{{tpname.Vchcustomthumbnail}}" >-->
-                                <img ng-if="tpname.Vchcustomthumbnail!=''" src="/resize2/showimage/@{{tpname.IntId}}/{{$managesite->intmanagesiteid}}/@{{tpname.Vchcustomthumbnail}}/?={{rand(10,100)}}" >
-                            </div>
-                            <div class="image" ng-if="tpname.Vchcustomthumbnail==''">
-                            <!--<img ng-if="tpname.Vchcustomthumbnail==''" src="@{{tpname.VchFolderPath}}/@{{tpname.VchVideothumbnail}}"> -->
-                                <img ng-if="tpname.Vchcustomthumbnail==''" src="/resize2/showimage/@{{tpname.IntId}}/{{$managesite->intmanagesiteid}}/@{{tpname.VchVideothumbnail}}/?={{rand(10,100)}}">
-                            </div>
-                        </a>
-					</div>
-                </div>
-
-                <div class="btn-model" ng-if="tpname.applied_bg!= ''" data-name="@{{tpname.VchTitle}}" data-tags="@{{tpname.videotags}}"  data-image="showimg/@{{tpname.userid}}/@{{tpname.imgname}}" data-id="@{{tpname.productid}}" data-imgtype="@{{tpname.content_category}}" data-category="@{{tpname.stock_category}}" data-seo="@{{tpname.seo_url}}" data-type="@{{tpname.EnumType}}" data-folder="@{{tpname.VchFolderPath}}" data-download="@{{tpname.downloadstatus}}" cart-status="@{{tpname.cartstatus}}"fav-status="@{{tpname.favoritesstatus}}" video-id="@{{tpname.IntId}}" transparent-status="@{{tpname.transparent}}" applied-bg="@{{tpname.applied_bg}}">
+                    <div class="btn-model" ng-if="tpname.applied_bg!= ''" data-name="@{{tpname.VchTitle}}" data-tags="@{{tpname.videotags}}"  data-image="showimg/@{{tpname.userid}}/@{{tpname.imgname}}" data-id="@{{tpname.productid}}" data-imgtype="@{{tpname.content_category}}" data-category="@{{tpname.stock_category}}" data-seo="@{{tpname.seo_url}}" data-type="@{{tpname.EnumType}}" data-folder="@{{tpname.VchFolderPath}}" data-download="@{{tpname.downloadstatus}}" cart-status="@{{tpname.cartstatus}}"fav-status="@{{tpname.favoritesstatus}}" video-id="@{{tpname.IntId}}" transparent-status="@{{tpname.transparent}}" applied-bg="@{{tpname.applied_bg}}">
 					<div class="hover-play-icon group1" ng-if="tpname.EnumType=='V'"   >
 					<img src="{{ asset('images') }}/{{$tblthemesetting->vchvideoicon}}" alt="img">
 					</div>
