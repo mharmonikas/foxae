@@ -3151,7 +3151,7 @@ class HomeController extends Controller {
 
 		}
 
-    public function showimage1($id,$imgs){
+    public function showimage1($id, $imgs){
 	$managesite = DB::table('tbl_managesite')->where('txtsiteurl',$_SERVER['SERVER_NAME'])->first();
 	$img="change_background/".$id.'/'.''.$imgs;
 	$info = pathinfo( $imgs );

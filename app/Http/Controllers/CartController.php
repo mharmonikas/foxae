@@ -638,21 +638,17 @@ class CartController extends Controller {
 
 
 	public function imageresize(){
-
 		// if(end(explode('.', $filename)), $exts){
 
-
-
-
 		// }
-	$stamp = imagecreatefrompng('imagick/change.png');
-	$im2 = imagecreatefrompng('imagick/unnamed.png');
-	//$im2 = imagecreatefromjpeg('background/transparent.jpg');
-	$img=Image::make($im2);
-	$size = getimagesize('imagick/change.png');
-	$diemension=$size[0].'x'.$size[1];
-	$img->resize($size[0],$size[1])->save('imagick/unnamed.png');
-	$marge_right = 0;
+        $stamp = imagecreatefrompng('imagick/change.png');
+        $im2 = imagecreatefrompng('imagick/unnamed.png');
+        //$im2 = imagecreatefromjpeg('background/transparent.jpg');
+        $img=Image::make($im2);
+        $size = getimagesize('imagick/change.png');
+        $diemension=$size[0].'x'.$size[1];
+        $img->resize($size[0],$size[1])->save('imagick/unnamed.png');
+        $marge_right = 0;
 		$marge_bottom = 0;
 		$sx = imagesx($stamp);
 		$sy = imagesy($stamp);
@@ -662,83 +658,77 @@ class CartController extends Controller {
 		// width to calculate positioning of the stamp.
 		imagecopy($im, $stamp, imagesx($im) - $sx - $marge_right, imagesy($stamp) - $sy - $marge_bottom, 0, 0, imagesx($stamp), imagesy($stamp));
 
-			$stamp2 = imagecreatefrompng('imagick/1553250678.png');
+        $stamp2 = imagecreatefrompng('imagick/1553250678.png');
 
-			$vchtransparency = 7 * 10;
+        $vchtransparency = 7 * 10;
 
-			$image = $im;
-			//$im = $image;
+        $image = $im;
+        //$im = $image;
 		// Set the margins for the stamp and get the height/width of the stamp image
-			$marge_right = 10;
-			$marge_bottom = 10;
-			//$stamp = imagecolorallocate($stamp, 255, 255, 0, 75);
-			$sx = imagesx($stamp2);
-			$sy = imagesy($stamp2);
+        $marge_right = 10;
+        $marge_bottom = 10;
+        //$stamp = imagecolorallocate($stamp, 255, 255, 0, 75);
+        $sx = imagesx($stamp2);
+        $sy = imagesy($stamp2);
 
-			$imageWidth=imagesx($image);
-			$imageHeight=imagesy($image);
+        $imageWidth=imagesx($image);
+        $imageHeight=imagesy($image);
 
-			$logoWidth=imagesx($stamp2);
-			$logoHeight=imagesy($stamp2);
-			$logoImage = $stamp2;
-			$image = $image;
+        $logoWidth=imagesx($stamp2);
+        $logoHeight=imagesy($stamp2);
+        $logoImage = $stamp2;
+        $image = $image;
 
-			imagecopymerge($image, $logoImage, ($imageWidth-$logoWidth)/2,  ($imageHeight-$logoHeight)/2,0, 0,$logoWidth,$logoHeight,$vchtransparency);
+        imagecopymerge($image, $logoImage, ($imageWidth-$logoWidth)/2,  ($imageHeight-$logoHeight)/2,0, 0,$logoWidth,$logoHeight,$vchtransparency);
 		// Output and free memory
 		header('Content-type: image/png');
 		//imagepng($im,'img.png');
 		imagepng($im);
-
-
 	}
 
 	public function imageresize2(){
-	$img='images/1608539999.png';
-	$stamp = imagecreatefrompng('imagick/change.png');
-	//$im2 = imagecreatefrompng('images/1608539023.png');
-	//$im = imagecreatefromjpeg('imagick/download.jpg');
-	//$img=Image::make($im2);
-	//$newFileName = time();
-	$size = getimagesize('imagick/change.png');
-//	$diemension=$size[0].'x'.$size[1];
-	$diemension='1080x1080';
+        $img='images/1608539999.png';
+        $stamp = imagecreatefrompng('imagick/change.png');
+        //$im2 = imagecreatefrompng('images/1608539023.png');
+        //$im = imagecreatefromjpeg('imagick/download.jpg');
+        //$img=Image::make($im2);
+        //$newFileName = time();
+        $size = getimagesize('imagick/change.png');
+        // $diemension=$size[0].'x'.$size[1];
+        $diemension='1080x1080';
 
-	shell_exec("convert $img -resize $diemension\! $img");
-	 //  $tmp = imageResize($im2,$size[0],$size[1]);
-        //        imagepng($tmp,'images/'. $newFileName. ".png");
-	//$img->resize($size[0],$size[1], function ($constraint) {$constraint->aspectRatio();})->save('images/1608539999-1.png');
-        $im = imagecreatefrompng('images/1608539999.png');
-	$marge_right = 0;
-    $marge_bottom = 0;
-    $sx = imagesx($stamp);
-    $sy = imagesy($stamp);
+        shell_exec("convert $img -resize $diemension\! $img");
+         //  $tmp = imageResize($im2,$size[0],$size[1]);
+            //        imagepng($tmp,'images/'. $newFileName. ".png");
+        //$img->resize($size[0],$size[1], function ($constraint) {$constraint->aspectRatio();})->save('images/1608539999-1.png');
+            $im = imagecreatefrompng('images/1608539999.png');
+        $marge_right = 0;
+        $marge_bottom = 0;
+        $sx = imagesx($stamp);
+        $sy = imagesy($stamp);
 
-// Copy the stamp image onto our photo using the margin offsets and the photo
-// width to calculate positioning of the stamp.
-imagecopy($im, $stamp, imagesx($im) - $sx - $marge_right, imagesy($im) - $sy - $marge_bottom, 0, 0, imagesx($stamp), imagesy($stamp));
+        // Copy the stamp image onto our photo using the margin offsets and the photo
+        // width to calculate positioning of the stamp.
+        imagecopy($im, $stamp, imagesx($im) - $sx - $marge_right, imagesy($im) - $sy - $marge_bottom, 0, 0, imagesx($stamp), imagesy($stamp));
 
-// Output and free memory
-header('Content-type: image/png');
-//imagepng($im,'img.png');
-imagepng($im);
-
-
+        // Output and free memory
+        header('Content-type: image/png');
+        //imagepng($im,'img.png');
+        imagepng($im);
 	}
 
 	public function imageresize3(){
 		$filename='images/1608539023.png';
-	$image = $filename;
+	    $image = $filename;
 
-$image_name = rand(111111, 888999)*time() .'A.png';
-$thumb_name = rand(111111, 888999)*time() .'A.png';
-$destinationPath = public_path('/images');
+        $image_name = rand(111111, 888999)*time() .'A.png';
+        $thumb_name = rand(111111, 888999)*time() .'A.png';
+        $destinationPath = public_path('/images');
 
-//$image->move($destinationPath, $image_name);
-$orgImgPath = $filename;
-$thumbPath = $filename;
-shell_exec("convert $orgImgPath -resize 1928x1080\! $thumbPath");
-
-
+        //$image->move($destinationPath, $image_name);
+        $orgImgPath = $filename;
+        $thumbPath = $filename;
+        shell_exec("convert $orgImgPath -resize 1928x1080\! $thumbPath");
 	}
 
 	public function updatedata(){

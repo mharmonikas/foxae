@@ -13,9 +13,16 @@ class MyajaxController extends Controller {
 
         $selectserver = DB::table('tbl_managesite')->where('txtsiteurl',$servername)->first();
 
-        $mygetallvideo = DB::table('tbl_Video')->select(DB::raw('COUNT(DISTINCT(tbl_Video.Intid)) AS totalvideo'), 'parentserachingcategory.VchSearchcategorytitle','tbl_SearchgroupVideoRelationship.VchSearchgrouptitle','tbl_Video.VchTitle','p.VchCategoryTitle')->leftJoin('tbl_Videotagrelations', 'tbl_Video.IntId', '=', 'tbl_Videotagrelations.VchVideoId')->leftJoin('tbl_SearchcategoryVideoRelationship as parentserachingcategory', 'tbl_Video.IntId', '=', 'parentserachingcategory.IntVideoID')->leftJoin('tbl_SearchgroupVideoRelationship', 'tbl_Video.IntId', '=', 'tbl_SearchgroupVideoRelationship.IntVideoID')->leftJoin('tbl_Searchcategory as p', 'parentserachingcategory.IntCategorid', '=', 'p.IntParent')->leftJoin('tbl_group', 'tbl_SearchgroupVideoRelationship.Intgroupid', '=', 'tbl_group.intgroupid');
+        $mygetallvideo = DB::table('tbl_Video')
+            ->select(DB::raw('COUNT(DISTINCT(tbl_Video.Intid)) AS totalvideo'), 'parentserachingcategory.VchSearchcategorytitle','tbl_SearchgroupVideoRelationship.VchSearchgrouptitle','tbl_Video.VchTitle','p.VchCategoryTitle')
+            ->leftJoin('tbl_Videotagrelations', 'tbl_Video.IntId', '=', 'tbl_Videotagrelations.VchVideoId')
+            ->leftJoin('tbl_SearchcategoryVideoRelationship as parentserachingcategory', 'tbl_Video.IntId', '=', 'parentserachingcategory.IntVideoID')
+            ->leftJoin('tbl_SearchgroupVideoRelationship', 'tbl_Video.IntId', '=', 'tbl_SearchgroupVideoRelationship.IntVideoID')
+            ->leftJoin('tbl_Searchcategory as p', 'parentserachingcategory.IntCategorid', '=', 'p.IntParent')->leftJoin('tbl_group', 'tbl_SearchgroupVideoRelationship.Intgroupid', '=', 'tbl_group.intgroupid');
 
-        $getallvideo = DB::table('tbl_Video')->select('tbl_Video.*','tbl_Videotagrelations.VchVideoId', DB::raw("(Select GROUP_CONCAT(np.VchSearchcategorytitle SEPARATOR ', ') from tbl_SearchcategoryVideoRelationship as np where np.IntVideoID = tbl_Video.IntId ORDER BY RAND() LIMIT 4) as videotags "))->leftJoin('tbl_Videotagrelations', 'tbl_Video.IntId', '=', 'tbl_Videotagrelations.VchVideoId');
+        $getallvideo = DB::table('tbl_Video')
+            ->select('tbl_Video.*','tbl_Videotagrelations.VchVideoId', DB::raw("(Select GROUP_CONCAT(np.VchSearchcategorytitle SEPARATOR ', ') from tbl_SearchcategoryVideoRelationship as np where np.IntVideoID = tbl_Video.IntId ORDER BY RAND() LIMIT 4) as videotags "))
+            ->leftJoin('tbl_Videotagrelations', 'tbl_Video.IntId', '=', 'tbl_Videotagrelations.VchVideoId');
 
 //        if(request()->get('racetag')){
 //            if($_GET['racetag'] != "" && $_GET['racetag'] != 0 ){
@@ -23,7 +30,7 @@ class MyajaxController extends Controller {
 //        }
 
         if($searchtext = request('searchtext')){
-            $mysearchtext = explode(' ',$searchtext);
+            $mysearchtext = explode(' ', $searchtext);
             $searchtagsinfo = DB::table('tbl_Searchcategory')->where('VchCategoryTitle', $searchtext)->first();
 
             if($searchtagsinfo){
@@ -107,7 +114,6 @@ class MyajaxController extends Controller {
             $tumbvideo->productid = Crypt::encryptString($tumbvideo->IntId);
 
             $userid = Session::get('userid') ?? Session::getId();
-
 
             if ($userid) {
                 $incartlist = DB::table('tbl_wishlist')->where('tbl_wishlist.videoid',$tumbvideo->IntId)->where('tbl_wishlist.userid',$userid)->where('tbl_wishlist.siteid',$selectserver->intmanagesiteid)->whereNotNull('status')->first();
