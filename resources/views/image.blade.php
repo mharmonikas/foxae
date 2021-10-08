@@ -165,7 +165,7 @@ $explodeurl = explode("/",$_SERVER['REQUEST_URI']);
 				<div class="img-btm login-text" id="login-link"><p>Don't have free account yet?</p><a data-toggle="modal" data-target="#signupModal">Create your free account</a><button class="btn btn-default" data-toggle="modal" data-target="#exampleModal">Log In</button></div>
 				@endif
 				<div class="img-btm ">
-					<p>Not quite what you are looking for?</p>
+					<p>Not quite what you are looking for? </p>
 					<a href="/custom">Request Custom Graphics</a>
 				</div>
 

@@ -145,7 +145,7 @@ class MyajaxController extends Controller {
             $Watermark = '';
 
             if($tumbvideo->EnumType == 'V') {
-               if(!file_exists($tumbvideo->VchFolderPath.'/'.$selectserver->intmanagesiteid.'/watermark.mp4')){
+               if(!file_exists($tumbvideo->VchFolderPath.'/'.$selectserver->intmanagesiteid.'/watermark.mp4')) {
                     $Watermark = DB::table('tblwatermarklogo')->where('vchtype','V')->where('vchsiteid',$selectserver->intmanagesiteid)->where('enumstatus','A')->first();
                     $watermarklogo = public_path().'/upload/watermark/'.$Watermark->vchwatermarklogoname;
                     //shell_exec('ffmpeg -i '.$tumbvideo->VchFolderPath.'/'.$tumbvideo->VchVideoName.' -i '.$watermarklogo.' -filter_complex "overlay=(main_w-overlay_w)/2:(main_h-overlay_h)/2" -codec:a copy '.$tumbvideo->VchFolderPath.'/'.$selectserver->intmanagesiteid.'/watermark.mp4');

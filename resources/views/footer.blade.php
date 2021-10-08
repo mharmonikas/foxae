@@ -165,13 +165,12 @@ $managesite = HomeController::managesite2();
 			</div>
 			<div class="pop-footer">
 				<div class="img-btm hide-on-mobile">
-					<p>Not quite what you are looking for?</p>
+					<p>Not quite what you are looking for? </p>
 					<a href="/custom">Request Custom Graphics</a>
 				</div>
 				<div class="rlt-key hide-on-desktop"></div>
 				<div class="main-icon">
 					<ul>
-						<li id="add-cartli">
 
 
 						</li>
