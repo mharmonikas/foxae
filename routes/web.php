@@ -18,6 +18,10 @@ Route::get('/getkeywords', 'MyajaxController@getkeywords');
 Route::get('/getkeywordsvideo', 'MyajaxController@getkeywordsvideo');
 Route::get('/getallkeywords', 'MyajaxController@getallkeywords');
 
+Route::get('/testimage', function() {
+    \App\Jobs\UpdateDomainPreviewImages::dispatchNow(1);
+});
+
 //Clear Cache facade value:
 Route::get('/clear-cache', function() {
 	 $exitCode = Artisan::call('config:clear');
