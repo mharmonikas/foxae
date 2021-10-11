@@ -8,6 +8,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
 
 class UpdateDomainPreviewImages implements ShouldQueue
@@ -29,37 +30,51 @@ class UpdateDomainPreviewImages implements ShouldQueue
     /**
      * Execute the job.
      *
-     * @return void
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
      */
     public function handle()
     {
         $watermark = DB::table('tblwatermarklogo')->where('vchtype','L')->where('vchsiteid', $this->domainId)->where('enumstatus','A')->first();
 
-        $watermarkPath = public_path().'/upload/watermark/'.$watermark->vchwatermarklogoname;
-        $watermarkImage = imagecreatefrompng($watermarkPath);
-        $watermarkWidth = imagesx($watermarkImage);
-        $watermarkHeight = imagesy($watermarkImage);
+//        $watermarkImage = imagecreatefrompng($watermarkPath);
+//        $watermarkWidth = imagesx($watermarkImage);
+//        $watermarkHeight = imagesy($watermarkImage);
 
-        $images = DB::table('tbl_Video')->get(['IntId', 'VchFolderPath', 'VchVideoName', 'VchResizeImage', 'vchcacheimages']);
+//        $watermarkPath = public_path().'/testing/watermark.png';
+        $watermarkPath = public_path('/upload/watermark/'.$watermark->vchwatermarklogoname);
+        $watermarkImage = Image::make($watermarkPath);
+
+        $images = DB::table('tbl_Video')->orderByDesc('IntId')->get(['IntId', 'VchFolderPath', 'VchVideoName', 'VchResizeimage', 'vchcacheimages', 'vchorginalfile']);
 
         $image = $images[0];
 
         // todo: This should be in the each() loop.
 
-//        $imagePath = public_path().'/'.$image->VchFolderPath.'/'.$image->VchVideoName;
-        $imagePath = public_path('testing/image.jpg');
+//        $imagePath = public_path('showimage/'.$image->IntId.'/1/'.$image->vchorginalfile);
+        $imagePath = public_path($image->VchFolderPath.'/'.$image->VchVideoName);
+//        $imagePath = public_path('upload/videosearch/'.$image->IntId.'/resize/'.$image->VchResizeimage);
+//        $imagePath = public_path('testing/image.jpg');
 
         $img = Image::make($imagePath);
 
-        /* insert watermark at bottom-right corner with 10px offset */
-        $img->insert($watermarkPath, 'bottom-left');
-        $img->insert($watermarkPath, 'bottom-right');
-        $img->insert($watermarkPath); // top-left is default.
-        $img->insert($watermarkPath, 'top-right');
+        $watermarkImage->resize($img->width(), $img->height());
+//        $watermarkImage->opacity(60);
 
-        $img->save(public_path('/testing/imageresult.jpg'));
+        $img->insert($watermarkImage, 'bottom-left');
 
-        dd('saved image successfully.');
+//        $img->encode('jpg');
+//
+//        $path = public_path('/testing/imageresult.jpg');
+        $destinationPath = 'watermarkedImages/'.$this->domainId.'/'.$image->IntId;
+        File::isDirectory($destinationPath) or File::makeDirectory($destinationPath, 0777, true, true);
+
+        $destinationPath = public_path($destinationPath.'/'.$image->VchVideoName);
+
+        $img->save($destinationPath);
+
+//        return response()->download($path);
+
+//        dd('saved image successfully.');
 
 
 //        dump($imagePath);
