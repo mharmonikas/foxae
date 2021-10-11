@@ -62,8 +62,10 @@ $managesite = HomeController::managesite2();
 				@if($planfirst->plan_purchase == 'M')
 					<li class="">
 						<input type="radio" class="plisting" id="f-{{$planfirst->plan_id}}" name="packageid" value="{{$planfirst->plan_id}}" required>
-						<label for="f-{{$planfirst->plan_id}}"><p class="plan-name">{{ $planfirst->plan_name }}</p>
-				<p class="plan-descrption">{{ $planfirst->plan_description }}</p></label>
+						<label for="f-{{$planfirst->plan_id}}">
+                            <p class="plan-name">{{ $planfirst->plan_name }}</p>
+				            <p class="plan-descrption">{{ $planfirst->plan_description }}</p>
+                        </label>
 						<span for="f-price" class="plan-price">$ {{$planfirst->plan_price / $planfirst->plan_download}} <br>
 						<small>par image</small></span>
 						<div class="check"></div>

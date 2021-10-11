@@ -19,7 +19,7 @@ Route::get('/getkeywordsvideo', 'MyajaxController@getkeywordsvideo');
 Route::get('/getallkeywords', 'MyajaxController@getallkeywords');
 
 Route::get('/testimage', function() {
-    \App\Jobs\UpdateDomainPreviewImages::dispatchNow(1);
+   return \App\Jobs\UpdateDomainPreviewImages::dispatchNow(1);
 });
 
 //Clear Cache facade value:

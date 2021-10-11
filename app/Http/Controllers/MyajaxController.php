@@ -236,7 +236,7 @@ class MyajaxController extends Controller {
             $count = 1;
             $whereconditions = '';
             $selectconditions = '';
-            foreach($suggestions as $mykeyword){
+            foreach($suggestions as $mykeyword) {
                $mykeyword = str_replace("'", '', $mykeyword);
                if($count==1){
                   $selectconditions .= "select CASE when tbl_Video.VchTitle like '%$mykeyword%' then '".$mykeyword."' end  as  title from tbl_Video where VchTitle like '%$mykeyword%' ";
