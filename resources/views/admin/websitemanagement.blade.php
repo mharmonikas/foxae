@@ -398,13 +398,13 @@
                             <form  method="POST" enctype="multipart/form-data" action="/admin/savebackground">
                             {!! csrf_field() !!}
                             <!--
-                                   <div class="form-group">
-                                   <label for="popupcolor">Domain</label>
-                                     <select name="siteid" class="form-control">
-                                   <option value="">Select Domain</option>
-                                   @foreach($managesites as $managesite)
+                           <div class="form-group">
+                           <label for="popupcolor">Domain</label>
+                             <select name="siteid" class="form-control">
+                           <option value="">Select Domain</option>
+                           @foreach($managesites as $managesite)
                                 <option value="{{$managesite->intmanagesiteid}}"  >{{$managesite->txtsiteurl}}</option>
-                                   @endforeach
+                           @endforeach
                                 </select>
                                 </div>
 -->
@@ -531,3 +531,159 @@
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function(){
+        $('.delete').click(function(){
+            var result = confirm("Are you sure to delete this ?");
+            if (result) {
+                var deleteid = $(this).attr('deleteid');
+                var token= $('meta[name="csrf_token"]').attr('content');
+                $.ajax({
+                    url:'{{ URL::to("/admin/deletewatermark") }}',
+                    type:'POST',
+                    data:{'_token':token,'deleteid':deleteid},
+                    success:function(ress){
+
+                        location.reload();
+
+                    }
+                });
+            }
+        });
+
+
+        $('.delete-bg').click(function(){
+            var result = confirm("Are you sure to delete this ?");
+            if (result) {
+                var deleteid = $(this).attr('deleteid');
+                var token= $('meta[name="csrf_token"]').attr('content');
+                $.ajax({
+                    url:'{{ URL::to("/admin/deletebg") }}',
+                    type:'POST',
+                    data:{'_token':token,'deleteid':deleteid},
+                    success:function(ress){
+                        location.reload();
+                    }
+                });
+            }
+        });
+
+        $('.tabwatermarkss').click(function(){
+            var logotype = $(this).attr('logotype');
+            $('.searchtags').css('display','none');
+            $('.'+logotype).fadeIn();
+
+        });
+        $('.racecategory').click(function(){
+            var checkbox = $(this).is(":checked");
+            var image = $(this).attr("data-value");
+            var siteid = $(this).attr("site-id");
+            var checkboxid = $(this).val();
+            if(image == 'V'){
+                if(checkbox){
+                    $('#myModal').modal('show');
+                    $(".videologoid").val(checkboxid);
+                    $(".videotype").val(image);
+                    $(".siteid").val(siteid);
+
+                }
+                //$('#myModal').modal({backdrop: 'static', keyboard: false});
+            }else{
+                markset(checkbox,image,checkboxid,siteid);
+            }
+
+        });
+
+
+
+    });
+
+    $('.cache-images').click(function(event) {
+        let siteId = parseInt(event.currentTarget.dataset.siteId)
+
+        {{--$.ajax({--}}
+        {{--    url:'{{ URL::to("/admin/addeditsearchcategory") }}',--}}
+        {{--    type:'POST',--}}
+        {{--    data:{'categorytitle':categorytitle,'category':category,'parentcat':parentcat,'_token':token},--}}
+        {{--    success:function(ress){--}}
+        {{--        window.location.href="";--}}
+        {{--    }--}}
+        {{--});--}}
+    })
+
+    $(".btn-submit-video").click(function(){
+        markset('yes',$(".videotype").val(),$(".videologoid").val(),$(".siteid").val())
+    });
+    function markset(checkbox,image,checkboxid,siteid){
+        if(checkbox){
+            var myconfirm = confirm("Are you sure to mark it default watermark logo");
+            if(myconfirm){
+                var vtime = $(".form_datetime").val();
+                var token= $('meta[name="csrf_token"]').attr('content');
+                $.ajax({
+                    beforeSend: function(){
+                        $(".info-loading-image").css("display","flex");
+                        $("body").css("overflow","hidden");
+                    },
+                    url:'{{ URL::to("/admin/markdefaultlogo") }}',
+                    type:'POST',
+                    data:{'_token':token,'imagetype':image,'type':'check','checkboxid':checkboxid,'vtime':vtime,'siteid':siteid},
+                    success:function(ress){
+                        $(".info-loading-image").css("display","none");
+                        $("body").css("overflow","scroll");
+                        location.reload();
+                    }
+                });
+            }else {
+                $(this).prop("checked", false);
+            }
+        }else {
+
+        }
+    }
+    $(".btn-close").click(function(){
+        location.reload();
+    });
+</script>
+<link href="/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+<script type="text/javascript" src="/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+<script type="text/javascript">
+    var date = new Date();
+    date.setDate(date.getDate());
+    $(".form_datetime").datetimepicker({
+        format: 'yyyy-mm-dd hh:ii',
+        startDate: date,
+    });
+
+    $("#large").click(function(){
+        $('#small').removeClass('active');
+        $('#video').removeClass('active');
+        $("tabwatermarkss").removeClass("active");
+        $('#background').removeClass('active');
+        $(this).removeClass('active').addClass('active');
+    });
+    $("#small").click(function(){
+        $('#large').removeClass('active');
+        $('#video').removeClass('active');
+        $("tabwatermarkss").removeClass("active");
+        $('#background').removeClass('active');
+        $(this).removeClass('active').addClass('active');
+    });
+    $("#video").click(function(){
+        $('#large').removeClass('active');
+        $('#small').removeClass('active');
+        $('#background').removeClass('active');
+        //$("tabwatermarkss").removeClass("active");
+        $(this).removeClass('active').addClass('active');
+    });
+    $("#background").click(function(){
+        $('#large').removeClass('active');
+        $('#small').removeClass('active');
+        $('#video').removeClass('active');
+        //$("tabwatermarkss").removeClass("active");
+        $(this).removeClass('active').addClass('active');
+    });
+
+
+</script>
+@include('admin/admin-footer')
