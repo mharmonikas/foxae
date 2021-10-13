@@ -75,14 +75,14 @@ Manage Website
 </div>
 </div>
 <div class="clearfix"></div>
- 
+
 <div class="col-md-12" style="padding-bottom: 35px;">
 <!--<a href="/admin/websitemanagement/create" class="addnew" style="margin-left:10px; width:200px;">
 <i class="fa fa-refresh" aria-hidden="true"></i>
   Refresh watermark Images </a>-->
   @if(strstr($access, "1"))
 <a href="/admin/websitemanagement/create" class="addnew" >
-<i class="fa fa-plus-square"></i>  Add New </a>	
+<i class="fa fa-plus-square"></i>  Add New </a>
 </div>
 @endif
 <div style="padding:30px 50px 0">
@@ -115,42 +115,41 @@ Manage Website
 </div>
 </div>
 </div>
-	
+
 <div class="searchtags prdctlargegogo">
 <div class="ful-top gap-sextion"  id="product_container">
 <div class="col-md-12">
-<?php 
+<?php
 if(!$watermark->isEmpty()){
 ?>
 
 <table class="table-bordered" width="80%;">
-<thead>
-<tr>
-<th style="text-align:center;">
-Watermark Logo
-</th>
-<th style="text-align:center;">
-Type
-</th>
-<th style="text-align:center;">
-Transparency
-</th>
-<th style="text-align:center;">
-Domain
-</th>
-<th style="text-align:center;">
-Mark Default 
-</th>
-@if(strstr($access, "1"))
-<th style="text-align:center;">
-Action
-</th>
-@endif
-</tr>
-
-</thead>
+    <thead>
+        <tr>
+            <th style="text-align:center;">
+                Watermark Logo
+            </th>
+            <th style="text-align:center;">
+                Type
+            </th>
+            <th style="text-align:center;">
+                Transparency
+            </th>
+            <th style="text-align:center;">
+                Domain
+            </th>
+            <th style="text-align:center;">
+                Mark Default
+            </th>
+            @if(strstr($access, "1"))
+                <th style="text-align:center;">
+                    Actions
+                </th>
+            @endif
+        </tr>
+    </thead>
 <tbody>
-<?php 
+<?php
 foreach($watermark as $mylogo){
 
 ?>
@@ -159,47 +158,50 @@ foreach($watermark as $mylogo){
 <img src="/upload/watermark/<?php echo $mylogo->vchwatermarklogoname; ?>" width="100px;">
 </td>
 <td>
-<?php 
+<?php
 if($mylogo->vchtype=="L"){
 	echo "Large Thumbnail";
 }else {
-echo "Small Thumbnail";	
+echo "Small Thumbnail";
 }
 
 ?>
 
 </td>
 <td>
-<?php 
+<?php
 echo $mylogo->vchtransparency; ?>
 </td>
 <td>
-<?php 
+<?php
 echo $mylogo->txtsiteurl; ?>
 </td>
 <td>
-<?php 
+<?php
 $mystatus = $mylogo->enumstatus;
 if($mystatus=='A'){
 	$check = "checked";
 }else {
 	$check = "";
-	
+
 }
-?> 
-<input type="checkbox" id="box-<?php echo $mylogo->Intwatermarklogoid; ?>" class="racecategory racecategorycheckbox" name="markdefault" value="<?php echo $mylogo->Intwatermarklogoid; ?>" <?php echo $check; ?> data-value="L" site-id="<?php echo $mylogo->vchsiteid; ?>" > 
+?>
+<input type="checkbox" id="box-<?php echo $mylogo->Intwatermarklogoid; ?>" class="racecategory racecategorycheckbox" name="markdefault" value="<?php echo $mylogo->Intwatermarklogoid; ?>" <?php echo $check; ?> data-value="L" site-id="<?php echo $mylogo->vchsiteid; ?>" >
   <label for="box-<?php echo $mylogo->Intwatermarklogoid; ?>">
   Mark default Watermark Logo</label>
- 
+
 </td>
 @if(strstr($access, "1"))
 	<td style="text-align:center;">
 		<a href="javascript:void(0);" class="btn btn-danger delete" deleteid="<?php echo $mylogo->Intwatermarklogoid; ?>">
-		<i class="fa fa-trash-o" aria-hidden="true"></i>
+		    <i class="fa fa-trash-o" aria-hidden="true"></i>
 		</a>
 		<a href="/admin/watermarkupdateedit?id=<?php echo $mylogo->Intwatermarklogoid; ?>" class="btn btn-danger edit">
-		<i class="fa fa-pencil" aria-hidden="true"></i>
+		    <i class="fa fa-pencil" aria-hidden="true"></i>
 		</a>
+		<button class="btn btn-secondary cache-images" data-site-id="{{$mylogo->vchsiteid}}">
+            <i class="fa fa-dashcube" aria-hidden="true"></i>
+		</button>
 	</td>
 @endif
 </tr>
@@ -219,7 +221,7 @@ if($mystatus=='A'){
 <div class="searchtags prdctsmalgogo" style="display:none;">
 <div class="ful-top gap-sextion"  id="product_container">
 <div class="col-md-12">
-<?php 
+<?php
 if(!$smallwatermark->isEmpty()){
 ?>
 
@@ -239,7 +241,7 @@ Transparency
 Domain
 </th>
 <th style="text-align:center;">
-Mark Default 
+Mark Default
 </th>
 @if(strstr($access, "1"))
 	<th style="text-align:center;">
@@ -249,7 +251,7 @@ Mark Default
 </tr>
 </thead>
 <tbody>
-<?php 
+<?php
 foreach($smallwatermark as $mylogo){
 ?>
 <tr>
@@ -257,38 +259,38 @@ foreach($smallwatermark as $mylogo){
 <img src="/upload/watermark/<?php echo $mylogo->vchwatermarklogoname; ?>" width="100px;">
 </td>
 <td>
-<?php 
+<?php
 if($mylogo->vchtype=="L"){
 	echo "Large Thumbnail";
 }else {
-echo "Small Thumbnail";	
+echo "Small Thumbnail";
 }
 
 ?>
 
 </td>
 <td>
-<?php 
+<?php
 echo $mylogo->vchtransparency; ?>
 </td>
 <td>
-<?php 
+<?php
 echo $mylogo->txtsiteurl; ?>
 </td>
 <td>
-<?php 
+<?php
 $mystatus = $mylogo->enumstatus;
 if($mystatus=='A'){
 	$check = "checked";
 }else {
 	$check = "";
-	
+
 }
-?> 
-<input type="checkbox" id="box-<?php echo $mylogo->Intwatermarklogoid; ?>" class="racecategory racecategorycheckbox" data-value="S" name="markdefault" value="<?php echo $mylogo->Intwatermarklogoid; ?>" <?php echo $check; ?> site-id="<?php echo $mylogo->vchsiteid; ?>"> 
+?>
+<input type="checkbox" id="box-<?php echo $mylogo->Intwatermarklogoid; ?>" class="racecategory racecategorycheckbox" data-value="S" name="markdefault" value="<?php echo $mylogo->Intwatermarklogoid; ?>" <?php echo $check; ?> site-id="<?php echo $mylogo->vchsiteid; ?>">
   <label for="box-<?php echo $mylogo->Intwatermarklogoid; ?>">
   Mark default Watermark Logo</label>
- 
+
 </td>
 @if(strstr($access, "1"))
 <td style="text-align:center;">
@@ -316,7 +318,7 @@ if($mystatus=='A'){
 <div class="searchtags prdctsmalgogos" style="display:none;">
 <div class="ful-top gap-sextion"  id="product_container">
 <div class="col-md-12">
-<?php 
+<?php
 if(!$videowatermark->isEmpty()){
 ?>
 
@@ -336,7 +338,7 @@ Transparency
 Domain
 </th>
 <th style="text-align:center;">
-Mark Default 
+Mark Default
 </th>
 @if(strstr($access, "1"))
 <th style="text-align:center;">
@@ -346,7 +348,7 @@ Action
 </tr>
 </thead>
 <tbody>
-<?php 
+<?php
 foreach($videowatermark as $mylogo){
 ?>
 <tr>
@@ -354,38 +356,38 @@ foreach($videowatermark as $mylogo){
 <img src="/upload/watermark/<?php echo $mylogo->vchwatermarklogoname; ?>" width="100px;">
 </td>
 <td>
-<?php 
+<?php
 if($mylogo->vchtype=="V"){
 	echo "Video Watermark";
 }else {
-echo "Small Thumbnail";	
+echo "Small Thumbnail";
 }
 
 ?>
 
 </td>
 <td>
-<?php 
+<?php
 echo $mylogo->vchtransparency; ?>
 </td>
 <td>
-<?php 
+<?php
 echo $mylogo->txtsiteurl; ?>
 </td>
 <td>
-<?php 
+<?php
 $mystatus = $mylogo->enumstatus;
 if($mystatus=='A'){
 	$check = "checked";
 }else {
 	$check = "";
-	
+
 }
-?> 
-<input type="checkbox" id="box-<?php echo $mylogo->Intwatermarklogoid; ?>" class="racecategory racecategorycheckbox" data-value="V" name="markdefault" value="<?php echo $mylogo->Intwatermarklogoid; ?>" <?php echo $check; ?> site-id="<?php echo $mylogo->vchsiteid; ?>"> 
+?>
+<input type="checkbox" id="box-<?php echo $mylogo->Intwatermarklogoid; ?>" class="racecategory racecategorycheckbox" data-value="V" name="markdefault" value="<?php echo $mylogo->Intwatermarklogoid; ?>" <?php echo $check; ?> site-id="<?php echo $mylogo->vchsiteid; ?>">
   <label for="box-<?php echo $mylogo->Intwatermarklogoid; ?>">
   Mark default Watermark Logo</label>
- 
+
 </td>
 @if(strstr($access, "1"))
 <td style="text-align:center;">
@@ -425,15 +427,15 @@ if($mystatus=='A'){
 <option value="{{$managesite->intmanagesiteid}}"  >{{$managesite->txtsiteurl}}</option>
 @endforeach
 </select>
-</div>	
+</div>
 -->
 @if(strstr($access, "1"))
 <div class="iconsdsf">
          <label>Domain</label>
          <ul class="main">
          <li>
-       
-         <ul style="margin-top: -10px;">  
+
+         <ul style="margin-top: -10px;">
         	@foreach($managesites as $managesite)
          <li>
          <label class="container-checkbox">{{$managesite->txtsiteurl}}
@@ -441,22 +443,22 @@ if($mystatus=='A'){
          <span class="checkmark"></span>
          </label>
          </li>
-         @endforeach	
+         @endforeach
          </ul>
-         </ul> 
+         </ul>
          </div>
-		 
+
 <div class="form-group">
 <label for="popupcolor">Background Title:</label>
     <input type="text" class="form-control" name="background_title" value="" />
-</div>	
+</div>
 
 
 <div class="form-group">
 <label for="popupcolor">Background Image:</label>
     <input type="hidden" name="bg_image" class="proicon" value=""  id="customvideo">
 	 <input type="file" name="bg_upload" class="form-control" >
-</div>	
+</div>
 
 
 
@@ -465,7 +467,7 @@ if($mystatus=='A'){
 <input type="submit" name="resettagcolor" value="Reset to default" class="btn btn-dafualt" id="anchorcolor" onclick="return confirm('Are you sure you want reset default setting?');">
 -->
     <input type="submit" name="custompage" value="Save" class="btn btn-dafualt" id="anchorcolor">
-</div>	
+</div>
 
 </div>
 @endif
@@ -494,13 +496,13 @@ Domain
 </tr>
 </thead>
 <tbody>
-<?php 
+<?php
 if(!empty($background_list)){
 foreach($background_list as $bglist){
 ?>
 <tr>
 <td>
-<?php 
+<?php
 echo $bglist->background_title; ?>
 </td>
 <td>
@@ -508,7 +510,7 @@ echo $bglist->background_title; ?>
 </td>
 
 <td>
-<?php 
+<?php
 
 echo $bglist->sitename; ?>
 </td>
@@ -526,7 +528,7 @@ echo $bglist->sitename; ?>
 <?php }}else{
 ?>
 	<tr><td> NO BACKGROUNDS </td></tr>
-<?php	
+<?php
 }
 
  ?>
@@ -537,13 +539,13 @@ echo $bglist->sitename; ?>
 </div>
 </div>
 </div>
-</div>  
+</div>
 </div>
 </div>
 
  <div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog">
-    
+
       <!-- Modal content-->
       <div class="modal-content">
         <div class="modal-header" style="display: block;">
@@ -560,120 +562,133 @@ echo $bglist->sitename; ?>
           <button type="button" class="btn btn-default btn-close btn-submit-video" >Submit</button>
         </div>
       </div>
-      
+
     </div>
   </div>
 <script>
-$(document).ready(function(){
-$('.delete').click(function(){	
-var result = confirm("Are you sure to delete this ?");
-if (result) {
-	    var deleteid = $(this).attr('deleteid');
-		 var token= $('meta[name="csrf_token"]').attr('content');
-   	$.ajax({
-				url:'{{ URL::to("/admin/deletewatermark") }}',
-				type:'POST',
-				data:{'_token':token,'deleteid':deleteid},
-				success:function(ress){
-					
-					location.reload();
+    $(document).ready(function(){
+    $('.delete').click(function(){
+    var result = confirm("Are you sure to delete this ?");
+    if (result) {
+            var deleteid = $(this).attr('deleteid');
+             var token= $('meta[name="csrf_token"]').attr('content');
+        $.ajax({
+                    url:'{{ URL::to("/admin/deletewatermark") }}',
+                    type:'POST',
+                    data:{'_token':token,'deleteid':deleteid},
+                    success:function(ress){
 
-				}
-			});
-}	
-});	
+                        location.reload();
 
-
-$('.delete-bg').click(function(){	
-var result = confirm("Are you sure to delete this ?");
-if (result) {
-	    var deleteid = $(this).attr('deleteid');
-		 var token= $('meta[name="csrf_token"]').attr('content');
-   	$.ajax({
-				url:'{{ URL::to("/admin/deletebg") }}',
-				type:'POST',
-				data:{'_token':token,'deleteid':deleteid},
-				success:function(ress){
-					location.reload();
-				}
-			});
-}	
-});	
-
-$('.tabwatermarkss').click(function(){
-var logotype = $(this).attr('logotype');	
-	$('.searchtags').css('display','none');
-	$('.'+logotype).fadeIn();
-	
-});
-$('.racecategory').click(function(){
-	var checkbox = $(this).is(":checked");
-	var image = $(this).attr("data-value");
-	var siteid = $(this).attr("site-id");
-	var checkboxid = $(this).val();
-	if(image == 'V'){
-		if(checkbox){
-			$('#myModal').modal('show');
-			$(".videologoid").val(checkboxid);
-			$(".videotype").val(image);
-			$(".siteid").val(siteid);
-			
-		}
-		//$('#myModal').modal({backdrop: 'static', keyboard: false});  	
-	}else{
-		markset(checkbox,image,checkboxid,siteid);
-	}
-
-});
+                    }
+                });
+    }
+    });
 
 
+    $('.delete-bg').click(function(){
+    var result = confirm("Are you sure to delete this ?");
+    if (result) {
+            var deleteid = $(this).attr('deleteid');
+             var token= $('meta[name="csrf_token"]').attr('content');
+        $.ajax({
+                    url:'{{ URL::to("/admin/deletebg") }}',
+                    type:'POST',
+                    data:{'_token':token,'deleteid':deleteid},
+                    success:function(ress){
+                        location.reload();
+                    }
+                });
+    }
+    });
 
-});
+    $('.tabwatermarkss').click(function(){
+    var logotype = $(this).attr('logotype');
+        $('.searchtags').css('display','none');
+        $('.'+logotype).fadeIn();
 
-$(".btn-submit-video").click(function(){
-	markset('yes',$(".videotype").val(),$(".videologoid").val(),$(".siteid").val())
-});
-function markset(checkbox,image,checkboxid,siteid){
-	if(checkbox){
-	 var myconfirm = confirm("Are you sure to mark it default watermark logo");
-	 if(myconfirm){
-		var vtime = $(".form_datetime").val();   
-		 var token= $('meta[name="csrf_token"]').attr('content');
-   	    $.ajax({
-				beforeSend: function(){  
-		    	    $(".info-loading-image").css("display","flex");
-		    	    $("body").css("overflow","hidden");
-                },
-				url:'{{ URL::to("/admin/markdefaultlogo") }}',
-				type:'POST',
-				data:{'_token':token,'imagetype':image,'type':'check','checkboxid':checkboxid,'vtime':vtime,'siteid':siteid},
-				success:function(ress){
-					$(".info-loading-image").css("display","none");
-		           $("body").css("overflow","scroll");
-					location.reload();
-				}
-			});
-	 }else {
-	  $(this).prop("checked", false);		
-	 }
-	}else {
-		
-	}
-}
-$(".btn-close").click(function(){
-	location.reload();
-});
+    });
+    $('.racecategory').click(function(){
+        var checkbox = $(this).is(":checked");
+        var image = $(this).attr("data-value");
+        var siteid = $(this).attr("site-id");
+        var checkboxid = $(this).val();
+        if(image == 'V'){
+            if(checkbox){
+                $('#myModal').modal('show');
+                $(".videologoid").val(checkboxid);
+                $(".videotype").val(image);
+                $(".siteid").val(siteid);
+
+            }
+            //$('#myModal').modal({backdrop: 'static', keyboard: false});
+        }else{
+            markset(checkbox,image,checkboxid,siteid);
+        }
+
+    });
+
+
+
+    });
+
+    $('.cache-images').click(function(event) {
+        let siteId = parseInt(event.currentTarget.dataset.siteId)
+
+        {{--$.ajax({--}}
+        {{--    url:'{{ URL::to("/admin/addeditsearchcategory") }}',--}}
+        {{--    type:'POST',--}}
+        {{--    data:{'categorytitle':categorytitle,'category':category,'parentcat':parentcat,'_token':token},--}}
+        {{--    success:function(ress){--}}
+        {{--        window.location.href="";--}}
+        {{--    }--}}
+        {{--});--}}
+    })
+
+    $(".btn-submit-video").click(function(){
+        markset('yes',$(".videotype").val(),$(".videologoid").val(),$(".siteid").val())
+    });
+    function markset(checkbox,image,checkboxid,siteid){
+        if(checkbox){
+         var myconfirm = confirm("Are you sure to mark it default watermark logo");
+         if(myconfirm){
+            var vtime = $(".form_datetime").val();
+             var token= $('meta[name="csrf_token"]').attr('content');
+            $.ajax({
+                    beforeSend: function(){
+                        $(".info-loading-image").css("display","flex");
+                        $("body").css("overflow","hidden");
+                    },
+                    url:'{{ URL::to("/admin/markdefaultlogo") }}',
+                    type:'POST',
+                    data:{'_token':token,'imagetype':image,'type':'check','checkboxid':checkboxid,'vtime':vtime,'siteid':siteid},
+                    success:function(ress){
+                        $(".info-loading-image").css("display","none");
+                       $("body").css("overflow","scroll");
+                        location.reload();
+                    }
+                });
+         }else {
+          $(this).prop("checked", false);
+         }
+        }else {
+
+        }
+    }
+    $(".btn-close").click(function(){
+        location.reload();
+    });
 </script>
  <link href="/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
 <script type="text/javascript" src="/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
 <script type="text/javascript">
-var date = new Date();
-  date.setDate(date.getDate());
+    var date = new Date();
+    date.setDate(date.getDate());
     $(".form_datetime").datetimepicker({
-		format: 'yyyy-mm-dd hh:ii',
-		startDate: date
-		});
-		
+        format: 'yyyy-mm-dd hh:ii',
+        startDate: date,
+    });
+
 	$("#large").click(function(){
 	 $('#small').removeClass('active');
 	 $('#video').removeClass('active');
@@ -687,7 +702,7 @@ var date = new Date();
 		$("tabwatermarkss").removeClass("active");
 		$('#background').removeClass('active');
       $(this).removeClass('active').addClass('active');
-	  }); 
+	  });
 	  $("#video").click(function(){
 			$('#large').removeClass('active');
 			$('#small').removeClass('active');
@@ -695,15 +710,15 @@ var date = new Date();
 	//$("tabwatermarkss").removeClass("active");
       $(this).removeClass('active').addClass('active');
 	  });
- $("#background").click(function(){
+    $("#background").click(function(){
 			$('#large').removeClass('active');
 			$('#small').removeClass('active');
 			$('#video').removeClass('active');
-	//$("tabwatermarkss").removeClass("active");
+        //$("tabwatermarkss").removeClass("active");
       $(this).removeClass('active').addClass('active');
 	  });
 
-	
-</script> 
+
+</script>
 @include('admin/admin-footer')
- 
+

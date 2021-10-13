@@ -54,6 +54,8 @@ class UpdateDomainPreviewImages implements ShouldQueue
 
         $img->insert($watermarkImage, 'bottom-left');
 
+        File::isDirectory('watermarkedImages/'.$this->domainId) or File::makeDirectory('watermarkedImages/'.$this->domainId, 0777, true, true);
+
         $destinationPath = 'watermarkedImages/'.$this->domainId.'/'.$image->IntId;
 
         File::isDirectory($destinationPath) or File::makeDirectory($destinationPath, 0777, true, true);
