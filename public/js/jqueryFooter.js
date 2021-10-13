@@ -408,7 +408,7 @@ $(document).on("click",".btn-favorites",function(){
 		changestatus = 'in-favorites';
 		cartstatus = 'Add';
 		changehtml = "<svg width='33' height='33' viewBox='0 0 28 28' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M15.5749 23.4848C14.6883 24.2898 13.3233 24.2898 12.4366 23.4731L12.3083 23.3565C6.18327 17.8148 2.1816 14.1865 2.33327 9.65979C2.40327 7.67645 3.41827 5.77479 5.06327 4.65479C8.14327 2.55479 11.9466 3.53479 13.9999 5.93812C16.0533 3.53479 19.8566 2.54312 22.9366 4.65479C24.5816 5.77479 25.5966 7.67645 25.6666 9.65979C25.8299 14.1865 21.8166 17.8148 15.6916 23.3798L15.5749 23.4848Z' fill='#FF8F09'/></svg>";
-		addtocart_status = "Added to favorites successfully";
+		addtocart_status = "Added to favourites successfully";
 		carttitle = "Delete from Collection";
 	}else{
 		cartstatus = 'Remove';
@@ -538,8 +538,6 @@ $('.myloadercontainer2').css("display", "block");
 	}
 		var src='';
 		 $("#backgroundnavbarDropdown").dropdown('toggle');
-
-
 				$.ajax({
 						url: '/cart-background',
 						type:"GET",
