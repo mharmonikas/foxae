@@ -196,6 +196,7 @@ Route::get('/admin/recoverpassword/{id}', array('as' => 'id', 'uses'=>'MyadminCo
 Route::get('/admin/replace/{id}', array('as' => 'id', 'uses'=>'MyadminController@replace'));
 Route::resource('admin/websitemanagement','WebsitemanagementController');
 Route::post('/admin/watermarkupdate', 'MyadminController@watermarkupdate');
+Route::post('/admin/scheduleImageCaching', 'MyadminController@scheduleImageCaching');
 Route::get('/admin/refreshwatermark', 'MyadminController@refreshwatermark');
 Route::get('/admin/saverefreshwatermark', 'MyadminController@saverefreshwatermark');
 Route::post('/admin/themeoption', 'MyadminController@savethemeoption');

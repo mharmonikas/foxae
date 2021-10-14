@@ -1,8 +1,10 @@
 <?php
 namespace App\Http\Controllers;
+use App\Jobs\UpdateDomainPreviewImages;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\AdminModel;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Hash;
 use File;
@@ -5549,4 +5551,12 @@ exit;
 		}
 		return redirect()->to('/admin/manageuser')->with('success', 'Email sent successfully');
 	}
+
+    public function scheduleImageCaching(Request $request)
+    {
+        $diff = Carbon::parse($request->date)->diffInHours(now());
+        $delay = now()->addHours($diff);
+
+        UpdateDomainPreviewImages::dispatch($request->domainId)->delay($delay);
+    }
 }
