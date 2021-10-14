@@ -5558,5 +5558,7 @@ exit;
         $delay = now()->addHours($diff);
 
         UpdateDomainPreviewImages::dispatch($request->domainId)->delay($delay);
+
+        return 1;
     }
 }

@@ -531,6 +531,26 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="cacheImagesModal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header" style="display: block;">
+                <button type="button" class="close btn-close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Schedule Images Caching </h4>
+            </div>
+            <div class="modal-body">
+                <p>When should we start caching images for this domain ?</p>
+                <input id="cacheImagesTime" size="16" type="text" value="<?=date('Y-m-d H:s')?>" placeholder="2021-06-15 14:45" readonly class="form-control form_datetime">
+            </div>
+            <div class="modal-footer">
+                <button id="cacheImagesBtn" type="button" class="btn btn-default">Schedule</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     $(document).ready(function(){
         $('.delete').click(function(){
@@ -593,22 +613,30 @@
             }
 
         });
-
-
-
     });
 
-    $('.cache-images').click(function(event) {
-        let siteId = parseInt(event.currentTarget.dataset.siteId)
+    var siteId = null
 
-        {{--$.ajax({--}}
-        {{--    url:'{{ URL::to("/admin/addeditsearchcategory") }}',--}}
-        {{--    type:'POST',--}}
-        {{--    data:{'categorytitle':categorytitle,'category':category,'parentcat':parentcat,'_token':token},--}}
-        {{--    success:function(ress){--}}
-        {{--        window.location.href="";--}}
-        {{--    }--}}
-        {{--});--}}
+    $('.cache-images').click(function(event) {
+        siteId = parseInt(event.currentTarget.dataset.siteId)
+        $('#cacheImagesModal').modal('show');
+
+    })
+
+    $('#cacheImagesBtn').click(function() {
+        let token = $('meta[name="csrf_token"]').attr('content')
+        let date = $('#cacheImagesTime').val()
+
+        $.ajax({
+            url:'/admin/scheduleImageCaching',
+            type:'POST',
+            data:{_token: token, date: date, domainId: siteId},
+            success: function(res){
+                console.log('res')
+                console.log(res)
+            }
+        });
+
     })
 
     $(".btn-submit-video").click(function(){
@@ -634,7 +662,7 @@
                         location.reload();
                     }
                 });
-            }else {
+            } else {
                 $(this).prop("checked", false);
             }
         }else {

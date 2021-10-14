@@ -24,7 +24,7 @@ class UpdateDomainPreviewImages implements ShouldQueue
 
     public function __construct($domainId)
     {
-        $this->domainId = $domainId;
+        $this->domainId = (int)$domainId;
     }
 
     /**
