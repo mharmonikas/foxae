@@ -45,8 +45,6 @@ class UpdateDomainPreviewImages implements ShouldQueue
         $image = $images[0];
 
         $imagePath = public_path($image->VchFolderPath.'/'.$image->VchVideoName);
-//        $imagePath = public_path('showimage/'.$image->IntId.'/1/'.$image->vchorginalfile);
-//        $imagePath = public_path('upload/videosearch/'.$image->IntId.'/resize/'.$image->VchResizeimage);
 
         $img = Image::make($imagePath);
 
