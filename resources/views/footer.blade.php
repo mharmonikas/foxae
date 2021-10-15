@@ -332,7 +332,7 @@ $managesite = HomeController::managesite2();
 
 			<div class="order-summary">
 				<div class="order-inner">
-				<h6>Order Summary</h6>
+				    <h6>Order Summary</h6>
 					<div class="details">
 						<div class="order_sec">
 							<!--<p><strong>365-day Image On Demond, with 2 Standard License Download</strong></p>
@@ -350,11 +350,8 @@ $managesite = HomeController::managesite2();
 
 							</div>
 						</div>
-
-
 					</div>
-
-			</div>
+			    </div>
 			</div>
 		</div>
 		<div class="col-md-12" >
