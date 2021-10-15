@@ -78,7 +78,7 @@ use App\Http\Controllers\HomeController;
                                 @endif
                                 <!--<img src="/img/share-apple.png" onclick="showCopy()">-->
                                 </div>
-                                <div class="bigimgcontainer" id="zoom-container" >
+                                <div class="bigimgcontainer transparent-background" id="zoom-container" >
                                     @if($applied_bg=='')
                                         <img src="/showimage/{{$response->IntId }}/{{$managesite->intmanagesiteid}}/{{$response->VchVideoName }}?={{$response->intsetdefault }}" class="loading" id="bigimagesize"  ondragstart="return false">
                                     @else

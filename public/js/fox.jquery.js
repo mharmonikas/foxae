@@ -58,10 +58,12 @@ app.controller('customersCtrl', function ($scope, $http) {
 		$http.get('/getallvideo?_token = <?php echo csrf_token() ?>&type=' + type + '&searchtext=' + searchkeyword + '&startlimit=' + limit + '&showitemperpage=' + showitemperpage + '&category=1&Tagid=' + myJSON).then(successCallback, errorCallback);
 
 	};
+
 	$scope.setItemsPerPage = function (num) {
 		$scope.itemsPerPage = num;
 		$scope.currentPage = 1;
 	}
+
 	var showitemperpage = $('.showitemperpage').val();
 	var offest = showitemperpage;
 	var count = 0;
@@ -316,6 +318,7 @@ app.controller('customersCtrl', function ($scope, $http) {
 
 	});
 	$('.homepage').on("click", ".btn-model", function () {
+        console.log($(this))
 		localStorage.removeItem("sharelink");
 		$('.homepage').addClass('freeze');
 		var stock='';
@@ -485,9 +488,12 @@ app.controller('customersCtrl', function ($scope, $http) {
 			$("#videopart").css("display","none");
 		    $('#zoomCheck').prop('checked', false);
 			var img = $(this).attr('data-image');
+			let imageName = $(this).attr('data-image-name');
+			let imageId = $(this).attr('data-image-id');
 			$(".bigimagename").text(name);
 			var res = img.replace("%20", "W3Schools")
-			$("#bigimagesize").attr("src", res);
+            $("#bigimagesize").attr("src", '/watermarkedImages/' + currentsiteid + '/' + imageId + '/' + imageName);
+            // $("#bigimagesize").attr("src", res);
 			$("#image-url").val(res);
 		}
 
@@ -616,7 +622,7 @@ app.controller('customersCtrl', function ($scope, $http) {
 
 		openbigForm();
 
-	    $("#errorMessage").html(' ');
+        $("#errorMessage").html(' ');
 	});
 });
 $(document).ready(function () {

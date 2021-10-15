@@ -19,7 +19,7 @@ Route::get('/getkeywordsvideo', 'MyajaxController@getkeywordsvideo');
 Route::get('/getallkeywords', 'MyajaxController@getallkeywords');
 
 Route::get('/testimage', function() {
-   return \App\Jobs\UpdateDomainPreviewImages::dispatchNow(1);
+   return \App\Jobs\UpdateDomainPreviewImagesJob::dispatchNow(1);
 });
 
 //Clear Cache facade value:
@@ -128,6 +128,10 @@ Route::get('/userlicence', 'HomeController@userlicence');
 Route::get('/getreceipt', 'HomeController@getreceipt');
 Route::get('/demo', 'MyadminController@demo');
 Route::get('/showimg/{id}/{imgs}', array('as' => 'id', 'uses'=>'HomeController@showimage1'));
+
+Route::get('/clearcache', function() {
+    \Illuminate\Support\Facades\Artisan::call('optimize:clear');
+});
 /*******************************Home****************************************************/
 
 /*******************************Admin****************************************************/

@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
 
-class UpdateDomainPreviewImages implements ShouldQueue
+class UpdateDomainPreviewImagesJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -36,15 +36,20 @@ class UpdateDomainPreviewImages implements ShouldQueue
     {
         $watermark = DB::table('tblwatermarklogo')->where('vchtype','L')->where('vchsiteid', $this->domainId)->where('enumstatus','A')->first();
 
-        $watermarkPath = public_path('/upload/watermark/'.$watermark->vchwatermarklogoname);
-        $watermarkImage = Image::make($watermarkPath);
+        $watermarkImage = Image::make(public_path('/upload/watermark/'.$watermark->vchwatermarklogoname));
 
         $images = DB::table('tbl_Video')->orderByDesc('IntId')->get(['IntId', 'VchFolderPath', 'VchVideoName', 'VchResizeimage', 'vchcacheimages', 'vchorginalfile']);
 
-        // todo: This should be in the each() loop.
-        $image = $images[0];
+        $this->assureDirectoryExists('watermarkedImages/'.$this->domainId);
 
-        $imagePath = public_path($image->VchFolderPath.'/'.$image->VchVideoName);
+        $images->each(function ($image) use ($watermarkImage) {
+            $this->addWatermark($image, $watermarkImage);
+        });
+    }
+
+    private function addWatermark($image, $watermarkImage)
+    {
+        $imagePath = public_path('upload/videosearch/'.$image->IntId.'/resize/'.$image->VchResizeimage);
 
         $img = Image::make($imagePath);
 
@@ -52,19 +57,17 @@ class UpdateDomainPreviewImages implements ShouldQueue
 
         $img->insert($watermarkImage, 'bottom-left');
 
-        File::isDirectory('watermarkedImages/'.$this->domainId) or File::makeDirectory('watermarkedImages/'.$this->domainId, 0777, true, true);
-
         $destinationPath = 'watermarkedImages/'.$this->domainId.'/'.$image->IntId;
 
-        File::isDirectory($destinationPath) or File::makeDirectory($destinationPath, 0777, true, true);
+        $this->assureDirectoryExists($destinationPath);
 
         $destinationPath = public_path($destinationPath.'/'.$image->VchVideoName);
 
         $img->save($destinationPath);
     }
 
-    private function addWatermark($imagePath)
+    private function assureDirectoryExists($path)
     {
-
+        File::isDirectory($path) or File::makeDirectory($path, 0777, true, true);
     }
 }

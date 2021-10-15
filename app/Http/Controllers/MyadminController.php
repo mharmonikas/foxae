@@ -1,6 +1,6 @@
 <?php
 namespace App\Http\Controllers;
-use App\Jobs\UpdateDomainPreviewImages;
+use App\Jobs\UpdateDomainPreviewImagesJob;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\AdminModel;
@@ -5557,7 +5557,7 @@ exit;
         $diff = Carbon::parse($request->date)->diffInHours(now());
         $delay = now()->addHours($diff);
 
-        UpdateDomainPreviewImages::dispatch($request->domainId)->delay($delay);
+        UpdateDomainPreviewImagesJob::dispatch(1)->delay($delay);
 
         return 1;
     }

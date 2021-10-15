@@ -60,7 +60,7 @@ $(document).ready(function () {
 
             },
             items: {
-                "edit": {name: "Open in new tab" }
+                "edit": { name: "Open in new tab" }
             }
         });
 
@@ -80,8 +80,6 @@ $(document).ready(function () {
         });
 });
 function download_detail(id){
-
-
 
 }
 
