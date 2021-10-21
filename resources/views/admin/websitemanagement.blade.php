@@ -621,7 +621,6 @@
     $('.cache-images').click(function(event) {
         siteId = parseInt(event.currentTarget.dataset.siteId)
         $('#cacheImagesModal').modal('show');
-
     })
 
     $('#cacheImagesBtn').click(function() {
@@ -635,6 +634,7 @@
             success: function(res){
                 console.log('res')
                 console.log(res)
+                $('#cacheImagesModal').modal('hide');
             }
         });
 

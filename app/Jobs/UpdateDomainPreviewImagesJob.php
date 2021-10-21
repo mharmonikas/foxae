@@ -9,6 +9,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 use Intervention\Image\Facades\Image;
 
 class UpdateDomainPreviewImagesJob implements ShouldQueue
@@ -24,7 +25,7 @@ class UpdateDomainPreviewImagesJob implements ShouldQueue
 
     public function __construct($domainId)
     {
-        $this->domainId = (int)$domainId;
+        $this->domainId = (string)$domainId;
     }
 
     /**
@@ -34,6 +35,8 @@ class UpdateDomainPreviewImagesJob implements ShouldQueue
      */
     public function handle()
     {
+        Log::info('Start update');
+
         $watermark = DB::table('tblwatermarklogo')->where('vchtype','L')->where('vchsiteid', $this->domainId)->where('enumstatus','A')->first();
 
         $watermarkImage = Image::make(public_path('/upload/watermark/'.$watermark->vchwatermarklogoname));
@@ -42,7 +45,15 @@ class UpdateDomainPreviewImagesJob implements ShouldQueue
 
         $this->assureDirectoryExists('watermarkedImages/'.$this->domainId);
 
+        Log::info('Before foreach');
+
+        Log::info('count');
+        Log::info($images->count());
+
         $images->each(function ($image) use ($watermarkImage) {
+            Log::info('In foreach');
+            Log::info($image->IntId);
+
             $this->addWatermark($image, $watermarkImage);
         });
     }
@@ -54,6 +65,8 @@ class UpdateDomainPreviewImagesJob implements ShouldQueue
         $img = Image::make($imagePath);
 
         $watermarkImage->resize($img->width(), $img->height());
+
+        $watermarkImage->opacity(50);
 
         $img->insert($watermarkImage, 'bottom-left');
 
