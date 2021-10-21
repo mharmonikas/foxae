@@ -195,7 +195,7 @@
                                             <i class="fa fa-pencil" aria-hidden="true"></i>
                                         </a>
                                         <button class="btn btn-secondary cache-images" data-site-id="{{$mylogo->vchsiteid}}">
-                                            <i class="fa fa-dashcube" aria-hidden="true"></i>
+                                            <i class="fa fa-money" aria-hidden="true"></i>
                                         </button>
                                     </td>
                                 @endif

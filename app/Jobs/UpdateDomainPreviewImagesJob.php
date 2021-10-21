@@ -25,7 +25,7 @@ class UpdateDomainPreviewImagesJob implements ShouldQueue
 
     public function __construct($domainId)
     {
-        $this->domainId = (string)$domainId;
+        $this->domainId = (int)$domainId;
     }
 
     /**
@@ -60,9 +60,11 @@ class UpdateDomainPreviewImagesJob implements ShouldQueue
 
     private function addWatermark($image, $watermarkImage)
     {
-        $imagePath = public_path('upload/videosearch/'.$image->IntId.'/resize/'.$image->VchResizeimage);
+        $imagePath = public_path('upload/videosearch/'.$image->IntId.'/'.$image->VchResizeimage);
 
         $img = Image::make($imagePath);
+
+        $img->resize(1024, 768);
 
         $watermarkImage->resize($img->width(), $img->height());
 

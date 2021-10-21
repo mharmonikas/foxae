@@ -8,6 +8,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Hash;
 use File;
+use Illuminate\Support\Facades\Log;
 use Intervention\Image\ImageManagerStatic as Image;
 use Session;
 use Mail;
@@ -5557,8 +5558,19 @@ exit;
         $diff = Carbon::parse($request->date)->diffInHours(now());
         $delay = now()->addHours($diff);
 
-        UpdateDomainPreviewImagesJob::dispatch(1)->delay($delay);
+        Log::info('delay');
+        Log::info($delay);
+        Log::info($delay > now());
 
-        return 1;
+        if($delay > now()) {
+            Log::info('delay');
+            UpdateDomainPreviewImagesJob::dispatch($request->domainId)->delay($delay);
+        } else {
+            Log::info('no delay');
+
+            UpdateDomainPreviewImagesJob::dispatch($request->domainId);
+        }
+
+        return response()->json(['status' => 1]);
     }
 }
