@@ -50,6 +50,8 @@ class UpdateDomainPreviewImagesJob implements ShouldQueue
         Log::info('count');
         Log::info($images->count());
 
+//        $image = $images[0];
+
         $images->each(function ($image) use ($watermarkImage) {
             Log::info('In foreach');
             Log::info($image->IntId);
@@ -60,11 +62,11 @@ class UpdateDomainPreviewImagesJob implements ShouldQueue
 
     private function addWatermark($image, $watermarkImage)
     {
-        $imagePath = public_path('upload/videosearch/'.$image->IntId.'/'.$image->VchResizeimage);
+        $imagePath = public_path($image->VchFolderPath.'/'.$image->VchVideoName);
 
         $img = Image::make($imagePath);
 
-        $img->resize(1024, 768);
+        $img->resize(1280, 720);
 
         $watermarkImage->resize($img->width(), $img->height());
 

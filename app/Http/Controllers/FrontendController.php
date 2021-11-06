@@ -7,14 +7,14 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Session;
 class FrontendController extends BaseController {
-	public function index(){
+	public function index() {
         $userdetail = '';
 	   	$package = '';
 		if($userid = Session::get('userid')){
 			$userdetail = DB::table('tbluser')->where('intuserid', $userid)->first();
 			$packageavailable = DB::table('tbl_buypackage')->where('package_userid',$userid)->whereDate('package_expiredate','>', date('Y-m-d'))->get();
 
-			foreach($packageavailable as $packageavailables){
+			foreach($packageavailable as $packageavailables) {
 				if ($packageavailables->package_download < $packageavailables->package_count) {
 				    $package=$packageavailables;
 				}

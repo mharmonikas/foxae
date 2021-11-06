@@ -5543,7 +5543,7 @@ exit;
 			$data['hyperlink']=$res->hyperlink;
 			$data['bgtext_iconcolor']=$res->bgtext_iconcolor;
 
-			Mail::send('email.sendemail',['data'=>$data], function ($message) use ($data2, $data) {
+			Mail::send('email.sendemail',['data' => $data], function ($message) use ($data2, $data) {
 				$message->from($data2['emailfrom'],$data2['vchsitename']);
 				$message->to($data2['email']);
                 $message->subject($data2['subject'] ?? 'Hey '.$data['vchfirst_name']);
@@ -5555,16 +5555,15 @@ exit;
 
     public function scheduleImageCaching(Request $request)
     {
-        $diff = Carbon::parse($request->date)->diffInHours(now());
-        $delay = now()->addHours($diff);
+        if($job = DB::table('jobs')->where('payload', 'like','%UpdateDomainPreviewImagesJob%')->first()) {
+            return response()->json(['status' => 0, 'message' => 'Caching has already been scheduled. Please try again after it finishes.', 'available_at' => Carbon::parse($job->available_at)]);
+        }
 
-        Log::info('delay');
-        Log::info($delay);
-        Log::info($delay > now());
+        $date = Carbon::parse($request->date);
 
-        if($delay > now()) {
+        if($date > now()) {
             Log::info('delay');
-            UpdateDomainPreviewImagesJob::dispatch($request->domainId)->delay($delay);
+            UpdateDomainPreviewImagesJob::dispatch($request->domainId)->delay($date);
         } else {
             Log::info('no delay');
 

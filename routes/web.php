@@ -272,6 +272,12 @@ Route::post('/applycoupon/price', 'CouponController@couponPrice');
 Route::get('/clearcache', function () {
     Artisan::call('optimize:clear');
 });
+
+Route::get('/setUpQueue', function () {
+    Artisan::call('queue:work');
+    dd('ok');
+});
+
 /*******************************Admin****************************************************/
 
 Route::get('/testitng5', 'MyadminController@testitng');

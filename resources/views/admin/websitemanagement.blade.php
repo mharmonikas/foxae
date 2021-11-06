@@ -543,7 +543,8 @@
             </div>
             <div class="modal-body">
                 <p>When should we start caching images for this domain ?</p>
-                <input id="cacheImagesTime" size="16" type="text" value="<?=date('Y-m-d H:s')?>" placeholder="2021-06-15 14:45" readonly class="form-control form_datetime">
+                <input id="cacheImagesTime" size="16" type="text" value="<?=date('Y-m-d H:i:s')?>" placeholder="2021-06-15 14:45" readonly class="form-control form_datetime">
+                <p id="caching-error" class="d-none text-danger"></p>
             </div>
             <div class="modal-footer">
                 <button id="cacheImagesBtn" type="button" class="btn btn-default">Schedule</button>
@@ -562,11 +563,9 @@
                 $.ajax({
                     url:'{{ URL::to("/admin/deletewatermark") }}',
                     type:'POST',
-                    data:{'_token':token,'deleteid':deleteid},
+                    data:{'_token': token,'deleteid': deleteid},
                     success:function(ress){
-
                         location.reload();
-
                     }
                 });
             }
@@ -632,9 +631,15 @@
             type:'POST',
             data:{_token: token, date: date, domainId: siteId},
             success: function(res){
-                console.log('res')
-                console.log(res)
-                $('#cacheImagesModal').modal('hide');
+                if(res.status === 1) {
+                    $('#cacheImagesModal').modal('hide');
+                } else {
+                    let err = $('#caching-error')
+
+                    err.removeClass('d-none')
+                    err.addClass('d-block')
+                    err.html(res.message)
+                }
             }
         });
 
