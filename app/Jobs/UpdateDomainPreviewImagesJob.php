@@ -62,29 +62,46 @@ class UpdateDomainPreviewImagesJob implements ShouldQueue
 
     private function addWatermark($image, $watermarkImage)
     {
-        $imagePath = public_path($image->VchFolderPath.'/'.$image->VchVideoName);
+        $imagePath = public_path($image->VchFoldePrath.'/'.$image->VchVideoName);
 
         $img = Image::make($imagePath);
 
-        $img->resize(1280, 720);
+        $backgrounds = DB::table('tbl_backgrounds')->where('siteid', 'like', '%'.$this->domainId.'%'); // get backgrounds.
 
-        $watermarkImage->resize($img->width(), $img->height());
+        $backgrounds->each(function ($background) use ($img, $image, $watermarkImage) {
+            $backgroundImage = $this->getBackgroundImage($background);
 
-        $watermarkImage->opacity(50);
+            $backgroundImage->resize(852, 480);
+            $img->resize(852, 480);
 
-        $img->insert($watermarkImage, 'bottom-left');
+            $watermarkImage->resize($img->width(), $img->height());
 
-        $destinationPath = 'watermarkedImages/'.$this->domainId.'/'.$image->IntId;
+            $watermarkImage->opacity(50);
 
-        $this->assureDirectoryExists($destinationPath);
+            $img->insert($watermarkImage, 'bottom-left');
+            $img->insert($backgroundImage, 'bottom-left');
 
-        $destinationPath = public_path($destinationPath.'/'.$image->VchVideoName);
+            $this->assureDirectoryExists('watermarkedImages/'.$this->domainId.'/'.$background->bg_id);
 
-        $img->save($destinationPath);
+            $destinationPath = 'watermarkedImages/'.$this->domainId.'/'.$background->bg_id.'/'.$image->IntId;
+
+            $this->assureDirectoryExists($destinationPath);
+
+            $destinationPath = public_path($destinationPath.'/'.$image->VchVideoName);
+
+            $img->save($destinationPath);
+        });
     }
 
     private function assureDirectoryExists($path)
     {
         File::isDirectory($path) or File::makeDirectory($path, 0777, true, true);
+    }
+
+    private function getBackgroundImage($background)
+    {
+        $imagePath = public_path('background/'.$background->background_img);
+
+        return Image::make($imagePath);
     }
 }
