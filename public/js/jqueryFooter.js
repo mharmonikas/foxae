@@ -526,64 +526,59 @@ function showCopy(){
 
 
 function change_background(bg,vid,event){
-$('.myloadercontainer2').css("display", "block");
+     debugger
+    let changeBackground = $(".change-background")
+    $('.myloadercontainer2').css("display", "block");
 	var token=$('meta[name="csrf-token"]').attr('content');
+    var id = vid!='' ? vid : changeBackground.attr('data-value');
+    var src='';
+    $("#backgroundnavbarDropdown").dropdown('toggle');
 
-	if(vid!=''){
-		var id=vid;
-	}else{
-		var id = $(".change-background").attr('data-value');
-	}
-		var src='';
-		 $("#backgroundnavbarDropdown").dropdown('toggle');
-				$.ajax({
-						url: '/cart-background',
-						type:"GET",
-						async: true,
-						dataType: 'json',
-						 beforeSend: function(){
-						},
-						headers: {
-							'X-CSRF-TOKEN':token
-						},
-						data:'src='+src+'&_token='+token+'&img='+bg+'&id='+id,
-						success:function(data){
+    let bigimagesize = $("#bigimagesize")
+    let imgName = bigimagesize.attr('data-img-name')
+    let imgId = bigimagesize.attr('data-img-id')
+    let siteId = bigimagesize.attr('data-site-id')
 
-							var appliedbg=data.apllied_bg.toUpperCase();
+    let url = '/watermarkedImages/' + siteId + '/' + bg + '/' + imgId + '/' + imgName
+    bigimagesize.attr('src', url); // Add the image with chosen background
 
-								setTimeout(function(){
-								if(event=='onclick'){
+    $.ajax({
+        url: '/cart-background',
+        type:"GET",
+        async: true,
+        dataType: 'json',
+        beforeSend: function(){},
+        headers: {
+            'X-CSRF-TOKEN':token
+        },
+        data:'src='+src+'&_token='+token+'&img='+bg+'&id='+id,
+        success:function(data){
+            var appliedbg=data.apllied_bg.toUpperCase();
 
-									$("#errorMessage").html('<div class=""><strong>Background changed to '+data.apllied_bg+'</strong> </div>');
-									myFunction();
-								}  }, 3500);
-
-								$('#bigimagesize').on('load', function(){
-									$(".myloadercontainer2").css("display", "none");
-								});
-
-								if(data){
-									$("#bigimagesize").attr("src",'/'+data.url);
-									$("#alldetail_"+id).attr("data-image",'/'+data.url);
-
-								if(id!=''){
-									$("#bigimagesize_"+id).attr("src",'/'+data.url);
-								}
-
-								$("#background-effect_"+id).text(appliedbg+' BACKGROUND');
-
-								$("#appliedbg_"+id).text(data.apllied_bg+' Background');
-
-
-								}
-
-
-						}
-
-					});
-
-
-
+            // setTimeout(function(){
+                // if(event=='onclick'){
+                //     $("#errorMessage").html('<div class=""><strong>Background changed to '+data.apllied_bg+'</strong> </div>');
+                //     myFunction();
+                // }  }, 3500);
+                //
+                // $('#bigimagesize').on('load', function(){
+                //     $(".myloadercontainer2").css("display", "none");
+                // });
+                //
+                // if(data){
+                //     $("#bigimagesize").attr("src",'/'+data.url);
+                //     $("#alldetail_"+id).attr("data-image",'/'+data.url);
+                //
+                //     if(id!=''){
+                //         $("#bigimagesize_"+id).attr("src",'/'+data.url);
+                //     }
+                //
+                //     $("#background-effect_"+id).text(appliedbg+' BACKGROUND');
+                //
+                //     $("#appliedbg_"+id).text(data.apllied_bg+' Background');
+                // }
+        }
+    });
 }
 $('.passwordplaceholder').click(function() {
   $(this).siblings('input').focus();

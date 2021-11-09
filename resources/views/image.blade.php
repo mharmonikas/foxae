@@ -79,10 +79,10 @@ use App\Http\Controllers\HomeController;
                                 <!--<img src="/img/share-apple.png" onclick="showCopy()">-->
                                 </div>
                                 <div class="bigimgcontainer transparent-background" id="zoom-container" >
-                                    @if($applied_bg=='')
-                                        <img src="/showimage/{{$response->IntId }}/{{$managesite->intmanagesiteid}}/{{$response->VchVideoName }}?={{$response->intsetdefault }}" class="loading" id="bigimagesize"  ondragstart="return false">
+                                    @if($applied_bg == '')
+                                        <img src="/showimage/{{$response->IntId }}/{{$managesite->intmanagesiteid}}/{{$response->VchVideoName }}?={{$response->intsetdefault }}" data-site-id="{{$response->IntId }}" data-img-id="{{$response->IntId }}" data-img-name="{{$response->VchVideoName }}" class="loading" id="bigimagesize"  ondragstart="return false">
                                     @else
-                                        <img src="/showimg/{{$userid}}/{{$imgname }}" class="loading" id="bigimagesize"  ondragstart="return false" >
+                                        <img src="/showimg/{{$userid}}/{{$imgname }}" class="loading" id="bigimagesize" data-site-id="{{$response->IntId }}" data-img-id="{{$response->IntId }}" data-img-name="{{$response->VchVideoName }}"  ondragstart="return false" >
                                     @endif
                                 </div>
                                 <button class="" id="zoomin">
