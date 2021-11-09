@@ -278,6 +278,11 @@ Route::get('/setUpQueue', function () {
     dd('ok');
 });
 
+Route::get('/stopQueue', function () {
+    Artisan::call('queue:down');
+    dd('ok');
+});
+
 /*******************************Admin****************************************************/
 
 Route::get('/testitng5', 'MyadminController@testitng');
