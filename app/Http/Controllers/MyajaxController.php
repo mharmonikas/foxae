@@ -9,7 +9,7 @@ use Session;
 
 class MyajaxController extends Controller {
     public function index(){
-        $servername = $_SERVER['SERVER_NAME'];
+        $servername = self::getServerName();
 
         $selectserver = DB::table('tbl_managesite')->where('txtsiteurl',$servername)->first();
 
@@ -251,5 +251,10 @@ class MyajaxController extends Controller {
             $myresultss = DB::select(DB::raw($selectconditions));
             return response()->json($myresultss);
         }
+    }
+
+    public static function getServerName()
+    {
+        return app()->isLocal() ? 'dev.fox-ae.com' : $_SERVER['SERVER_NAME'];
     }
 }

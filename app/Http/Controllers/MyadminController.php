@@ -29,7 +29,7 @@ class MyadminController extends Controller
 		}
 	}
 	public function index(){
-		if($_SERVER['SERVER_NAME'] != "dev.fox-ae.com"){
+		if(!app()->isLocal() && $_SERVER['SERVER_NAME'] != "dev.fox-ae.com"){
 			return redirect('/');
 			exit;
 		}
@@ -5513,7 +5513,7 @@ exit;
 
 		if($to_email == 'ALL'){
 			$response = DB::table('tbluser')->join('tbl_managesite','tbluser.vchsiteid','tbl_managesite.intmanagesiteid')->leftjoin('tbl_themesetting','tbl_managesite.intmanagesiteid','tbl_themesetting.Intsiteid')->get();
-		}else{
+		} else {
 			$response = DB::table('tbluser')->join('tbl_managesite','tbluser.vchsiteid','tbl_managesite.intmanagesiteid')->leftjoin('tbl_themesetting','tbl_managesite.intmanagesiteid','tbl_themesetting.Intsiteid')->whereIn('tbluser.intuserid',$users_id)->get();
 		}
 
@@ -5561,14 +5561,14 @@ exit;
 
         $date = Carbon::parse($request->date);
 
-        if($date > now()) {
-            Log::info('delay');
-            UpdateDomainPreviewImagesJob::dispatch($request->domainId)->delay($date);
-        } else {
+//        if($date > now()) {
+//            Log::info('delay');
+//            UpdateDomainPreviewImagesJob::dispatch($request->domainId)->delay($date);
+//        } else {
             Log::info('no delay');
 
             UpdateDomainPreviewImagesJob::dispatch($request->domainId);
-        }
+//        }
 
         return response()->json(['status' => 1]);
     }

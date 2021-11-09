@@ -22,7 +22,16 @@ class HomeController extends Controller {
         $this->HomeModel = $HomeModel;
 
     }
-	public function checklogin(){
+
+    /**
+     * @return mixed|string
+     */
+    public static function getServerName()
+    {
+        return app()->isLocal() ? 'dev.fox-ae.com' : $_SERVER['SERVER_NAME'];
+    }
+
+    public function checklogin(){
 		if(!Session::get('userid')){
 			return redirect('/');
 		 }
@@ -46,7 +55,7 @@ class HomeController extends Controller {
 		$buyid='';
 		$current_packageid	='';
 		$package_type = '';
-		$managesite = DB::table('tbl_managesite')->leftjoin('tbl_themesetting','tbl_managesite.intmanagesiteid','tbl_themesetting.Intsiteid')->where('txtsiteurl',$_SERVER['SERVER_NAME'])->first();
+		$managesite = DB::table('tbl_managesite')->leftjoin('tbl_themesetting','tbl_managesite.intmanagesiteid','tbl_themesetting.Intsiteid')->where('txtsiteurl',self::getServerName())->first();
 		$siteid=$managesite->intmanagesiteid;
 		$email = $request->email;
 		$password = md5($request->password);
@@ -197,7 +206,7 @@ class HomeController extends Controller {
 	}
 
 	public function submitregistrationdata(Request $request){
-		$managesite = DB::table('tbl_managesite')->leftjoin('tbl_themesetting','tbl_managesite.intmanagesiteid','tbl_themesetting.Intsiteid')->where('txtsiteurl',$_SERVER['SERVER_NAME'])->first();
+		$managesite = DB::table('tbl_managesite')->leftjoin('tbl_themesetting','tbl_managesite.intmanagesiteid','tbl_themesetting.Intsiteid')->where('txtsiteurl',self::getServerName())->first();
 
         if ($captcha = data_get($_POST, 'g-recaptcha-response')) {
              $secretKey = $this->getSecretKey($managesite);
@@ -293,7 +302,7 @@ class HomeController extends Controller {
 	}
 
 	public function forgot_password(Request $request){
-		$managesite = DB::table('tbl_managesite')->leftjoin('tbl_themesetting','tbl_managesite.intmanagesiteid','tbl_themesetting.Intsiteid')->where('txtsiteurl',$_SERVER['SERVER_NAME'])->first();
+		$managesite = DB::table('tbl_managesite')->leftjoin('tbl_themesetting','tbl_managesite.intmanagesiteid','tbl_themesetting.Intsiteid')->where('txtsiteurl',self::getServerName())->first();
 		$email=$request->email;
 		$checkemail=$this->HomeModel->checkmail($email,$managesite->intmanagesiteid);
 		if(!empty($checkemail)){
@@ -301,7 +310,7 @@ class HomeController extends Controller {
 
 			$data = array(
 					'userid'=>$userid,
-					'vchsite'=>$_SERVER['SERVER_NAME'],
+					'vchsite'=>self::getServerName(),
 					);
 				//$username=$request->email;
 				$data2 = array(
@@ -346,7 +355,7 @@ class HomeController extends Controller {
 	public function resetpassword($id=''){
 		$userid = $this->mycrypt($id,'d');
 		$userdata = $this->HomeModel->UserData($userid);
-		$managesite = DB::table('tbl_managesite')->where('txtsiteurl',$_SERVER['SERVER_NAME'])->first();
+		$managesite = DB::table('tbl_managesite')->where('txtsiteurl',self::getServerName())->first();
 		$tblthemesetting = DB::table('tbl_themesetting')->select('*')->where('Intsiteid',$managesite->intmanagesiteid)->first();
 		if($userdata->forgotstatus==1){
 			return view('reset-password',compact('managesite','tblthemesetting','id'));
@@ -375,28 +384,28 @@ class HomeController extends Controller {
 	}
 
 	public function aboutus(){
-		$managesite = DB::table('tbl_managesite')->where('txtsiteurl',$_SERVER['SERVER_NAME'])->first();
+		$managesite = DB::table('tbl_managesite')->where('txtsiteurl',self::getServerName())->first();
 		$manageabout = DB::table('tbl_legaldocuments')->where('siteid',$managesite->intmanagesiteid)->first();
 
 		return view('aboutus',compact('manageabout'));
 	}
 
 	public function termscondition(){
-		$managesite = DB::table('tbl_managesite')->where('txtsiteurl',$_SERVER['SERVER_NAME'])->first();
+		$managesite = DB::table('tbl_managesite')->where('txtsiteurl',self::getServerName())->first();
 		$manageabout = DB::table('tbl_legaldocuments')->where('siteid',$managesite->intmanagesiteid)->first();
 
 		return view('termscondition',compact('manageabout'));
 	}
 
 	public function privacypolicy(){
-		$managesite = DB::table('tbl_managesite')->where('txtsiteurl',$_SERVER['SERVER_NAME'])->first();
+		$managesite = DB::table('tbl_managesite')->where('txtsiteurl',self::getServerName())->first();
 		$manageabout = DB::table('tbl_legaldocuments')->where('siteid',$managesite->intmanagesiteid)->first();
 
 		return view('privacypolicy',compact('manageabout'));
 	}
 
 	public function userlicence(){
-		$managesite = DB::table('tbl_managesite')->where('txtsiteurl',$_SERVER['SERVER_NAME'])->first();
+		$managesite = DB::table('tbl_managesite')->where('txtsiteurl',self::getServerName())->first();
 		$manageabout = DB::table('tbl_legaldocuments')->where('siteid',$managesite->intmanagesiteid)->first();
 
 		return view('userlicence',compact('manageabout'));
@@ -406,7 +415,7 @@ class HomeController extends Controller {
 		$userid='';
 		$siteid='';
 		$user='';
-		$managesite = DB::table('tbl_managesite')->where('txtsiteurl',$_SERVER['SERVER_NAME'])->first();
+		$managesite = DB::table('tbl_managesite')->where('txtsiteurl',self::getServerName())->first();
 		$tblthemesetting = DB::table('tbl_themesetting')->select('*')->where('Intsiteid',$managesite->intmanagesiteid)->first();
 		$faqs = DB::table('tblfaq')->select('*')->where('siteid',$managesite->intmanagesiteid)->get();
 		if(!empty(Session::get('userid'))){
@@ -419,7 +428,7 @@ class HomeController extends Controller {
 	}
 
 	public function contactus(Request $request){
-		$managesite = DB::table('tbl_managesite')->leftjoin('tbl_themesetting','tbl_managesite.intmanagesiteid','tbl_themesetting.Intsiteid')->where('txtsiteurl',$_SERVER['SERVER_NAME'])->first();
+		$managesite = DB::table('tbl_managesite')->leftjoin('tbl_themesetting','tbl_managesite.intmanagesiteid','tbl_themesetting.Intsiteid')->where('txtsiteurl',self::getServerName())->first();
 			if(isset($_POST['g-recaptcha-response']) && !empty($_POST['g-recaptcha-response'])){
 			 if($managesite->intmanagesiteid=='1'){
 			  $secretKey = "6LflkxcaAAAAAMlSzq_xPbwMzy7zwypu602wScoi";
@@ -522,7 +531,7 @@ class HomeController extends Controller {
 	}
 
 	public function custom(){
-		$managesite = DB::table('tbl_managesite')->where('txtsiteurl',$_SERVER['SERVER_NAME'])->first();
+		$managesite = DB::table('tbl_managesite')->where('txtsiteurl',self::getServerName())->first();
 		$tblthemesetting = DB::table('tbl_themesetting')->select('*')->where('Intsiteid',$managesite->intmanagesiteid)->first();
 
 			return view('custom',compact('managesite','tblthemesetting'));
@@ -530,7 +539,7 @@ class HomeController extends Controller {
 	}
 
 	public function submitcustom(Request $request){
-		$managesite = DB::table('tbl_managesite')->leftjoin('tbl_themesetting','tbl_managesite.intmanagesiteid','tbl_themesetting.Intsiteid')->where('txtsiteurl',$_SERVER['SERVER_NAME'])->first();
+		$managesite = DB::table('tbl_managesite')->leftjoin('tbl_themesetting','tbl_managesite.intmanagesiteid','tbl_themesetting.Intsiteid')->where('txtsiteurl',self::getServerName())->first();
 
 			 if(isset($_POST['g-recaptcha-response']) && !empty($_POST['g-recaptcha-response'])){
 			 if($managesite->intmanagesiteid=='1'){
@@ -618,7 +627,7 @@ class HomeController extends Controller {
         $yarly_dis = '';
         $coupon = data_get(Session::get('pricing-coupon'), 'coupon');
         $websiteWideCoupons = $this->getPricingWebsiteWideCoupons();
-		$managesite = DB::table('tbl_managesite')->where('txtsiteurl',$_SERVER['SERVER_NAME'])->first();
+		$managesite = DB::table('tbl_managesite')->where('txtsiteurl',self::getServerName())->first();
 
 		if(!empty(Session::get('userid'))){
             $packageavailable = DB::table('tbl_buypackage')->where('status','A')->where('package_userid', Session::get('userid'))->whereDate('package_expiredate','>',date('Y-m-d'))->get();
@@ -692,7 +701,7 @@ class HomeController extends Controller {
 	}
 
 	public function pricing1(){
-		$managesite  = DB::table('tbl_managesite')->where('txtsiteurl',$_SERVER['SERVER_NAME'])->first();
+		$managesite  = DB::table('tbl_managesite')->where('txtsiteurl',self::getServerName())->first();
 		$response = DB::table('tbl_plan')->where('plan_status','A')->where('plan_siteid',$managesite->intmanagesiteid)->orderBy('plan_id', 'DESC')->get();
 
 		//$onetime_response = DB::table('tbl_plan')->where('plan_type','O')->where('plan_status','A')->where('plan_siteid',$managesite->intmanagesiteid)->orderBy('plan_id', 'DESC')->get();
@@ -708,12 +717,11 @@ class HomeController extends Controller {
     }
 
 	public static function managesite(){
-		$response = DB::table('tbl_managesite')->where('txtsiteurl',$_SERVER['SERVER_NAME'])->first();
-		return $response;
+        return DB::table('tbl_managesite')->where('txtsiteurl', self::getServerName())->first();
 	}
 
 	public static function tblthemesetting(){
-		$response = DB::table('tbl_managesite')->where('txtsiteurl',$_SERVER['SERVER_NAME'])->first();
+        $response = DB::table('tbl_managesite')->where('txtsiteurl', self::getServerName())->first();
 
 		$tblthemesetting = DB::table('tbl_themesetting')->select('*')->where('Intsiteid',$response->intmanagesiteid)->first();
 
@@ -732,7 +740,7 @@ class HomeController extends Controller {
 
 	public static function cartcount(){
 		$cartcount='0';
-		$response = DB::table('tbl_managesite')->where('txtsiteurl',$_SERVER['SERVER_NAME'])->first();
+		$response = DB::table('tbl_managesite')->where('txtsiteurl', self::getServerName())->first();
 		if(!empty(Session::get('userid'))){
 			$userid=Session::get('userid');
 		}else{
@@ -771,7 +779,7 @@ class HomeController extends Controller {
 }
 
 	public static function incartcredit(){
-		$managesite = DB::table('tbl_managesite')->leftjoin('tbl_themesetting','tbl_managesite.intmanagesiteid','tbl_themesetting.Intsiteid')->where('txtsiteurl',$_SERVER['SERVER_NAME'])->first();
+		$managesite = DB::table('tbl_managesite')->leftjoin('tbl_themesetting','tbl_managesite.intmanagesiteid','tbl_themesetting.Intsiteid')->where('txtsiteurl', self::getServerName())->first();
         $coupon = data_get(Session::get('cart-coupon'), 'coupon');
 
         if(Session::get('userid')){
@@ -985,7 +993,7 @@ class HomeController extends Controller {
 
                         $fileName = $response->VchVideoName;
                         $filePath = $response->VchFolderPath;
-                        $managesite = DB::table('tbl_managesite')->leftjoin('tbl_themesetting','tbl_managesite.intmanagesiteid','tbl_themesetting.Intsiteid')->where('txtsiteurl',$_SERVER['SERVER_NAME'])->first();
+                        $managesite = DB::table('tbl_managesite')->leftjoin('tbl_themesetting','tbl_managesite.intmanagesiteid','tbl_themesetting.Intsiteid')->where('txtsiteurl',self::getServerName())->first();
                         $userinfo = DB::table('tbluser')->where('intuserid',Session::get('userid'))->first();
 
                         $data2 = [
@@ -1094,7 +1102,7 @@ class HomeController extends Controller {
                 }
 
                 if(!empty($packageid)){
-                    $managesite = DB::table('tbl_managesite')->leftjoin('tbl_themesetting','tbl_managesite.intmanagesiteid','tbl_themesetting.Intsiteid')->where('txtsiteurl',$_SERVER['SERVER_NAME'])->first();
+                    $managesite = DB::table('tbl_managesite')->leftjoin('tbl_themesetting','tbl_managesite.intmanagesiteid','tbl_themesetting.Intsiteid')->where('txtsiteurl', self::getServerName())->first();
 
                     $videoinfo = DB::table('tbl_Video')->select('content_category','stock_category')->where('IntId',$id)->first();
 
@@ -1163,7 +1171,7 @@ class HomeController extends Controller {
 	}
 
 	public function RemoveFromWishlist($id){
-		$managesite = DB::table('tbl_managesite')->leftjoin('tbl_themesetting','tbl_managesite.intmanagesiteid','tbl_themesetting.Intsiteid')->where('txtsiteurl',$_SERVER['SERVER_NAME'])->first();
+		$managesite = DB::table('tbl_managesite')->leftjoin('tbl_themesetting','tbl_managesite.intmanagesiteid','tbl_themesetting.Intsiteid')->where('txtsiteurl', self::getServerName())->first();
 		$this->HomeModel->DeleteFromWishlist($id,$managesite->intmanagesiteid,Session::get('userid'));
 	}
 
@@ -1179,7 +1187,7 @@ class HomeController extends Controller {
 
 	public function buynow(Request $request){
 		$userid = Session::get('userid');
-		$managesite = DB::table('tbl_managesite')->where('txtsiteurl', $_SERVER['SERVER_NAME'])->first();
+		$managesite = DB::table('tbl_managesite')->where('txtsiteurl', self::getServerName())->first();
 		$type = '';
 		$getplan = '';
 		$price = 0;
@@ -1313,7 +1321,7 @@ class HomeController extends Controller {
 		$search = $request->search;
 		$imgtype = $request->type;
 		$userid = Session::get('userid');
-		$managesite = DB::table('tbl_managesite')->where('txtsiteurl',$_SERVER['SERVER_NAME'])->first();
+		$managesite = DB::table('tbl_managesite')->where('txtsiteurl',self::getServerName())->first();
 		$response =  DB::table('tbl_download')->leftjoin('tbl_Video','tbl_download.video_id','tbl_Video.IntId')->where('tbl_download.user_id',$userid)->where('tbl_download.site_id',$managesite->intmanagesiteid);
 
         if(!empty($search)){
@@ -1340,7 +1348,7 @@ class HomeController extends Controller {
 	}
 
 	public function payment(Request $request) {
-		$managesite = DB::table('tbl_managesite')->leftjoin('tbl_themesetting','tbl_managesite.intmanagesiteid','tbl_themesetting.Intsiteid')->where('txtsiteurl',$_SERVER['SERVER_NAME'])->first();
+		$managesite = DB::table('tbl_managesite')->leftjoin('tbl_themesetting','tbl_managesite.intmanagesiteid','tbl_themesetting.Intsiteid')->where('txtsiteurl',self::getServerName())->first();
 		$userinfo = $this->HomeModel->UserData(Session::get('userid'));
 		$getapidetail = DB::table('tblapidetail')->where('id','1')->first();
         $pricingCoupon = Session::get('pricing-coupon');
@@ -1888,7 +1896,7 @@ class HomeController extends Controller {
 
 	public function checkmail(Request $request){
 		$email = $request->email;
-		$managesite = DB::table('tbl_managesite')->where('txtsiteurl',$_SERVER['SERVER_NAME'])->first();
+		$managesite = DB::table('tbl_managesite')->where('txtsiteurl',self::getServerName())->first();
 		$checkemail = $this->HomeModel->checkmail($email,$managesite->intmanagesiteid);
 		if(!empty($checkemail)){
 			$value = array('response'=>3);
@@ -1908,7 +1916,7 @@ class HomeController extends Controller {
 		}
 		//echo $userid;
 		//exit;
-		$managesite = DB::table('tbl_managesite')->leftjoin('tbl_themesetting','tbl_managesite.intmanagesiteid','tbl_themesetting.Intsiteid')->where('txtsiteurl',$_SERVER['SERVER_NAME'])->first();
+		$managesite = DB::table('tbl_managesite')->leftjoin('tbl_themesetting','tbl_managesite.intmanagesiteid','tbl_themesetting.Intsiteid')->where('txtsiteurl',self::getServerName())->first();
 		if(!empty($request->id)){
 		$videoid = $request->id;
 		$id = Crypt::decryptString($request->id);
@@ -2088,7 +2096,7 @@ class HomeController extends Controller {
 	public function wishlist(){
 			$this->checklogin();
 		$userid = Session::get('userid');
-		$managesite = DB::table('tbl_managesite')->where('txtsiteurl',$_SERVER['SERVER_NAME'])->first();
+		$managesite = DB::table('tbl_managesite')->where('txtsiteurl',self::getServerName())->first();
 		$response =  DB::table('tbl_wishlist')->leftjoin('tbl_Video','tbl_wishlist.videoid','tbl_Video.IntId')->whereNotNull('status')->where('tbl_wishlist.userid',$userid)->where('tbl_wishlist.siteid',$managesite->intmanagesiteid)->orderBy('created_date','DESC')->paginate(10);
 		$siteid=$managesite->intmanagesiteid;
 
@@ -2103,7 +2111,7 @@ class HomeController extends Controller {
 
 		$results = DB::table('tbl_wishlist')->where('id', $request->id)->delete();
 
-		$managesite = DB::table('tbl_managesite')->leftjoin('tbl_themesetting','tbl_managesite.intmanagesiteid','tbl_themesetting.Intsiteid')->where('tbl_managesite.txtsiteurl',$_SERVER['SERVER_NAME'])->first();
+		$managesite = DB::table('tbl_managesite')->leftjoin('tbl_themesetting','tbl_managesite.intmanagesiteid','tbl_themesetting.Intsiteid')->where('tbl_managesite.txtsiteurl',self::getServerName())->first();
 		$siteid=$managesite->intmanagesiteid;
 		$package='';
 		$stockinfo='';
@@ -2297,19 +2305,19 @@ class HomeController extends Controller {
 		}
 
 	public static function plans(){
-		$managesite  = DB::table('tbl_managesite')->where('txtsiteurl',$_SERVER['SERVER_NAME'])->first();
+		$managesite  = DB::table('tbl_managesite')->where('txtsiteurl',self::getServerName())->first();
 		$response = DB::table('tbl_plan')->where('plan_status','A')->where('plan_siteid',$managesite->intmanagesiteid)->get();
 		return $response;
 	}
 
 	public static function background(){
-		$managesite  = DB::table('tbl_managesite')->where('txtsiteurl',$_SERVER['SERVER_NAME'])->first();
+		$managesite  = DB::table('tbl_managesite')->where('txtsiteurl',self::getServerName())->first();
 		$response = DB::table('tbl_backgrounds')->whereRaw('FIND_IN_SET('.$managesite->intmanagesiteid.',siteid)')->get();
 		return $response;
 	}
 
 	public function cart() {
-        $managesite = DB::table('tbl_managesite')->leftjoin('tbl_themesetting','tbl_managesite.intmanagesiteid','tbl_themesetting.Intsiteid')->where('txtsiteurl',$_SERVER['SERVER_NAME'])->first();
+        $managesite = DB::table('tbl_managesite')->leftjoin('tbl_themesetting','tbl_managesite.intmanagesiteid','tbl_themesetting.Intsiteid')->where('txtsiteurl',self::getServerName())->first();
 		$siteid = $managesite->intmanagesiteid;
 		$package = '';
 		$stockinfo = '';
@@ -2564,7 +2572,7 @@ class HomeController extends Controller {
 	public function downloadcart(Request $request){
 		$arr = explode(',',$request->check_id);
 		$cartcount='';
-		$managesite = DB::table('tbl_managesite')->leftjoin('tbl_themesetting','tbl_managesite.intmanagesiteid','tbl_themesetting.Intsiteid')->where('txtsiteurl',$_SERVER['SERVER_NAME'])->first();
+		$managesite = DB::table('tbl_managesite')->leftjoin('tbl_themesetting','tbl_managesite.intmanagesiteid','tbl_themesetting.Intsiteid')->where('txtsiteurl',self::getServerName())->first();
 		$cartvalue=$request->cartvalue;
 
 		if(!empty($arr)){
@@ -2691,7 +2699,7 @@ class HomeController extends Controller {
 		if(!empty(Session::get('userid'))){
 			$userid=Session::get('userid');
 			$userdetail = DB::table('tbluser')->where('intuserid',$userid)->first();
-			$managesite = DB::table('tbl_managesite')->leftjoin('tbl_themesetting','tbl_managesite.intmanagesiteid','tbl_themesetting.Intsiteid')->where('txtsiteurl',$_SERVER['SERVER_NAME'])->first();
+			$managesite = DB::table('tbl_managesite')->leftjoin('tbl_themesetting','tbl_managesite.intmanagesiteid','tbl_themesetting.Intsiteid')->where('txtsiteurl',self::getServerName())->first();
 
 			$data['vchsitename'] = $managesite->vchsitename;
 			$data['siteurl'] =  "https://".$managesite->txtsiteurl;
@@ -2725,7 +2733,7 @@ class HomeController extends Controller {
 
 		$packid=$request->packid;
 		$buypack = DB::table('tbl_buypackage')->leftjoin('tbluser','tbl_buypackage.package_userid','tbluser.intuserid')->leftjoin('tbl_plan','tbl_plan.plan_id','tbl_buypackage.buy_id')->where('package_id',$packid)->first();
-		$managesite = DB::table('tbl_managesite')->leftjoin('tbl_themesetting','tbl_managesite.intmanagesiteid','tbl_themesetting.Intsiteid')->where('txtsiteurl',$_SERVER['SERVER_NAME'])->first();
+		$managesite = DB::table('tbl_managesite')->leftjoin('tbl_themesetting','tbl_managesite.intmanagesiteid','tbl_themesetting.Intsiteid')->where('txtsiteurl',self::getServerName())->first();
 		$dataarr = array(
 				"package_subscription"=> 'C',
 				"status"=> 'A',
@@ -2795,7 +2803,7 @@ class HomeController extends Controller {
 		$content = $request->content;
 		$stock = $request->stock;
 		$id = Crypt::decryptString($request->productid);
-		$managesite = DB::table('tbl_managesite')->leftjoin('tbl_themesetting','tbl_managesite.intmanagesiteid','tbl_themesetting.Intsiteid')->where('txtsiteurl',$_SERVER['SERVER_NAME'])->first();
+		$managesite = DB::table('tbl_managesite')->leftjoin('tbl_themesetting','tbl_managesite.intmanagesiteid','tbl_themesetting.Intsiteid')->where('txtsiteurl',self::getServerName())->first();
 
 		if(!empty(Session::get('userid')))
         {
@@ -2870,7 +2878,7 @@ class HomeController extends Controller {
 		}
 
 
-		$managesite = DB::table('tbl_managesite')->leftjoin('tbl_themesetting','tbl_managesite.intmanagesiteid','tbl_themesetting.Intsiteid')->where('txtsiteurl',$_SERVER['SERVER_NAME'])->first();
+		$managesite = DB::table('tbl_managesite')->leftjoin('tbl_themesetting','tbl_managesite.intmanagesiteid','tbl_themesetting.Intsiteid')->where('txtsiteurl',self::getServerName())->first();
 		$response = DB::table('tbl_Video')->select("tbl_Video.*",DB::raw("(Select GROUP_CONCAT(np.VchSearchcategorytitle SEPARATOR ', ') from tbl_SearchcategoryVideoRelationship as np where np.IntVideoID = tbl_Video.IntId) as videotags "))->where("IntId",$seo)->first();
 
 		$productid = Crypt::encryptString($response->IntId);
@@ -2964,7 +2972,7 @@ class HomeController extends Controller {
 
     public function favoritesData(Request $request){
             if(Session::get('userid')) {
-                $managesite = DB::table('tbl_managesite')->where('txtsiteurl',$_SERVER['SERVER_NAME'])->first();
+                $managesite = DB::table('tbl_managesite')->where('txtsiteurl',self::getServerName())->first();
                 $videoid = $request->id;
                 $id = Crypt::decryptString($request->id);
                 $userid = Session::get('userid');
@@ -2999,7 +3007,7 @@ class HomeController extends Controller {
 	public function favorites(){
 		$this->checklogin();
 		$userid = Session::get('userid');
-		$managesite = DB::table('tbl_managesite')->where('txtsiteurl',$_SERVER['SERVER_NAME'])->first();
+		$managesite = DB::table('tbl_managesite')->where('txtsiteurl',self::getServerName())->first();
 		$response =  DB::table('tbl_favorites')->leftjoin('tbl_Video','tbl_favorites.fav_videoid','tbl_Video.IntId')->where('tbl_favorites.fav_userid',$userid)->where('tbl_favorites.fav_siteid',$managesite->intmanagesiteid)->orderBy('fav_created_date','DESC')->paginate(10);
 		$siteid=$managesite->intmanagesiteid;
 
@@ -3016,7 +3024,7 @@ class HomeController extends Controller {
 		}
 
     public function change_background(Request $request){
-			$managesite = DB::table('tbl_managesite')->where('txtsiteurl',$_SERVER['SERVER_NAME'])->first();
+			$managesite = DB::table('tbl_managesite')->where('txtsiteurl',self::getServerName())->first();
 			$session_id = Session::getId();
 			$path = public_path().'/'.$session_id;
 				//File::isDirectory($path) or
@@ -3102,7 +3110,7 @@ class HomeController extends Controller {
 			$skintone='';
 			$category='';
 			$id = Crypt::decryptString($request->productid);
-			$managesite = DB::table('tbl_managesite')->where('txtsiteurl',$_SERVER['SERVER_NAME'])->first();
+			$managesite = DB::table('tbl_managesite')->where('txtsiteurl',self::getServerName())->first();
 			$video_detail = DB::table('tbl_Video')->leftjoin('tbl_Videotagrelations','tbl_Videotagrelations.VchVideoId','tbl_Video.IntId')->where('tbl_Video.IntId',$id)->first();
 			$gender=DB::table('tbl_Tagtype')->where('Intid',$video_detail->VchGenderTagid)->first();
 			$skintone=DB::table('tbl_Tagtype')->where('Intid',$video_detail->VchRaceTagID)->first();
@@ -3152,7 +3160,7 @@ class HomeController extends Controller {
 		}
 
     public function showimage1($id, $imgs){
-	$managesite = DB::table('tbl_managesite')->where('txtsiteurl',$_SERVER['SERVER_NAME'])->first();
+	$managesite = DB::table('tbl_managesite')->where('txtsiteurl',self::getServerName())->first();
 	$img="change_background/".$id.'/'.''.$imgs;
 	$info = pathinfo( $imgs );
     $returnimg="change_background/".$id.'/'.''.$imgs;
@@ -3304,7 +3312,7 @@ class HomeController extends Controller {
 }
 
     public static function managesite2(){
-	$managesite = DB::table('tbl_managesite')->leftjoin('tbl_themesetting','tbl_managesite.intmanagesiteid','tbl_themesetting.Intsiteid')->where('txtsiteurl',$_SERVER['SERVER_NAME'])->first();
+	$managesite = DB::table('tbl_managesite')->leftjoin('tbl_themesetting','tbl_managesite.intmanagesiteid','tbl_themesetting.Intsiteid')->where('txtsiteurl',self::getServerName())->first();
 		return $managesite;
 
 }
@@ -3542,7 +3550,7 @@ class HomeController extends Controller {
      */
     protected function getDomainId()
     {
-        $url = str_replace('https://', '', url('/'));
+        $url = app()->isLocal() ? 'dev.fox-ae.com' : str_replace('https://', '', url('/'));
 
         $siteInfo = DB::table('tbl_managesite')
             ->where('txtsiteurl', $url)

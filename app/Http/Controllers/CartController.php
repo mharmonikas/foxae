@@ -32,7 +32,7 @@ class CartController extends Controller {
 	}
 
 	public function cartlogin(Request $request){
-		$managesite = DB::table('tbl_managesite')->leftjoin('tbl_themesetting','tbl_managesite.intmanagesiteid','tbl_themesetting.Intsiteid')->where('txtsiteurl',$_SERVER['SERVER_NAME'])->first();
+		$managesite = DB::table('tbl_managesite')->leftjoin('tbl_themesetting','tbl_managesite.intmanagesiteid','tbl_themesetting.Intsiteid')->where('txtsiteurl',self::getServerName())->first();
 		$siteid=$managesite->intmanagesiteid;
 		$email = $request->email;
 		$password = md5($request->password);
@@ -115,7 +115,7 @@ class CartController extends Controller {
         ['captcha.captcha'=>'invalid captcha code.']);
 
 
-		$managesite = DB::table('tbl_managesite')->leftjoin('tbl_themesetting','tbl_managesite.intmanagesiteid','tbl_themesetting.Intsiteid')->where('txtsiteurl',$_SERVER['SERVER_NAME'])->first();
+		$managesite = DB::table('tbl_managesite')->leftjoin('tbl_themesetting','tbl_managesite.intmanagesiteid','tbl_themesetting.Intsiteid')->where('txtsiteurl',self::getServerName())->first();
 
 		$checkemail=$this->HomeModel->checkmail($request->email,$managesite->intmanagesiteid);
 		if(!empty($checkemail)){
@@ -204,7 +204,7 @@ class CartController extends Controller {
 					mkdir($path, 0777);
 					//mkdir($path.'/new', 0777);
 			}
-		$managesite = DB::table('tbl_managesite')->where('txtsiteurl',$_SERVER['SERVER_NAME'])->first();
+		$managesite = DB::table('tbl_managesite')->where('txtsiteurl',self::getServerName())->first();
 		$response = DB::table('tbl_wishlist')->leftjoin('tbl_Video','tbl_wishlist.videoid','tbl_Video.IntId')->where('tbl_wishlist.userid',$session_id)->where('tbl_wishlist.siteid',$managesite->intmanagesiteid)->where('tbl_wishlist.status','cart')->where('tbl_Video.transparent','Y')->get();
 		 foreach($response as $res){
 			 $bg=$request->img;
@@ -257,7 +257,7 @@ class CartController extends Controller {
 	}
 
 	public function cart_background2(Request $request){
-		$managesite = DB::table('tbl_managesite')->where('txtsiteurl',$_SERVER['SERVER_NAME'])->first();
+		$managesite = DB::table('tbl_managesite')->where('txtsiteurl',self::getServerName())->first();
 		if(empty(Session::get('userid'))){
 			$session_id = Session::getId();
 		}else{
@@ -311,7 +311,7 @@ class CartController extends Controller {
 
 	public function cart_background(Request $request){
 		$full_path =$_SERVER['DOCUMENT_ROOT'].'/public/image_cache/';
-		$managesite = DB::table('tbl_managesite')->where('txtsiteurl',$_SERVER['SERVER_NAME'])->first();
+		$managesite = DB::table('tbl_managesite')->where('txtsiteurl',self::getServerName())->first();
 		if(empty(Session::get('userid'))){
 			$session_id = Session::getId();
 		}else{
@@ -399,7 +399,7 @@ class CartController extends Controller {
 
 	public function chck_uncheckcart(Request $request){
 		$arr=explode(',',$request->id);
-		$managesite = DB::table('tbl_managesite')->leftjoin('tbl_themesetting','tbl_managesite.intmanagesiteid','tbl_themesetting.Intsiteid')->where('txtsiteurl',$_SERVER['SERVER_NAME'])->first();
+		$managesite = DB::table('tbl_managesite')->leftjoin('tbl_themesetting','tbl_managesite.intmanagesiteid','tbl_themesetting.Intsiteid')->where('txtsiteurl',self::getServerName())->first();
 		$siteid=$managesite->intmanagesiteid;
 		$package='';
 		$stockinfo='';
@@ -519,7 +519,7 @@ class CartController extends Controller {
 
         $managesite = DB::table('tbl_managesite')
             ->leftjoin('tbl_themesetting','tbl_managesite.intmanagesiteid','tbl_themesetting.Intsiteid')
-            ->where('txtsiteurl',$_SERVER['SERVER_NAME'])
+            ->where('txtsiteurl',self::getServerName())
             ->first();
 
         $path = public_path().'/zip/'.Session::get('userid');
@@ -592,7 +592,7 @@ class CartController extends Controller {
 	public function DownloadFileServer($id){
 		$managesite = DB::table('tbl_managesite')
 			->leftjoin('tbl_themesetting','tbl_managesite.intmanagesiteid','tbl_themesetting.Intsiteid')
-			->where('txtsiteurl',$_SERVER['SERVER_NAME'])
+			->where('txtsiteurl',self::getServerName())
 			->first();
 
 		$response = DB::table('tbl_Video')
@@ -631,7 +631,7 @@ class CartController extends Controller {
 
 	}
 	public function RemoveFromWishlist($id){
-		$managesite = DB::table('tbl_managesite')->leftjoin('tbl_themesetting','tbl_managesite.intmanagesiteid','tbl_themesetting.Intsiteid')->where('txtsiteurl',$_SERVER['SERVER_NAME'])->first();
+		$managesite = DB::table('tbl_managesite')->leftjoin('tbl_themesetting','tbl_managesite.intmanagesiteid','tbl_themesetting.Intsiteid')->where('txtsiteurl',self::getServerName())->first();
 		$this->HomeModel->DeleteFromWishlist($id,$managesite->intmanagesiteid,Session::get('userid'));
 	}
 
@@ -763,6 +763,14 @@ class CartController extends Controller {
         }
 
         return $discount;
+    }
+
+    /**
+     * @return mixed|string
+     */
+    public static function getServerName()
+    {
+        return app()->isLocal() ? 'dev.fox-ae.com' : $_SERVER['SERVER_NAME'];
     }
 }
 
