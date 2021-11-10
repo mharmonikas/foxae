@@ -526,20 +526,21 @@ function showCopy(){
 
 
 function change_background(bg,vid,event){
-     debugger
-    let changeBackground = $(".change-background")
+     // debugger
+    // let changeBackground = $(".change-background")
+	// var token=$('meta[name="csrf-token"]').attr('content');
+    // var id = vid!='' ? vid : changeBackground.attr('data-value');
+    // var src='';
+    // $("#backgroundnavbarDropdown").dropdown('toggle');
+
     $('.myloadercontainer2').css("display", "block");
-	var token=$('meta[name="csrf-token"]').attr('content');
-    var id = vid!='' ? vid : changeBackground.attr('data-value');
-    var src='';
-    $("#backgroundnavbarDropdown").dropdown('toggle');
 
     let bigimagesize = $("#bigimagesize")
     let imgName = bigimagesize.attr('data-img-name')
     let imgId = bigimagesize.attr('data-img-id')
     let siteId = bigimagesize.attr('data-site-id')
 
-    let url = '/watermarkedImages/' + siteId + '/' + bg + '/' + imgId + '/' + imgName
+    let url = '/watermarkedImages/' + siteId + '/' + imgId + '/' + bg + '/' + imgName
     bigimagesize.attr('src', url); // Add the image with chosen background
 
     $.ajax({
@@ -553,7 +554,7 @@ function change_background(bg,vid,event){
         },
         data:'src='+src+'&_token='+token+'&img='+bg+'&id='+id,
         success:function(data){
-            var appliedbg=data.apllied_bg.toUpperCase();
+            // var appliedbg=data.apllied_bg.toUpperCase();
 
             // setTimeout(function(){
                 // if(event=='onclick'){

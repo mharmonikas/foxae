@@ -10,7 +10,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
-use Intervention\Image\Facades\Image;
+use Intervention\Image\ImageManagerStatic as Image;
 
 class UpdateDomainPreviewImagesJob implements ShouldQueue
 {
@@ -68,7 +68,7 @@ class UpdateDomainPreviewImagesJob implements ShouldQueue
 
         $backgrounds = DB::table('tbl_backgrounds')->where('siteid', 'like', '%'.$this->domainId.'%')->get(); // get backgrounds.
 
-        $backgrounds->each(function ($background) use ($img, $image, $watermarkImage) {
+        $backgrounds->each(function ($background) use ($img, $image, $imagePath, $watermarkImage) {
             $destinationPath = $this->getDestinationPath($background, $image);
 
             $backgroundImage = $this->getBackgroundImage($background);
@@ -77,19 +77,21 @@ class UpdateDomainPreviewImagesJob implements ShouldQueue
 
             $img->resize(852, 480);
 
-            $backgroundImage->insert($img, 'bottom-left');
+            $img->save($destinationPath);
+
+            $backgroundImage->insert($destinationPath, 'bottom-left');
 
             $backgroundImage->save($destinationPath);
 
-            $watermarkImage->resize(852, 480);
-
-            $watermarkImage->opacity(50);
-
-            $backgroundImage->insert($watermarkImage, 'bottom-left');
-
-            $this->assureDirectoryExists('watermarkedImages/'.$this->domainId.'/'.$background->bg_id);
-
-            $img->save($destinationPath);
+//            $watermarkImage->resize(852, 480);
+//
+//            $watermarkImage->opacity(50);
+//
+//            $backgroundImage->insert($watermarkImage, 'bottom-left');
+//
+//            $this->assureDirectoryExists('watermarkedImages/'.$this->domainId.'/'.$background->bg_id);
+//
+//            $img->save($destinationPath);
         });
     }
 
@@ -112,7 +114,7 @@ class UpdateDomainPreviewImagesJob implements ShouldQueue
      */
     private function getDestinationPath($background, $image): string
     {
-        $destinationPath = 'watermarkedImages/' . $this->domainId . '/' . $background->bg_id . '/' . $image->IntId;
+        $destinationPath = 'watermarkedImages/' . $this->domainId . '/' . $image->IntId . '/' . $background->bg_id;
 
         $this->assureDirectoryExists($destinationPath);
 

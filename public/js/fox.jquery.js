@@ -318,7 +318,6 @@ app.controller('customersCtrl', function ($scope, $http) {
 
 	});
 	$('.homepage').on("click", ".btn-model", function () {
-        console.log($(this))
 		localStorage.removeItem("sharelink");
 		$('.homepage').addClass('freeze');
 		var stock='';
@@ -494,7 +493,7 @@ app.controller('customersCtrl', function ($scope, $http) {
 			var res = img.replace("%20", "W3Schools")
             let bigimagesize = $("#bigimagesize")
 
-            bigimagesize.attr("src", '/watermarkedImages/' + currentsiteid + '/' + imageId + '/' + imageName);
+            bigimagesize.attr("src", '/watermarkedImages/' + currentsiteid + '/' + imageId + '/2/' + imageName);
             bigimagesize.attr('data-img-name', imageName)
             bigimagesize.attr('data-img-id', imageId)
             bigimagesize.attr('data-site-id', currentsiteid)
