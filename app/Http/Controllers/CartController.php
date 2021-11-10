@@ -309,95 +309,99 @@ class CartController extends Controller {
 			return 'showimg/'.$session_id.'/'.$imagename.'?v='.time();
 		}
 
-	public function cart_background(Request $request){
-		$full_path =$_SERVER['DOCUMENT_ROOT'].'/public/image_cache/';
-		$managesite = DB::table('tbl_managesite')->where('txtsiteurl',self::getServerName())->first();
-		if(empty(Session::get('userid'))){
-			$session_id = Session::getId();
-		}else{
-			$session_id = Session::get('userid');
-		}
-		$path = public_path().'/change_background/'.$session_id;
-			//File::isDirectory($path) or
-			if (!Is_Dir($path)){
-				mkdir($path, 0777);
-				//mkdir($path.'/new', 0777);
-		}
-		//Storage::put('flower.jpg', file_get_contents('https://dev.fox-ae.com/showimage/3701/1/org1588022082.png'));
-		$bg=$request->img;
-		$bgresponse = DB::table('tbl_backgrounds')->where('bg_id',$bg)->first();
-		 if(!empty($request->src)){
-		$src=$request->src;
-		$srcarr=explode('?',$request->src);
-		$srcarr1=$srcarr[0];
-		$srcarr2=explode('/',$srcarr1);
+    public function cart_background(Request $request){
+        $full_path =$_SERVER['DOCUMENT_ROOT'].'/public/image_cache/';
+        $managesite = DB::table('tbl_managesite')->where('txtsiteurl',self::getServerName())->first();
 
-		$mainimg="upload/videosearch/".$srcarr2[2]."/".$srcarr2[4];
-		$imagename=$bg.'_'.$srcarr2[4];
-		}else{
-			$response = DB::table('tbl_Video')->where('IntId',$request->id)->first();
-			$mainimg=$response->VchFolderPath.'/'.$response->VchVideoName;
-			$imagename=$bg.'_'.$response->VchVideoName;
+        if(empty(Session::get('userid'))) {
+            $session_id = Session::getId();
+        } else {
+            $session_id = Session::get('userid');
+        }
 
-		}
-		$w=0;
-	    $h=0;
-			header('Content-Type: image/png');
-			if(!file_exists($path.'/'.$imagename)){
-				$color = '#ff0000';
+        $path = public_path().'/change_background/'.$session_id;
+        //File::isDirectory($path) or
 
-				$imgs2 = $path.'/'.$imagename;
-				$stamp = imagecreatefrompng($mainimg);
-				$im2 = imagecreatefrompng('images/'.$bgresponse->background_img);
-				$img=Image::make($im2);
-				$size = getimagesize($mainimg);
-				$diemension=$size[0].'x'.$size[1];
-				$img->resize($size[0],$size[1])->save('background/'.$bgresponse->background_img);
-				$marge_right = 0;
-				$marge_bottom = 0;
-				$sx = imagesx($stamp);
-				$sy = imagesy($stamp);
-				$im = imagecreatefrompng('background/'.$bgresponse->background_img);
-				imagecopy($im, $stamp, imagesx($im) - $sx - $marge_right, imagesy($stamp) - $sy - $marge_bottom, 0, 0, imagesx($stamp), imagesy($stamp));
-				header('Content-type: image/png');
-				imagepng($im,$imgs2);
-				}
-				$date = date('Y-m-d H:i:s');
-				if(!empty($request->id)){
-					$response_wishlist = DB::table('tbl_wishlist')->where('videoid', $request->id)->where('siteid', $managesite->intmanagesiteid)->where('userid', $session_id)->where('status', 'cart')->first();
-					if(!empty($response_wishlist)){
-					$dataarr = array(
-						"applied_bg"=> $bgresponse->background_title,
-						"img_url"=> '/change_background/'.$session_id,
-						"img_name"=> $imagename,
+        if (!Is_Dir($path)) {
+            mkdir($path, 0777);
+            //mkdir($path.'/new', 0777);
+        }
 
-				);
-					DB::table('tbl_wishlist')->where('videoid', $request->id)->where('siteid', $managesite->intmanagesiteid)->where('userid', $session_id)->where('status', 'cart')->update($dataarr);
+        //Storage::put('flower.jpg', file_get_contents('https://dev.fox-ae.com/showimage/3701/1/org1588022082.png'));
+        $bg=$request->img;
+        $bgresponse = DB::table('tbl_backgrounds')->where('bg_id',$bg)->first();
+        if(!empty($request->src)) {
+            $src=$request->src;
+            $srcarr=explode('?',$request->src);
+            $srcarr1=$srcarr[0];
+            $srcarr2=explode('/',$srcarr1);
 
+            $mainimg="upload/videosearch/".$srcarr2[2]."/".$srcarr2[4];
+            $imagename=$bg.'_'.$srcarr2[4];
+        } else {
+            $response = DB::table('tbl_Video')->where('IntId',$request->id)->first();
+            $mainimg=$response->VchFolderPath.'/'.$response->VchVideoName;
+            $imagename=$bg.'_'.$response->VchVideoName;
+        }
 
+        $w=0;
+        $h=0;
+        header('Content-Type: image/png');
 
-				}else{
-				$data = array(
-				'videoid'	=> $request->id,
-				'siteid'	=> $managesite->intmanagesiteid,
-				'userid'=> $session_id,
-				"applied_bg"=> $bgresponse->background_title,
-				"img_url"=> '/change_background/'.$session_id,
-				"img_name"=> $imagename,
-				'created_date'	=> $date,
-			);
-			$lastinsetid=$this->HomeModel->wishlistdata($data);
+        if(!file_exists($path.'/'.$imagename)) {
+            $color = '#ff0000';
 
+            $imgs2 = $path.'/'.$imagename;
+            $stamp = imagecreatefrompng($mainimg);
+            $im2 = imagecreatefrompng('images/'.$bgresponse->background_img);
+            $img=Image::make($im2);
+            $size = getimagesize($mainimg);
+            $diemension = $size[0].'x'.$size[1];
+            $img->resize($size[0],$size[1])->save('background/'.$bgresponse->background_img);
+            $marge_right = 0;
+            $marge_bottom = 0;
+            $sx = imagesx($stamp);
+            $sy = imagesy($stamp);
+            $im = imagecreatefrompng('background/'.$bgresponse->background_img);
+            imagecopy($im, $stamp, imagesx($im) - $sx - $marge_right, imagesy($stamp) - $sy - $marge_bottom, 0, 0, imagesx($stamp), imagesy($stamp));
+            header('Content-type: image/png');
+            imagepng($im,$imgs2);
+        }
 
-				}
+        $date = date('Y-m-d H:i:s');
 
-			$res = array('url'=>'showimg/'.$session_id.'/'.$imagename.'?v='.time(),"apllied_bg"=>$bgresponse->background_title);
-			echo json_encode($res);
-			//return 'showimg/'.$session_id.'/'.$imagename.'?v='.time();
-			}
-		}
+        if(!empty($request->id)){
+            $response_wishlist = DB::table('tbl_wishlist')->where('videoid', $request->id)->where('siteid', $managesite->intmanagesiteid)->where('userid', $session_id)->where('status', 'cart')->first();
 
-	public function chck_uncheckcart(Request $request){
+            if(!empty($response_wishlist)){
+                $dataarr = array(
+                    "applied_bg"=> $bgresponse->background_title,
+                    "img_url"=> '/change_background/'.$session_id,
+                    "img_name"=> $imagename,
+
+                );
+
+                DB::table('tbl_wishlist')->where('videoid', $request->id)->where('siteid', $managesite->intmanagesiteid)->where('userid', $session_id)->where('status', 'cart')->update($dataarr);
+            } else {
+                $data = array(
+                    'videoid'	=> $request->id,
+                    'siteid'	=> $managesite->intmanagesiteid,
+                    'userid'=> $session_id,
+                    "applied_bg"=> $bgresponse->background_title,
+                    "img_url"=> '/change_background/'.$session_id,
+                    "img_name"=> $imagename,
+                    'created_date'	=> $date,
+                );
+                $lastinsetid=$this->HomeModel->wishlistdata($data);
+            }
+
+            $res = array('url'=>'showimg/'.$session_id.'/'.$imagename.'?v='.time(),"apllied_bg"=>$bgresponse->background_title);
+            echo json_encode($res);
+            //return 'showimg/'.$session_id.'/'.$imagename.'?v='.time();
+        }
+    }
+
+    public function chck_uncheckcart(Request $request){
 		$arr=explode(',',$request->id);
 		$managesite = DB::table('tbl_managesite')->leftjoin('tbl_themesetting','tbl_managesite.intmanagesiteid','tbl_themesetting.Intsiteid')->where('txtsiteurl',self::getServerName())->first();
 		$siteid=$managesite->intmanagesiteid;
