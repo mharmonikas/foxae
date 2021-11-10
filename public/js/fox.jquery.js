@@ -318,6 +318,8 @@ app.controller('customersCtrl', function ($scope, $http) {
 
 	});
 	$('.homepage').on("click", ".btn-model", function () {
+        let routeUrl = window.location.href
+
 		localStorage.removeItem("sharelink");
 		$('.homepage').addClass('freeze');
 		var stock='';
@@ -326,7 +328,7 @@ app.controller('customersCtrl', function ($scope, $http) {
         $( "#zoomin" ).removeClass( "hide-btn" );
         $("#bigimagesize").css("position", "unset");
 		$(".share-link").css("display","none");
-		var currentsiteid = $("#currentsiteid").val();
+		var currentsiteid = routeUrl.includes('cart') ? $(this).attr('data-site-id') : $("#currentsiteid").val();
 		var datatype = $(this).attr("data-type");
 		//var stock-category = $(this).attr("data-category");
 		var name = $(this).attr('data-name');
@@ -453,18 +455,12 @@ app.controller('customersCtrl', function ($scope, $http) {
                 $(".change-background").attr('data-value',videoid);
 
 
-                }else if(stock==2){
-
+                } else if(stock==2) {
                     $("#info-list").html('<a href="/custom"><svg width="33" height="33" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M19.0003 3.16675C10.2603 3.16675 3.16699 10.2601 3.16699 19.0001C3.16699 27.7401 10.2603 34.8334 19.0003 34.8334C27.7403 34.8334 34.8337 27.7401 34.8337 19.0001C34.8337 10.2601 27.7403 3.16675 19.0003 3.16675ZM20.5837 30.0834H17.417V26.9167H20.5837V30.0834ZM23.8612 17.8126L22.4362 19.2692C21.6445 20.0767 21.0745 20.8051 20.7895 21.9451C20.6628 22.4517 20.5837 23.0217 20.5837 23.7501H17.417V22.9584C17.417 22.2301 17.5437 21.5334 17.7653 20.8842C18.082 19.9659 18.6045 19.1426 19.2695 18.4776L21.2328 16.4826C21.9612 15.7859 22.3095 14.7409 22.1037 13.6326C21.8978 12.4926 21.0112 11.5267 19.9028 11.2101C18.1453 10.7192 16.5145 11.7167 15.992 13.2209C15.802 13.8067 15.3112 14.2501 14.6937 14.2501H14.2187C13.3003 14.2501 12.667 13.3634 12.9203 12.4767C13.6012 10.1492 15.5803 8.37592 18.0345 7.99592C20.4412 7.61592 22.737 8.86675 24.162 10.8459C26.0303 13.4267 25.4762 16.1976 23.8612 17.8126Z" fill="#5B5C5C"/></svg></a><p>Request a quote</p>');
-
-
                     $("#background-list").html('');
                     $(".background-list").css("display", "none");
-
-
-
                 }
-                }
+            }
         });
 
 		if (datatype == "V") {
@@ -493,7 +489,13 @@ app.controller('customersCtrl', function ($scope, $http) {
 			var res = img.replace("%20", "W3Schools")
             let bigimagesize = $("#bigimagesize")
 
-            bigimagesize.attr("src", '/watermarkedImages/' + currentsiteid + '/' + imageId + '/2/' + imageName);
+            let backgroundId = routeUrl.includes('cart') ? $(this).attr('data-bg-id') : 8
+
+            if(!backgroundId) {
+                backgroundId = 8
+            }
+
+            bigimagesize.attr("src", '/watermarkedImages/' + currentsiteid + '/' + imageId + '/' + backgroundId + '/' + imageName);
             bigimagesize.attr('data-img-name', imageName)
             bigimagesize.attr('data-img-id', imageId)
             bigimagesize.attr('data-site-id', currentsiteid)
@@ -594,35 +596,35 @@ app.controller('customersCtrl', function ($scope, $http) {
         $(".rlt-key").html(tag);
 
         if (imgtype!='') {
-				if (imgtype=='1') {
-					if (stock == 1) {
-						var imagetype = "Standard";
-					} else if(stock == 2) {
-						var imagetype = "Custom";
-					}
-					//var imagetype='Standard';
-					$("#image-desc").html(imagetype);
-					$("#image-desc2").html(imagetype);
-				} if(imgtype=='2') {
-						if (stock == 1) {
-							var imagetype = "Premium";
-						}else if(stock == 2){
-							var imagetype = "Custom";
-						}
-					//var imagetype='Premium';
-					$("#image-desc").html(imagetype);
-					$("#image-desc2").html(imagetype);
-				} if(imgtype=='3') {
-					if(stock == 1){
-							var imagetype = "Deluxe";
-						}else if(stock == 2){
-							var imagetype = "Custom";
-						}
-					//var imagetype='Deluxe';
-					$("#image-desc").html(imagetype);
-					$("#image-desc2").html(imagetype);
-				}
-			}
+            if (imgtype=='1') {
+                if (stock == 1) {
+                    var imagetype = "Standard";
+                } else if(stock == 2) {
+                    var imagetype = "Custom";
+                }
+                //var imagetype='Standard';
+                $("#image-desc").html(imagetype);
+                $("#image-desc2").html(imagetype);
+            } if(imgtype=='2') {
+                if (stock == 1) {
+                    var imagetype = "Premium";
+                } else if(stock == 2) {
+                    var imagetype = "Custom";
+                }
+                //var imagetype='Premium';
+                $("#image-desc").html(imagetype);
+                $("#image-desc2").html(imagetype);
+            } if(imgtype=='3') {
+                if(stock == 1){
+                        var imagetype = "Deluxe";
+                    }else if(stock == 2){
+                        var imagetype = "Custom";
+                    }
+                //var imagetype='Deluxe';
+                $("#image-desc").html(imagetype);
+                $("#image-desc2").html(imagetype);
+            }
+        }
         //$("#credit-count").html(credits);
 
 		openbigForm();

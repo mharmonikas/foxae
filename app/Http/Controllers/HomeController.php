@@ -2552,6 +2552,11 @@ class HomeController extends Controller {
         $myPlan = DB::table('tbl_plan')->where('plan_id',$packageid)->where('plan_status','A')->first();
         $backgroundslist = DB::table('tbl_backgrounds')->whereRaw('FIND_IN_SET('.$managesite->intmanagesiteid.',siteid)')->get();
 
+        foreach($response as &$res) {
+            $background = DB::table('tbl_backgrounds')->where('background_title', $res->applied_bg)->first();
+            $res->background_id = data_get($background, 'bg_id');
+        }
+
         return view('/cart', compact('response','siteid','packageid','later_response','stockinfo','totalitems','cartvalue','checkloginuser','saveuptoamount','managesite','availablecount','backgroundslist'));
 	}
 

@@ -310,8 +310,8 @@ class CartController extends Controller {
 		}
 
     public function cart_background(Request $request){
-        $full_path =$_SERVER['DOCUMENT_ROOT'].'/public/image_cache/';
-        $managesite = DB::table('tbl_managesite')->where('txtsiteurl',self::getServerName())->first();
+        $full_path = $_SERVER['DOCUMENT_ROOT'].'/public/image_cache/';
+        $managesite = DB::table('tbl_managesite')->where('txtsiteurl', self::getServerName())->first();
 
         if(empty(Session::get('userid'))) {
             $session_id = Session::getId();
@@ -378,7 +378,6 @@ class CartController extends Controller {
                     "applied_bg"=> $bgresponse->background_title,
                     "img_url"=> '/change_background/'.$session_id,
                     "img_name"=> $imagename,
-
                 );
 
                 DB::table('tbl_wishlist')->where('videoid', $request->id)->where('siteid', $managesite->intmanagesiteid)->where('userid', $session_id)->where('status', 'cart')->update($dataarr);

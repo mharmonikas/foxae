@@ -176,7 +176,7 @@
                                 </a>
                             </div>
                         </div>
-                        <div class="btn-model" ng-if="tpname.applied_bg!= ''" data-name="@{{tpname.VchTitle}}" data-tags="@{{tpname.videotags}}" data-image="showimg/@{{tpname.userid}}/@{{tpname.imgname}}" data-id="@{{tpname.productid}}" data-imgtype="@{{tpname.content_category}}" data-category="@{{tpname.stock_category}}" data-seo="@{{tpname.seo_url}}" data-type="@{{tpname.EnumType}}" data-folder="@{{tpname.VchFolderPath}}" data-download="@{{tpname.downloadstatus}}" cart-status="@{{tpname.cartstatus}}"fav-status="@{{tpname.favoritesstatus}}" video-id="@{{tpname.IntId}}" transparent-status="@{{tpname.transparent}}" applied-bg="@{{tpname.applied_bg}}">
+                        <div class="btn-model" ng-if="tpname.applied_bg!= ''" data-name="@{{tpname.VchTitle}}" data-tags="@{{tpname.videotags}}" data-image="showimg/@{{tpname.userid}}/@{{tpname.imgname}}" data-image-name="@{{tpname.VchVideoName}}" data-image-id="@{{tpname.IntId}}" data-id="@{{tpname.productid}}" data-imgtype="@{{tpname.content_category}}" data-category="@{{tpname.stock_category}}" data-seo="@{{tpname.seo_url}}" data-type="@{{tpname.EnumType}}" data-folder="@{{tpname.VchFolderPath}}" data-download="@{{tpname.downloadstatus}}" cart-status="@{{tpname.cartstatus}}"fav-status="@{{tpname.favoritesstatus}}" video-id="@{{tpname.IntId}}" transparent-status="@{{tpname.transparent}}" applied-bg="@{{tpname.applied_bg}}">
                             <div class="hover-play-icon group1" ng-if="tpname.EnumType=='V'"   >
                                 <img src="{{ asset('images') }}/{{$tblthemesetting->vchvideoicon}}" alt="img">
                             </div>

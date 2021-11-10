@@ -148,7 +148,7 @@ $managesite = HomeController::managesite2();
                         <span id="image-desc" class="image-desc"> </span>
                         <!--<img src="/img/share-apple.png" onclick="showCopy()">-->
                     </div>
-                    <div class="bigimgcontainer transparent-background" id="zoom-container" >
+                    <div class="bigimgcontainer" id="zoom-container" >
                         <!--	<input type="checkbox" id="zoomCheck">
                            <label for="zoomCheck">-->
                         <img src="" id="bigimagesize" onload="loadImage()" ondragstart="return false" >

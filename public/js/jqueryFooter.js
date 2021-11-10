@@ -523,17 +523,13 @@ function showCopy(){
 	$(".share-link").css("display","block");
 }
 
-
-
 function change_background(bg,vid,event){
-     // debugger
-    // let changeBackground = $(".change-background")
-	// var token=$('meta[name="csrf-token"]').attr('content');
-    // var id = vid!='' ? vid : changeBackground.attr('data-value');
-    // var src='';
-    // $("#backgroundnavbarDropdown").dropdown('toggle');
-
     $('.myloadercontainer2').css("display", "block");
+    let changeBackground = $(".change-background")
+	var token=$('meta[name="csrf-token"]').attr('content');
+    var id = vid!='' ? vid : changeBackground.attr('data-value');
+    var src='';
+    // $("#backgroundnavbarDropdown").dropdown('toggle');
 
     let bigimagesize = $("#bigimagesize")
     let imgName = bigimagesize.attr('data-img-name')

@@ -36,8 +36,7 @@
 											<td class="cart-img ">
 											<h5 class="cart-hide-on-desktop">{{$res->VchTitle}}</h5>
 
-
-												<div class="btn-model custom-video" id="alldetail_{{$res->IntId}}" data-name="{{$res->VchTitle}}" data-tags="{{$res->videotags}}"  data-image="@if(empty($res->applied_bg))/showimage/{{$res->IntId}}/{{$siteid}}/{{$res->VchVideoName}}?={{$res->intsetdefault}} @else /showimg/{{$res->userid}}/{{$res->img_name}} @endif" data-id="{{Crypt::encryptString($res->IntId)}}" data-imgtype="{{$res->content_category}}" data-category="{{$res->stock_category}}" data-seo="{{$res->seo_url}}" data-type="{{$res->EnumType}}" data-folder="{{$res->VchFolderPath}}" data-download="" video-id="{{$res->IntId}}" cart-status="out-cart" fav-status="{{$res->favoritesstatus}}" transparent-status="{{$res->transparent}}">
+												<div class="btn-model custom-video" id="alldetail_{{$res->IntId}}" data-bg-id="{{$res->background_id}}" data-site-id="{{$siteid}}" data-image-id="{{$res->IntId}}" data-image-name="{{$res->VchVideoName}}" data-name="{{$res->VchTitle}}" data-tags="{{$res->videotags}}"  data-image="@if(empty($res->applied_bg))/showimage/{{$res->IntId}}/{{$siteid}}/{{$res->VchVideoName}}?={{$res->intsetdefault}} @else /showimg/{{$res->userid}}/{{$res->img_name}} @endif" data-id="{{Crypt::encryptString($res->IntId)}}" data-imgtype="{{$res->content_category}}" data-category="{{$res->stock_category}}" data-seo="{{$res->seo_url}}" data-type="{{$res->EnumType}}" data-folder="{{$res->VchFolderPath}}" data-download="" video-id="{{$res->IntId}}" cart-status="out-cart" fav-status="{{$res->favoritesstatus}}" transparent-status="{{$res->transparent}}">
 												<div class="cart-hide-on-desktop outter">
 											<div class="object-type">
 												@if($res->EnumType=='I')Image @else Video @endif

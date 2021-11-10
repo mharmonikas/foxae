@@ -50,14 +50,14 @@ class UpdateDomainPreviewImagesJob implements ShouldQueue
         Log::info('count');
         Log::info($images->count());
 
-        $image = $images[0];
+//        $image = $images[0];
 
-//        $images->each(function ($image) use ($watermarkImage) {
+        $images->each(function ($image) use ($watermarkImage) {
             Log::info('In foreach');
             Log::info($image->IntId);
 
             $this->addWatermark($image, $watermarkImage);
-//        });
+        });
     }
 
     private function addWatermark($image, $watermarkImage)
