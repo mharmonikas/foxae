@@ -2954,7 +2954,6 @@ class HomeController extends Controller {
 			$favoritesstatus = 'in-favorites';
 		}else{
 			$favoritesstatus = 'out-favorites';
-
 		}
 
 		return view('/image',compact('response','managesite','productid','gender','tranparent','skintone','category','diemension','data_type','id','cartstatus','imgname','applied_bg','favoritesstatus','userid','userdetail'));

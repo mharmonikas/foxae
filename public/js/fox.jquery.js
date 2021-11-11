@@ -373,7 +373,7 @@ app.controller('customersCtrl', function ($scope, $http) {
 
         if(content == 1) {
            if(stock == 1) {
-                 standard = "standard";
+               standard = "standard";
            } else if (stock==2) {
                standard = "custom";
            }
@@ -385,7 +385,7 @@ app.controller('customersCtrl', function ($scope, $http) {
            }
         } else if(content == 3) {
            if(stock==1){
-                 standard = "ultra_premium";
+               standard = "ultra_premium";
            }else if(stock==2){
                standard = "custom";
            }

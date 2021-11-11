@@ -29,7 +29,9 @@ class FrontendController extends BaseController {
 
 		$tblthemesetting = DB::table('tbl_themesetting')->select('*')->where('Intsiteid', $intmanagesiteid)->first();
 
-		return view('homepage',compact('tblthemesetting','managesite','userdetail','Plans','package'))->with('alltags', $alltags);
+        $backgrounds = DB::table('tbl_backgrounds')->where('siteid', 'like', '%'. $intmanagesiteid .'%')->get();
+
+		return view('homepage',compact('tblthemesetting','managesite','userdetail','Plans','package', 'backgrounds'))->with('alltags', $alltags);
 	}
 
 	public function theme(){

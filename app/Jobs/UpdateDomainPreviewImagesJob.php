@@ -85,11 +85,11 @@ class UpdateDomainPreviewImagesJob implements ShouldQueue
 
             $watermarkImage->resize(852, 480);
 
+            $watermarkImage->opacity(50);
+
             $backgroundImage->insert($watermarkImage, 'bottom-left');
 
             $backgroundImage->save();
-//
-//            $watermarkImage->opacity(50);
 //
 //            $backgroundImage->insert($watermarkImage, 'bottom-left');
 //

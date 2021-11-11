@@ -252,7 +252,7 @@ use App\Http\Controllers\HomeController;
                                     </div>
                                 </li>
                                 @if($response->stock_category =='1')
-                                    @if($tranparent=='Y')
+{{--                                    @if($tranparent=='Y')--}}
                                         <li class="popup-dropdown background-list">
                                             <a id="backgroundnavbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 <svg width="33" height="33" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -269,7 +269,7 @@ use App\Http\Controllers\HomeController;
                                                 @endforeach
                                             </div>
                                         </li>
-                                    @endif
+{{--                                    @endif--}}
                                 @endif
                                 @if($response->stock_category =='2')
                                     <li class="popup-dropdown info-list" id="info-list">
