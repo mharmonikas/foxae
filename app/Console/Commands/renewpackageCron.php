@@ -45,9 +45,7 @@ class renewpackageCron extends Command
      */
     public function handle()
     {
-	//\Log::info("Cron is working fine2!");
-		$t=time();
-		$getresponse = $this->HomeModel->getautorenewpackage($t);
+		$getresponse = $this->HomeModel->getautorenewpackage();
 		$getapidetail = DB::table('tblapidetail')->where('id','1')->first();
 
 		foreach($getresponse as $res){
@@ -84,26 +82,8 @@ class renewpackageCron extends Command
 
                     $this->deactivatePackage($res);
 
-//                    $paymentdata = [
-//                        "strip_paymentid" => $response['id'],
-//                        "strip_packagename" => $res->plan_title,
-//                        "strip_transactionid" => $response['plan']['id'],
-//                        "strip_amount" =>($response['plan']['amount'] / 100),
-//                        "strip_created" => $response['plan']['created'],
-//                        "strip_currency" => $response['plan']['currency'],
-//                        "strip_receipt_url" => $invoiceresponse['hosted_invoice_url'],
-//                        "strip_status" => $response['status'],
-//                        "plan_id" => $res->buy_id,
-//                        "user_id" => $res->package_userid,
-//                        "strip_payment_type" => 'Renew Subscription',
-//                        "strip_package_type" => $res->package_type,
-//                        "create_at" => date('Y-m-d H:i:s')
-//                    ];
-//                    $paymentlastid = $this->HomeModel->paymentinfo_insert($paymentdata);
-
                     $managesite = DB::table('tbl_managesite')->leftjoin('tbl_themesetting','tbl_managesite.intmanagesiteid','tbl_themesetting.Intsiteid')->where('intmanagesiteid',$res->site_id)->first();
                     $userinfo = $this->HomeModel->UserData($res->package_userid);
-//                    $myUser = DB::table('tbluser')->where('intuserid', $res->package_userid)->first();
 
                     if(!$userinfo) {
                         Log::critical('No user info. Package user id:' . $res->package_userid);
@@ -196,8 +176,6 @@ class renewpackageCron extends Command
             elseif ($res->package_subscription=='C'){
                 $this->deactivatePackage($res);
             }
-
-//		    \Log::info("Package Renew Cron");
         }
 
         return 220;
