@@ -3322,8 +3322,7 @@ class HomeController extends Controller {
 }
 
     public function testfunction(){
-		$t=time();
-		$getresponse = $this->HomeModel->getautorenewpackage($t);
+		$getresponse = $this->HomeModel->getautorenewpackage();
 		$getapidetail = DB::table('tblapidetail')->where('id','1')->first();
 
 		foreach($getresponse as $res){
