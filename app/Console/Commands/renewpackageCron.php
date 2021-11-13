@@ -236,7 +236,7 @@ class renewpackageCron extends Command
                 'strip_payment_type' => 'Renew Subscription',
                 'plan_id' => $oldPackage->buy_id,
                 'user_id' => $oldPackage->package_userid,
-                'create_at' => $stripePayment['create_at'],
+                'create_at' => now(),
                 'strip_package_type' => $oldPackage->package_type,
             ];
 
@@ -273,7 +273,7 @@ class renewpackageCron extends Command
                 'plan_siteid' => $oldPackage->plan_siteid,
                 'yearly_discount' => $oldPackage->yearly_discount,
                 'conversion_rate' => $oldPackage->conversion_rate,
-                'plan_createdate' => $oldPackage->plan_createdate,
+                'plan_createdate' => now(),
             ];
 
             $this->HomeModel->buypackage_insert($data);
