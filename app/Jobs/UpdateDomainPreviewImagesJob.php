@@ -90,7 +90,7 @@ class UpdateDomainPreviewImagesJob implements ShouldQueue
             $backgroundImage->insert($watermarkImage, 'bottom-left');
 
             $backgroundImage->save();
-//
+
 //            $backgroundImage->insert($watermarkImage, 'bottom-left');
 //
 //            $this->assureDirectoryExists('watermarkedImages/'.$this->domainId.'/'.$background->bg_id);
