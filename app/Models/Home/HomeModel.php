@@ -97,9 +97,15 @@ class HomeModel extends Model{
 		 DB::table('tbl_favorites')->where('fav_videoid', $videoid)->where('fav_siteid', $siteid)->where('fav_userid', $userid)->delete();
 	}
 	public function getautorenewpackage(){
-		$result = DB::table('tbl_buypackage')->where('package_start_time','<',now())->where('package_expiredate', '<', now())->whereNotNull('package_start_time')->leftjoin('tbl_plan','tbl_buypackage.buy_id','tbl_plan.plan_id')->where('tbl_buypackage.package_subscription','!=','N')->where('tbl_buypackage.status','A')->where(function ($query) {
-            return $query->where('package_subscription', 'Y')->orWhere('package_subscription', 'C');
-        })->get();
+		$result = DB::table('tbl_buypackage')
+            ->where('package_start_time','<', time())
+            ->where('package_expiredate', '<', now())
+            ->whereNotNull('package_start_time')
+            ->leftjoin('tbl_plan','tbl_buypackage.buy_id','tbl_plan.plan_id')
+            ->where('tbl_buypackage.package_subscription','!=','N')
+            ->where('tbl_buypackage.status','A')
+            ->whereIn('package_subscription', ['Y', 'C'])
+            ->get();
 		return $result;
 	}
 	/* public function getautorenewpackage($timestamp){
