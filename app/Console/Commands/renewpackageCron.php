@@ -47,10 +47,14 @@ class renewpackageCron extends Command
     {
 		$getresponse = $this->HomeModel->getautorenewpackage();
 		$getapidetail = DB::table('tblapidetail')->where('id','1')->first();
+        Stripe\Stripe::setApiKey($getapidetail->stripe_secret);
 
-		foreach($getresponse as $res){
+        foreach($getresponse as $res){
+            Log::info('Res');
+
             if($res->package_subscription=='Y'){
-                Stripe\Stripe::setApiKey($getapidetail->stripe_secret);
+                Log::info('Subscription == Y');
+
                 try {
                     $response = \Stripe\Subscription::update($res->package_renewid);
                 }
@@ -64,11 +68,11 @@ class renewpackageCron extends Command
 
                 $response = $response->jsonSerialize();
                 $invoice_number=$response['latest_invoice'];
-                Stripe\Stripe::setApiKey($getapidetail->stripe_secret);
                 $invoice = Stripe\Invoice::retrieve($response['latest_invoice']);
                 $invoiceresponse = $invoice->jsonSerialize();
 
                 if($this->paymentSuccessful($response, $res)) {
+                    Log::info('payment successful');
                     //$available = $res->package_count - $res->package_download;
                     $available = 0;
                     $data = [
@@ -134,8 +138,11 @@ class renewpackageCron extends Command
                         $message->subject('Your receipt from '.$data2['vchsitename']);
                     });
                 } else {
+                    Log::info('payment unsuccessful');
+
                     $buypack = DB::table('tbl_buypackage')->leftjoin('tbluser','tbl_buypackage.package_userid','tbluser.intuserid')->where('package_id',$res->package_id)->first();
                     $managesite = DB::table('tbl_managesite')->leftjoin('tbl_themesetting','tbl_managesite.intmanagesiteid','tbl_themesetting.Intsiteid')->where('intmanagesiteid',$res->site_id)->first();
+
                     $dataarr = array(
                         "package_subscription" => 'C',
                         "status" => 'D',
@@ -143,7 +150,6 @@ class renewpackageCron extends Command
 
                     $this->HomeModel->UpdateBuyPackage($res->package_id,$dataarr);
 
-                    Stripe\Stripe::setApiKey($getapidetail->stripe_secret);
                     $subscription = \Stripe\Subscription::retrieve($buypack->package_renewid);
                     $subscription->cancel();
                     $response = $subscription->jsonSerialize();
@@ -173,10 +179,14 @@ class renewpackageCron extends Command
                 }
             }
 
-            elseif ($res->package_subscription=='C'){
+            elseif ($res->package_subscription == 'C'){
+                Log::info('Subscription == C');
+
                 $this->deactivatePackage($res);
             }
         }
+
+        Log::info('Renew cron done');
 
         return 220;
     }
@@ -186,6 +196,8 @@ class renewpackageCron extends Command
      */
     private function deactivatePackage($res): void
     {
+        Log::info('Deactivate package id: '.$res->package_id);
+
         $this->HomeModel->UpdateBuyPackage($res->package_id, ['status' => 'D']);
     }
 
@@ -201,17 +213,20 @@ class renewpackageCron extends Command
 
     private function createPackageFromOld($oldPackage, $stripePayment, $invoiceResponse)
     {
+        Log::info('createPackageFromOld');
+        Log::info('Old package: '.$oldPackage->package_id);
+
         try {
             $payment = [
                 'strip_paymentid' => $stripePayment['id'],
                 'strip_packagename' => $oldPackage->package_name,
                 'strip_transactionid' => $stripePayment['plan']['id'],
-                'strip_amount' => $stripePayment['plan']['amount'],
+                'strip_amount' => $stripePayment['plan']['amount'] / 100,
                 'strip_currency' => $stripePayment['plan']['currency'],
                 'strip_created' => $stripePayment['plan']['created'],
                 'strip_receipt_url' => $invoiceResponse['hosted_invoice_url'],
                 'strip_status' => $stripePayment['status'],
-                'strip_payment_type' => 'Renew Subscription',
+                'strip_payment_type' => 'Renew Payment',
                 'plan_id' => $oldPackage->buy_id,
                 'user_id' => $oldPackage->package_userid,
                 'create_at' => now(),
@@ -237,24 +252,12 @@ class renewpackageCron extends Command
                 'site_id' => $oldPackage->site_id,
                 'package_start_time' => $oldPackage->package_start_time,
                 'status' => $oldPackage->status,
-                'create_at' => $oldPackage->create_at,
-                'plan_id' => $oldPackage->plan_id,
-                'plan_name' => $oldPackage->plan_name,
-                'plan_title' => $oldPackage->plan_title,
-                'plan_description' => $oldPackage->plan_description,
-                'plan_time' => $oldPackage->plan_time,
-                'plan_price' => $oldPackage->plan_price,
-                'plan_download' => $oldPackage->plan_download,
-                'plan_type' => $oldPackage->plan_type,
-                'plan_purchase' => $oldPackage->plan_purchase,
-                'plan_status' => $oldPackage->plan_status,
-                'plan_siteid' => $oldPackage->plan_siteid,
-                'yearly_discount' => $oldPackage->yearly_discount,
-                'conversion_rate' => $oldPackage->conversion_rate,
-                'plan_createdate' => now(),
+                'create_at' => now(),
             ];
 
-            $this->HomeModel->buypackage_insert($data);
+            $newPackageId = $this->HomeModel->buypackage_insert($data);
+
+            Log::info('New package: '.$newPackageId);
         } catch (Exception $e) {
             Log::critical($e->getMessage());
         }
