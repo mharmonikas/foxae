@@ -172,7 +172,7 @@ use App\Http\Controllers\HomeController;
                                 <a data-toggle="modal" data-target="#signupModal">Create your free account</a><button class="btn btn-default" data-toggle="modal" data-target="#exampleModal">Log In</button>
                             </div>
                         @endif
-                        <div class="img-btm ">
+                        <div class="img-btm">
                             <p>Not quite what you are looking for? </p>
                             <a href="/custom">Request Custom Graphics</a>
                         </div>
