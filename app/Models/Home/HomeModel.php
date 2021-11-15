@@ -97,7 +97,7 @@ class HomeModel extends Model{
 		 DB::table('tbl_favorites')->where('fav_videoid', $videoid)->where('fav_siteid', $siteid)->where('fav_userid', $userid)->delete();
 	}
 	public function getautorenewpackage(){
-		$result = DB::table('tbl_buypackage')
+        return DB::table('tbl_buypackage')
             ->where('package_start_time','<', time())
             ->where('package_expiredate', '<', now())
             ->whereNotNull('package_start_time')
@@ -106,7 +106,6 @@ class HomeModel extends Model{
             ->where('tbl_buypackage.status','A')
             ->whereIn('package_subscription', ['Y', 'C'])
             ->get();
-		return $result;
 	}
 	/* public function getautorenewpackage($timestamp){
 		$result = DB::table('tbl_buypackage')->where('package_start_time','<',$timestamp)->whereNotNull('package_start_time')->where('package_subscription','Y')->orwhere('package_subscription','C')->where('status','A')->get();
