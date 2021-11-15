@@ -9,6 +9,10 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+use App\Models\Home\HomeModel;
+use Illuminate\Support\Facades\DB;
+
 Route::get('/', 'FrontendController@index');
 Route::get('/index1', 'FrontendController@index1');
 Route::get('/css/theme.php?v=5', 'FrontendController@theme');
@@ -281,6 +285,12 @@ Route::get('/setUpQueue', function () {
 Route::get('/stopQueue', function () {
     Artisan::call('queue:down');
     dd('ok');
+});
+
+Route::get('/testCron', function () {
+    dump(time());
+    $getresponse = (new HomeModel)->getautorenewpackage();
+    dd($getresponse);
 });
 
 /*******************************Admin****************************************************/
