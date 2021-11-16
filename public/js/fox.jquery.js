@@ -351,7 +351,7 @@ app.controller('customersCtrl', function ($scope, $http) {
 			$("#downloadstatus").val(0);
 		}
 
-		if (transparent_status=='N') {
+		if (transparent_status == 'N') {
 			$(".background-list").css("display", "none");
 		} else if (transparent_status=='Y') {
 			$(".background-list").removeAttr('style');

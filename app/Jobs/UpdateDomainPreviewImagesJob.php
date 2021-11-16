@@ -43,9 +43,6 @@ class UpdateDomainPreviewImagesJob implements ShouldQueue
 
         $images = DB::table('tbl_Video')->orderByDesc('IntId')->get(['IntId', 'VchFolderPath', 'VchVideoName', 'VchResizeimage', 'vchcacheimages', 'vchorginalfile']);
 
-        Log::info('images');
-        Log::info($images->pluck('IntId'));
-
         $backgrounds = DB::table('tbl_backgrounds')->where('siteid', 'like', '%'.$this->domainId.'%')->get(); // get backgrounds.
 
         $this->assureDirectoryExists('watermarkedImages/'.$this->domainId);
@@ -57,12 +54,12 @@ class UpdateDomainPreviewImagesJob implements ShouldQueue
 
 //        $image = $images[0];
 
-        foreach ($images as $image) {
+        $images->each(function ($image) use ($watermarkImage, $backgrounds) {
             Log::info('In foreach');
             Log::info($image->IntId);
 
             $this->addWatermark($image, $watermarkImage, $backgrounds);
-        }
+        });
     }
 
     private function addWatermark($image, $watermarkImage, $backgrounds)
@@ -90,11 +87,9 @@ class UpdateDomainPreviewImagesJob implements ShouldQueue
 
             $watermarkImage->opacity(40);
 
-            $reloadedImage = Image::make($destinationPath);
+            $backgroundImage->insert($watermarkImage, 'bottom-left');
 
-            $reloadedImage->insert($watermarkImage, 'bottom-left');
-
-            $reloadedImage->save();
+            $backgroundImage->save();
 
 //            $backgroundImage->insert($watermarkImage, 'bottom-left');
 //
@@ -114,9 +109,6 @@ class UpdateDomainPreviewImagesJob implements ShouldQueue
     private function getBackgroundImage($background)
     {
         $imagePath = public_path('background/'.$background->background_img);
-
-        Log::info('Background path: ');
-        Log::info($imagePath);
 
         return Image::make($imagePath);
     }

@@ -17,8 +17,6 @@
 					  <th>Payment Type</th>
 
 					  <th>Date</th>
-
-
 				</tr>
 			</thead>
 						@php

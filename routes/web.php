@@ -293,6 +293,12 @@ Route::get('/testCron', function () {
     dd($getresponse);
 });
 
+Route::get('/testJob', function () {
+    $a = DB::table('tbl_Video')->where('IntId', 3666)->orderByDesc('IntId')->get(['IntId', 'VchFolderPath', 'VchVideoName', 'VchResizeimage', 'vchcacheimages', 'vchorginalfile']);
+
+    dd($a);
+});
+
 /*******************************Admin****************************************************/
 
 Route::get('/testitng5', 'MyadminController@testitng');

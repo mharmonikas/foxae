@@ -216,8 +216,8 @@ class CartController extends Controller {
 
 				$imgs2 = $path.'/'.$imagename;
 				//$cmd = '-background "'.$bg.'" -flatten';
-				$stamp = imagecreatefrompng($mainimg);
-				$im2 = imagecreatefrompng('images/'.$bgresponse->background_img);
+				$stamp = $this->createImageFromPath($mainimg);
+				$im2 = $this->createImageFromPath('images/' . $bgresponse->background_img);
 				$img=Image::make($im2);
 				$size = getimagesize($mainimg);
 				$diemension=$size[0].'x'.$size[1];
@@ -227,7 +227,7 @@ class CartController extends Controller {
 				$sx = imagesx($stamp);
 				$sy = imagesy($stamp);
 				//$im = imagecreatefrompng('imagick/black_with_effect.png');
-				$im = imagecreatefrompng('background/'.$bgresponse->background_img);
+				$im = $this->createImageFromPath('background/' . $bgresponse->background_img);
 				// Copy the stamp image onto our photo using the margin offsets and the photo
 				// width to calculate positioning of the stamp.
 				imagecopy($im, $stamp, imagesx($im) - $sx - $marge_right, imagesy($stamp) - $sy - $marge_bottom, 0, 0, imagesx($stamp), imagesy($stamp));
@@ -352,8 +352,8 @@ class CartController extends Controller {
             $color = '#ff0000';
 
             $imgs2 = $path.'/'.$imagename;
-            $stamp = imagecreatefrompng($mainimg);
-            $im2 = imagecreatefrompng('images/'.$bgresponse->background_img);
+            $stamp = $this->createImageFromPath($mainimg);
+            $im2 = $this->createImageFromPath('images/' . $bgresponse->background_img);
             $img=Image::make($im2);
             $size = getimagesize($mainimg);
             $diemension = $size[0].'x'.$size[1];
@@ -362,7 +362,7 @@ class CartController extends Controller {
             $marge_bottom = 0;
             $sx = imagesx($stamp);
             $sy = imagesy($stamp);
-            $im = imagecreatefrompng('background/'.$bgresponse->background_img);
+            $im = $this->createImageFromPath('background/' . $bgresponse->background_img);
             imagecopy($im, $stamp, imagesx($im) - $sx - $marge_right, imagesy($stamp) - $sy - $marge_bottom, 0, 0, imagesx($stamp), imagesy($stamp));
             header('Content-type: image/png');
             imagepng($im,$imgs2);
@@ -644,8 +644,8 @@ class CartController extends Controller {
 		// if(end(explode('.', $filename)), $exts){
 
 		// }
-        $stamp = imagecreatefrompng('imagick/change.png');
-        $im2 = imagecreatefrompng('imagick/unnamed.png');
+        $stamp = $this->createImageFromPath('imagick/change.png');
+        $im2 = $this->createImageFromPath('imagick/unnamed.png');
         //$im2 = imagecreatefromjpeg('background/transparent.jpg');
         $img=Image::make($im2);
         $size = getimagesize('imagick/change.png');
@@ -656,12 +656,12 @@ class CartController extends Controller {
 		$sx = imagesx($stamp);
 		$sy = imagesy($stamp);
 		//$im = imagecreatefrompng('imagick/black_with_effect.png');
-		$im = imagecreatefrompng('imagick/unnamed.png');
+		$im = $this->createImageFromPath('imagick/unnamed.png');
 		// Copy the stamp image onto our photo using the margin offsets and the photo
 		// width to calculate positioning of the stamp.
 		imagecopy($im, $stamp, imagesx($im) - $sx - $marge_right, imagesy($stamp) - $sy - $marge_bottom, 0, 0, imagesx($stamp), imagesy($stamp));
 
-        $stamp2 = imagecreatefrompng('imagick/1553250678.png');
+        $stamp2 = $this->createImageFromPath('imagick/1553250678.png');
 
         $vchtransparency = 7 * 10;
 
@@ -691,7 +691,7 @@ class CartController extends Controller {
 
 	public function imageresize2(){
         $img='images/1608539999.png';
-        $stamp = imagecreatefrompng('imagick/change.png');
+        $stamp = $this->createImageFromPath('imagick/change.png');
         //$im2 = imagecreatefrompng('images/1608539023.png');
         //$im = imagecreatefromjpeg('imagick/download.jpg');
         //$img=Image::make($im2);
@@ -704,7 +704,7 @@ class CartController extends Controller {
          //  $tmp = imageResize($im2,$size[0],$size[1]);
             //        imagepng($tmp,'images/'. $newFileName. ".png");
         //$img->resize($size[0],$size[1], function ($constraint) {$constraint->aspectRatio();})->save('images/1608539999-1.png');
-            $im = imagecreatefrompng('images/1608539999.png');
+            $im = $this->createImageFromPath('images/1608539999.png');
         $marge_right = 0;
         $marge_bottom = 0;
         $sx = imagesx($stamp);
@@ -774,6 +774,22 @@ class CartController extends Controller {
     public static function getServerName()
     {
         return app()->isLocal() ? 'dev.fox-ae.com' : $_SERVER['SERVER_NAME'];
+    }
+
+    /**
+     * @param string $mainimg
+     * @return false|\GdImage|resource
+     */
+    private function createImageFromPath(string $imgLocation)
+    {
+        $splitPath = explode('.', $imgLocation);
+        $extension = strtolower($splitPath[count($splitPath) - 1]);
+
+        if($extension === 'jpg' || $extension === 'jpeg') {
+            return imagecreatefromjpeg($imgLocation);
+        }
+
+        return imagecreatefrompng($imgLocation);
     }
 }
 
