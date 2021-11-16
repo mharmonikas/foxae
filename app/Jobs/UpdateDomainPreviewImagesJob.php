@@ -43,6 +43,11 @@ class UpdateDomainPreviewImagesJob implements ShouldQueue
 
         $images = DB::table('tbl_Video')->orderByDesc('IntId')->get(['IntId', 'VchFolderPath', 'VchVideoName', 'VchResizeimage', 'vchcacheimages', 'vchorginalfile']);
 
+        Log::info('images');
+        Log::info($images->pluck('IntId'));
+
+        $backgrounds = DB::table('tbl_backgrounds')->where('siteid', 'like', '%'.$this->domainId.'%')->get(); // get backgrounds.
+
         $this->assureDirectoryExists('watermarkedImages/'.$this->domainId);
 
         Log::info('Before foreach');
@@ -52,23 +57,21 @@ class UpdateDomainPreviewImagesJob implements ShouldQueue
 
 //        $image = $images[0];
 
-        $images->each(function ($image) use ($watermarkImage) {
+        foreach ($images as $image) {
             Log::info('In foreach');
             Log::info($image->IntId);
 
-            $this->addWatermark($image, $watermarkImage);
-        });
+            $this->addWatermark($image, $watermarkImage, $backgrounds);
+        }
     }
 
-    private function addWatermark($image, $watermarkImage)
+    private function addWatermark($image, $watermarkImage, $backgrounds)
     {
         $imagePath = public_path($image->VchFolderPath.'/'.$image->VchVideoName);
 
         $img = Image::make($imagePath);
 
-        $backgrounds = DB::table('tbl_backgrounds')->where('siteid', 'like', '%'.$this->domainId.'%')->get(); // get backgrounds.
-
-        $backgrounds->each(function ($background) use ($img, $image, $imagePath, $watermarkImage) {
+        foreach ($backgrounds as $background) {
             $destinationPath = $this->getDestinationPath($background, $image);
 
             $backgroundImage = $this->getBackgroundImage($background);
@@ -85,18 +88,22 @@ class UpdateDomainPreviewImagesJob implements ShouldQueue
 
             $watermarkImage->resize(852, 480);
 
-            $watermarkImage->opacity(50);
+            $watermarkImage->opacity(40);
 
-            $backgroundImage->insert($watermarkImage, 'bottom-left');
+            $reloadedImage = Image::make($destinationPath);
 
-            $backgroundImage->save();
+            $reloadedImage->insert($watermarkImage, 'bottom-left');
+
+            $reloadedImage->save();
 
 //            $backgroundImage->insert($watermarkImage, 'bottom-left');
 //
 //            $this->assureDirectoryExists('watermarkedImages/'.$this->domainId.'/'.$background->bg_id);
 //
 //            $img->save($destinationPath);
-        });
+        }
+
+        return 1;
     }
 
     private function assureDirectoryExists($path)
@@ -107,6 +114,9 @@ class UpdateDomainPreviewImagesJob implements ShouldQueue
     private function getBackgroundImage($background)
     {
         $imagePath = public_path('background/'.$background->background_img);
+
+        Log::info('Background path: ');
+        Log::info($imagePath);
 
         return Image::make($imagePath);
     }
