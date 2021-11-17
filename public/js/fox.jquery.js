@@ -463,7 +463,7 @@ app.controller('customersCtrl', function ($scope, $http) {
             }
         });
 
-		if (datatype == "V") {
+        if (datatype == "V") {
             console.log('datatype == V');
 			var data_type='Video';
 			$(".bigvideocontainer").empty();
@@ -482,9 +482,12 @@ app.controller('customersCtrl', function ($scope, $http) {
 			$("#imagepart").css("display","block");
 			$("#videopart").css("display","none");
 		    $('#zoomCheck').prop('checked', false);
+
 			var img = $(this).attr('data-image');
 			let imageName = $(this).attr('data-image-name');
 			let imageId = $(this).attr('data-image-id');
+			let transparent = $(this).attr('data-transparent');
+
 			$(".bigimagename").text(name);
 			var res = img.replace("%20", "W3Schools")
             let bigimagesize = $("#bigimagesize")
@@ -495,7 +498,8 @@ app.controller('customersCtrl', function ($scope, $http) {
                 backgroundId = 8
             }
 
-            bigimagesize.attr("src", '/watermarkedImages/' + currentsiteid + '/' + imageId + '/' + backgroundId + '/' + imageName);
+            let imageUrl = getImageUrl(currentsiteid, imageId, backgroundId, imageName, transparent)
+            bigimagesize.attr("src", imageUrl);
             bigimagesize.attr('data-img-name', imageName)
             bigimagesize.attr('data-img-id', imageId)
             bigimagesize.attr('data-site-id', currentsiteid)
@@ -919,6 +923,14 @@ function updateURL() {
 		}, 500);
 
 	}
+}
+
+function getImageUrl(currentsiteid, imageId, backgroundId, imageName, transparent) {
+    if (transparent === 'N') {
+        return '/watermarkedImages/' + currentsiteid + '/' + imageId + '/' + imageName;
+    }
+
+    return '/watermarkedImages/' + currentsiteid + '/' + imageId + '/' + backgroundId + '/' + imageName;
 }
 
 function closelist() {
