@@ -35,57 +35,61 @@ class UpdateDomainPreviewImagesJob implements ShouldQueue
      */
     public function handle()
     {
-        Log::info('Start update');
+        Log::info("UpdateDomainPreviewImagesJob for domain ID {$this->domainId}");
+
+        $images = DB::table('tbl_Video')->orderByDesc('IntId')->get(['IntId', 'VchFolderPath', 'VchVideoName', 'VchResizeimage', 'vchcacheimages', 'vchorginalfile', 'transparent']);
+
+        $backgrounds = DB::table('tbl_backgrounds')->where('siteid', 'like', '%'.$this->domainId.'%')->get(); // get backgrounds.
 
         $watermark = DB::table('tblwatermarklogo')->where('vchtype','L')->where('vchsiteid', $this->domainId)->where('enumstatus','A')->first();
 
         $watermarkImage = Image::make(public_path('/upload/watermark/'.$watermark->vchwatermarklogoname));
 
-        $images = DB::table('tbl_Video')->orderByDesc('IntId')->get(['IntId', 'VchFolderPath', 'VchVideoName', 'VchResizeimage', 'vchcacheimages', 'vchorginalfile']);
+        $watermarkImage->resize(852, 480);
 
-        $backgrounds = DB::table('tbl_backgrounds')->where('siteid', 'like', '%'.$this->domainId.'%')->get(); // get backgrounds.
+        $watermarkImage->opacity(40);
 
         $this->assureDirectoryExists('watermarkedImages/'.$this->domainId);
 
-        Log::info('Before foreach');
+        Log::info("Number of images: {$images->count()}");
 
-        Log::info('count');
-        Log::info($images->count());
+        $images->each(function ($dbImage) use ($watermarkImage, $backgrounds) {
+            Log::info("Image ID {$dbImage->IntId}");
 
-//        $image = $images[0];
-
-        $images->each(function ($image) use ($watermarkImage, $backgrounds) {
-            Log::info('In foreach');
-            Log::info($image->IntId);
-
-            $this->addWatermark($image, $watermarkImage, $backgrounds);
+            $this->addWatermark($dbImage, $watermarkImage, $backgrounds);
         });
     }
 
-    private function addWatermark($image, $watermarkImage, $backgrounds)
+    private function addWatermark($dbImage, $watermarkImage, $backgrounds)
     {
-        $imagePath = public_path($image->VchFolderPath.'/'.$image->VchVideoName);
+        $imagePath = public_path($dbImage->VchFolderPath.'/'.$dbImage->VchVideoName);
 
-        $img = Image::make($imagePath);
+        $image = Image::make($imagePath);
+
+        $image->resize(852, 480);
+
+        if($dbImage->transparent === 'N') {
+            // add watermark
+            // save to folder without background (/watermarkedImage/id)
+            $image->insert($watermarkImage, 'bottom-left');
+
+            $this->saveImageWithoutBackground($image, $dbImage);
+
+            return 1;
+        }
 
         foreach ($backgrounds as $background) {
-            $destinationPath = $this->getDestinationPath($background, $image);
+            $destinationPath = $this->getDestinationPath($background, $dbImage);
 
             $backgroundImage = $this->getBackgroundImage($background);
 
             $backgroundImage->resize(852, 480);
 
-            $img->resize(852, 480);
-
-            $img->save($destinationPath);
+            $image->save($destinationPath);
 
             $backgroundImage->insert($destinationPath, 'bottom-left');
 
             $backgroundImage->save($destinationPath);
-
-            $watermarkImage->resize(852, 480);
-
-            $watermarkImage->opacity(40);
 
             $backgroundImage->insert($watermarkImage, 'bottom-left');
 
@@ -97,8 +101,6 @@ class UpdateDomainPreviewImagesJob implements ShouldQueue
 //
 //            $img->save($destinationPath);
         }
-
-        return 1;
     }
 
     private function assureDirectoryExists($path)
@@ -115,15 +117,24 @@ class UpdateDomainPreviewImagesJob implements ShouldQueue
 
     /**
      * @param $background
-     * @param $image
+     * @param $dbImage
      * @return string
      */
-    private function getDestinationPath($background, $image): string
+    private function getDestinationPath($background, $dbImage): string
     {
-        $destinationPath = 'watermarkedImages/' . $this->domainId . '/' . $image->IntId . '/' . $background->bg_id;
+        $destinationPath = 'watermarkedImages/' . $this->domainId . '/' . $dbImage->IntId . '/' . $background->bg_id;
 
         $this->assureDirectoryExists($destinationPath);
 
-        return public_path($destinationPath . '/' . $image->VchVideoName);
+        return public_path($destinationPath . '/' . $dbImage->VchVideoName);
+    }
+
+    private function saveImageWithoutBackground($image, $dbImage)
+    {
+        $path = public_path("watermarkedImages/{$this->domainId}/{$dbImage->IntId}");
+
+        $this->assureDirectoryExists($path);
+
+        $image->save($path.'/'.$dbImage->VchVideoName);
     }
 }
