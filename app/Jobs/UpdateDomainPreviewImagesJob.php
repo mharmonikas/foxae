@@ -69,8 +69,6 @@ class UpdateDomainPreviewImagesJob implements ShouldQueue
         $image->resize(852, 480);
 
         if($dbImage->transparent === 'N') {
-            // add watermark
-            // save to folder without background (/watermarkedImage/id)
             $image->insert($watermarkImage, 'bottom-left');
 
             $this->saveImageWithoutBackground($image, $dbImage);
