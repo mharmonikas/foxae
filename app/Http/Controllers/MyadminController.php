@@ -1,6 +1,8 @@
 <?php
 namespace App\Http\Controllers;
+use App\Jobs\CreateWatermarkedImageJob;
 use App\Jobs\UpdateDomainPreviewImagesJob;
+use Exception;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\AdminModel;
@@ -961,709 +963,718 @@ public function managevideosection(Request $request){
 public function saveuploadvideo(Request $request){
 
 	echo $this->checklogin();
-$servername = $_SERVER['SERVER_NAME'];
-$selectserver = DB::table('tbl_managesite')->where('txtsiteurl',$servername)->first();
+
+    $msite = explode(',', $_POST['multisite']);
+
+    $servername = $_SERVER['SERVER_NAME'];
+    $selectserver = DB::table('tbl_managesite')->where('txtsiteurl',$servername)->first();
 
 
-//$vchvideotitle = $_POST['vchvideotitle'];
+    //$vchvideotitle = $_POST['vchvideotitle'];
 
-if(!empty($_POST['multisite'])){
-$multisite = $_POST['multisite'];
-}
-if(isset($_POST['uploadtype'])){
-if($_POST['uploadtype']=='G'){
-	if(!empty($_POST['googlelink'])){
-	$googlelink = $_POST['googlelink'];
-	$googlelink2 = $_POST['googlelink'];
-	$mygoogledrivevideo = explode(PHP_EOL,$googlelink);
+    if(!empty($_POST['multisite'])){
+    $multisite = $_POST['multisite'];
+    }
+    if(isset($_POST['uploadtype'])){
+    if($_POST['uploadtype']=='G'){
+        if(!empty($_POST['googlelink'])){
+        $googlelink = $_POST['googlelink'];
+        $googlelink2 = $_POST['googlelink'];
+        $mygoogledrivevideo = explode(PHP_EOL,$googlelink);
 
-	for($i=0;$i<count($mygoogledrivevideo);$i++){
-     $googlelink = $mygoogledrivevideo[$i];
-	 $getcontent =  file_get_contents($mygoogledrivevideo[$i]);
+        for($i=0;$i<count($mygoogledrivevideo);$i++){
+         $googlelink = $mygoogledrivevideo[$i];
+         $getcontent =  file_get_contents($mygoogledrivevideo[$i]);
 
-preg_match_all('~<\s*meta\s+property="(og:image+)"\s+content="([^"]*)~i', $getcontent, $matches1);
-preg_match_all('~<\s*meta\s+property="(og:title+)"\s+content="([^"]*)~i', $getcontent, $matches2);
+    preg_match_all('~<\s*meta\s+property="(og:image+)"\s+content="([^"]*)~i', $getcontent, $matches1);
+    preg_match_all('~<\s*meta\s+property="(og:title+)"\s+content="([^"]*)~i', $getcontent, $matches2);
 
-$myvchvideotitle = $matches2[2][0];
-$videoext =explode('.',$myvchvideotitle);
-if(isset($matches1[2][0])){
-$imagelink = $matches1[2][0];
-}else {
-	$imagelink = '';
-	}
-
-
-	 if(!empty($mygoogledrivevideo[$i])){
-	if(isset($_POST['videoid'])){
-
-	$videoIntId = $_POST['videoid'];
-	  $vchvideotitle= $videoext[0];
-	  $vchvideotitle = $_POST['vchvideotitle'];
-
-
-	    $filenamechange = str_replace(" ","",$matches2[2][0]);
-		putenv('GOOGLE_APPLICATION_CREDENTIALS='.public_path().'/Video Search-2ecb22ecfe7d.json');
-		$destinationPath = '/var/www/vhosts/fox-ae.com/dev.fox-ae.com/public/upload/videosearch/'.$videoIntId.'/';
-		File::makeDirectory($destinationPath, $mode = 0777, true, true);
-
-		$client = new Google_Client();
-		$client->addScope(Google_Service_Drive::DRIVE);
-		$client->useApplicationDefaultCredentials();
-		$service = new Google_Service_Drive($client);
-		$videoexplode =  explode('/',$googlelink2);
-		$fileId = $videoexplode[5];
-		$response = $service->files->get($fileId, array('alt' => 'media'));
-		$content = $response->getBody()->getContents();
-		file_put_contents($destinationPath.$filenamechange,$content);
-
-			if (file_exists(public_path().'/upload/videosearch/'.$videoIntId.'/'.$selectserver->intmanagesiteid.'/watermark.mp4')){
-				$file_to_delete = public_path().'/upload/videosearch/'.$videoIntId.'/'.$selectserver->intmanagesiteid.'/watermark.mp4';
-				unlink($file_to_delete);
-			}
-
-		//$vchvideotitle= $videoext[0];
-		$dataupdate = [
-			'VchTitle'=>$vchvideotitle,
-			'VchVideoName'=>$filenamechange,
-			'vchorginalfile'=>$filenamechange,
-			'VchFolderPath' => 'upload/videosearch/'.$videoIntId,
-			'vchgoogledrivelink' => '',
-			"EnumUploadType"=>'G',
-			"EnumType"=>'V',
-			'VchVideothumbnail'=>$imagelink
-		];
-
-		//['VchTitle'=>$vchvideotitle,'vchgoogledrivelink' => $googlelink,"EnumUploadType"=>'G','VchVideothumbnail'=>$imagelink]
-      DB::table('tbl_Video')->where('IntId', $videoIntId)->update($dataupdate);
-
-	$Watermark = DB::table('tblwatermarklogo')->where('vchtype','V')->where('enumstatus','A')->where('vchsiteid',$selectserver->intmanagesiteid)->first();
-	$watermarklogo = public_path().'/upload/watermark/'.$Watermark->vchwatermarklogoname;
-
-	shell_exec('ffmpeg -i upload/videosearch/'.$videoIntId.'/'.$filenamechange.' -i '.$watermarklogo.' -filter_complex  "overlay=(main_w-overlay_w)/2:(main_h-overlay_h)/2" -codec:a copy upload/videosearch/'.$videoIntId.'/'.$selectserver->intmanagesiteid.'/watermark.mp4');
-
-		 $lastinsertid =$_POST['videoid'];
-
-
-	}else {
-
-	$filenamechange = str_replace(" ","",$matches2[2][0]);
-	$vchvideotitle= $videoext[0];
-	//'VchFolderPath' => 'upload/videosearch/'.$videoIntId,
-	$dataupdate = [
-			'VchTitle'=>$vchvideotitle,
-			'VchVideoName'=>$filenamechange,
-			'vchorginalfile'=>$filenamechange,
-			'vchgoogledrivelink' => '',
-			"EnumUploadType"=>'G',
-			"EnumType"=>'V',
-			'VchVideothumbnail'=>$imagelink,
-			'vchsiteid'=>((!empty($multisite))?implode(",",$multisite):"")
-		];
-
-	//['VchTitle'=>$vchvideotitle,'vchgoogledrivelink' => $googlelink,"EnumUploadType"=>'G','VchVideothumbnail'=>$imagelink,'vchsiteid'=>$multisite]
-	$lastinsertid = DB::table('tbl_Video')->insertGetId($dataupdate);
-
-
-		putenv('GOOGLE_APPLICATION_CREDENTIALS='.public_path().'/Video Search-2ecb22ecfe7d.json');
-		$destinationPath = '/var/www/vhosts/fox-ae.com/dev.fox-ae.com/public/upload/videosearch/'.$lastinsertid.'/';
-		File::makeDirectory($destinationPath, $mode = 0777, true, true);
-
-		$client = new Google_Client();
-		$client->addScope(Google_Service_Drive::DRIVE);
-		$client->useApplicationDefaultCredentials();
-		$service = new Google_Service_Drive($client);
-		$videoexplode =  explode('/',$googlelink2);
-		$fileId = $videoexplode[5];
-		$response = $service->files->get($fileId, array('alt' => 'media'));
-		$content = $response->getBody()->getContents();
-		file_put_contents($destinationPath.$filenamechange,$content);
-		$servername = $_SERVER['SERVER_NAME'];
-		$selectserver = DB::table('tbl_managesite')->where('txtsiteurl',$servername)->first();
-
-		$Watermark = DB::table('tblwatermarklogo')->where('vchtype','V')->where('enumstatus','A')->where('vchsiteid',$selectserver->intmanagesiteid)->first();
-		$watermarklogo = public_path().'/upload/watermark/'.$Watermark->vchwatermarklogoname;
-		shell_exec('ffmpeg -i upload/videosearch/'.$lastinsertid.'/'.$filenamechange.' -i '.$watermarklogo.' -filter_complex  "overlay=(main_w-overlay_w)/2:(main_h-overlay_h)/2" -codec:a copy upload/videosearch/'.$lastinsertid.'/'.$selectserver->intmanagesiteid.'/watermark.mp4');
-
-		$updatefolderpath = [
-			'VchFolderPath' => 'upload/videosearch/'.$lastinsertid,
-		];
-		DB::table('tbl_Video')->where('IntId', $lastinsertid)->update($updatefolderpath);
-	}
-
-	  	if(!empty($_FILES["file"]['name'])){
-
-        //get provided file information
-      $fileName= $_FILES["file"]['name'];
-	 $fileExtArr  = explode('.',$fileName);//make array of file.name.ext as    array(file,name,ext)
-        $fileExt     = strtolower(end($fileExtArr));//get last item of array of user file input
-        $fileSize    = $_FILES["file"]['size'];
-        $fileTmp     = $_FILES["file"]['tmp_name'];
-
-		$path1 = 'upload/'.'videosearch/'.$lastinsertid.'/'.$fileName;
-        if(empty($errors)){
-             move_uploaded_file($fileTmp, $path1);
-
-         DB::table('tbl_Video')->where('IntId', $lastinsertid)->update(['Vchcustomthumbnail'=> $fileName]);
-
+    $myvchvideotitle = $matches2[2][0];
+    $videoext =explode('.',$myvchvideotitle);
+    if(isset($matches1[2][0])){
+    $imagelink = $matches1[2][0];
+    }else {
+        $imagelink = '';
         }
 
 
-}
-	$filteringcategory = $_POST['filteringcategory'];
-	$videoid = $lastinsertid;
-	$allvideodata = DB::table('tbl_Video')->where("IntId",$videoid)->first();
-	$videotitle = $allvideodata->VchTitle;
-	$VchVideoName = $allvideodata->VchVideoName;
-	$videoext = pathinfo($VchVideoName, PATHINFO_EXTENSION);
-	$VchVideothumbnail = $allvideodata->VchVideothumbnail;
-	$thumbnailext = pathinfo($VchVideothumbnail, PATHINFO_EXTENSION);
-	$VchFolderPath = $allvideodata->VchFolderPath;
-	$videotype = $allvideodata->EnumType;
-	if(isset($_POST['tags'])){
-	DB::table('tbl_SearchcategoryVideoRelationship')->where('IntVideoID', $videoid)->delete();
-	$tagid= $_POST['tags'];
-    for($j=0;$j<count($tagid);$j++){
-	$mytagid = $tagid[$j];
+         if(!empty($mygoogledrivevideo[$i])){
+        if(isset($_POST['videoid'])){
 
-		$checkexit = DB::table('tbl_Searchcategory')->where("VchCategoryTitle",$tagid[$j])->orWhere("IntId",$tagid[$j])->first();
-		if(empty($checkexit)){
-			DB::table('tbl_Searchcategory')->insert(
-				 array(
-						'VchCategoryTitle'=>$tagid[$j],
-						'VchDescripation'=> "",
-						'IntParent'=> 0
-				 )
-			);
-			$tagnewid = DB::getPdo()->lastInsertId();
-		}else{
-			$tagnewid = $checkexit->IntId;
-		}
+        $videoIntId = $_POST['videoid'];
+          $vchvideotitle= $videoext[0];
+          $vchvideotitle = $_POST['vchvideotitle'];
 
 
-	$searchcategory = DB::table('tbl_Searchcategory')->select('VchCategoryTitle')->where("IntId",$tagnewid)->first();
-	$VchCategoryTitle = $searchcategory->VchCategoryTitle;
-	DB::table('tbl_SearchcategoryVideoRelationship')->insert(['IntCategorid'=>$tagnewid,'VchSearchcategorytitle' =>$VchCategoryTitle,'IntVideoID'=>$videoid]);
+            $filenamechange = str_replace(" ","",$matches2[2][0]);
+            putenv('GOOGLE_APPLICATION_CREDENTIALS='.public_path().'/Video Search-2ecb22ecfe7d.json');
+            $destinationPath = '/var/www/vhosts/fox-ae.com/dev.fox-ae.com/public/upload/videosearch/'.$videoIntId.'/';
+            File::makeDirectory($destinationPath, $mode = 0777, true, true);
 
-	}
-	}
+            $client = new Google_Client();
+            $client->addScope(Google_Service_Drive::DRIVE);
+            $client->useApplicationDefaultCredentials();
+            $service = new Google_Service_Drive($client);
+            $videoexplode =  explode('/',$googlelink2);
+            $fileId = $videoexplode[5];
+            $response = $service->files->get($fileId, array('alt' => 'media'));
+            $content = $response->getBody()->getContents();
+            file_put_contents($destinationPath.$filenamechange,$content);
 
-   if(isset($filteringcategory['VchGenderTagid'])){
-	$videotitle .= "_".$filteringcategory['VchGenderTagid'];
+                if (file_exists(public_path().'/upload/videosearch/'.$videoIntId.'/'.$selectserver->intmanagesiteid.'/watermark.mp4')){
+                    $file_to_delete = public_path().'/upload/videosearch/'.$videoIntId.'/'.$selectserver->intmanagesiteid.'/watermark.mp4';
+                    unlink($file_to_delete);
+                }
 
-	}else {
-		$videotitle .= "_".'0';
+            //$vchvideotitle= $videoext[0];
+            $dataupdate = [
+                'VchTitle'=>$vchvideotitle,
+                'VchVideoName'=>$filenamechange,
+                'vchorginalfile'=>$filenamechange,
+                'VchFolderPath' => 'upload/videosearch/'.$videoIntId,
+                'vchgoogledrivelink' => '',
+                "EnumUploadType"=>'G',
+                "EnumType"=>'V',
+                'VchVideothumbnail'=>$imagelink
+            ];
 
-	}
+            //['VchTitle'=>$vchvideotitle,'vchgoogledrivelink' => $googlelink,"EnumUploadType"=>'G','VchVideothumbnail'=>$imagelink]
+          DB::table('tbl_Video')->where('IntId', $videoIntId)->update($dataupdate);
 
- foreach ($filteringcategory as $key =>$result) {
+        $Watermark = DB::table('tblwatermarklogo')->where('vchtype','V')->where('enumstatus','A')->where('vchsiteid',$selectserver->intmanagesiteid)->first();
+        $watermarklogo = public_path().'/upload/watermark/'.$Watermark->vchwatermarklogoname;
+
+        shell_exec('ffmpeg -i upload/videosearch/'.$videoIntId.'/'.$filenamechange.' -i '.$watermarklogo.' -filter_complex  "overlay=(main_w-overlay_w)/2:(main_h-overlay_h)/2" -codec:a copy upload/videosearch/'.$videoIntId.'/'.$selectserver->intmanagesiteid.'/watermark.mp4');
+
+             $lastinsertid =$_POST['videoid'];
 
 
-	$getvideosearch = DB::table('tbl_Videotagrelations')->select('IntId')->where("VchVideoId",$videoid)->first();
-	if(!empty($getvideosearch)){
-		$videoIntId = $getvideosearch->IntId;
-	}else {
-		$videoIntId = '';
-	}
-		if(!empty($result)){
-		$searchcategory = DB::table('tbl_Tagtype')->select('vchTitle')->where("Intid",$result)->first();
-		//$videotitle .= $searchcategory->VchCategoryTitle."_";
-		//$videotitle .=$searchcategory->vchTitle;
-	   if(!empty($videoIntId)){
-		 DB::table('tbl_Videotagrelations')->where('IntId', $videoIntId)->update([$key => $result]);
-	 }else {
-	   DB::table('tbl_Videotagrelations')->insertGetId([$key =>$result,'VchVideoId'=>$videoid]);
- 	}
+        }else {
 
-	 if($key=='VchRaceTagID'){
-	$videotitle .= "R".$result;
-	}
-   if($key=='VchCategoryTagID'){
-	$videotitle .= "C".$result;
-	}
-	}else {
-	$searchcategory = DB::table('tbl_Tagtype')->select('vchTitle')->where("Intid",$result)->first();
-		//$videotitle .= $searchcategory->VchCategoryTitle."_";
-		//$videotitle .=$searchcategory->vchTitle;
-	   if(!empty($videoIntId)){
-		 DB::table('tbl_Videotagrelations')->where('IntId', $videoIntId)->update([$key => 0]);
-	 }else {
-	   DB::table('tbl_Videotagrelations')->insertGetId([$key =>0,'VchVideoId'=>$videoid]);
- 	}
+        $filenamechange = str_replace(" ","",$matches2[2][0]);
+        $vchvideotitle= $videoext[0];
+        //'VchFolderPath' => 'upload/videosearch/'.$videoIntId,
+        $dataupdate = [
+                'VchTitle'=>$vchvideotitle,
+                'VchVideoName'=>$filenamechange,
+                'vchorginalfile'=>$filenamechange,
+                'vchgoogledrivelink' => '',
+                "EnumUploadType"=>'G',
+                "EnumType"=>'V',
+                'VchVideothumbnail'=>$imagelink,
+                'vchsiteid'=>((!empty($multisite))?implode(",",$multisite):"")
+            ];
 
-	 if($key=='VchRaceTagID'){
-	$videotitle .= "R".$result;
-	}
-   if($key=='VchCategoryTagID'){
-	$videotitle .= "C".$result;
-	}
+        //['VchTitle'=>$vchvideotitle,'vchgoogledrivelink' => $googlelink,"EnumUploadType"=>'G','VchVideothumbnail'=>$imagelink,'vchsiteid'=>$multisite]
+        $lastinsertid = DB::table('tbl_Video')->insertGetId($dataupdate);
 
-		}
-	}
-	$videoname = $videotitle.'.'.$videoext;
-	}
-	}
-}else{
 
-	$videoIntId = $_POST['videoid'];
-	$vchvideotitle = $_POST['vchvideotitle'];
+            putenv('GOOGLE_APPLICATION_CREDENTIALS='.public_path().'/Video Search-2ecb22ecfe7d.json');
+            $destinationPath = '/var/www/vhosts/fox-ae.com/dev.fox-ae.com/public/upload/videosearch/'.$lastinsertid.'/';
+            File::makeDirectory($destinationPath, $mode = 0777, true, true);
 
-		$dataupdate = [
-			'VchTitle'=>$vchvideotitle,
-			'vchgoogledrivelink' => '',
-			"EnumUploadType"=>'G',
-			"EnumType"=>'V',
+            $client = new Google_Client();
+            $client->addScope(Google_Service_Drive::DRIVE);
+            $client->useApplicationDefaultCredentials();
+            $service = new Google_Service_Drive($client);
+            $videoexplode =  explode('/',$googlelink2);
+            $fileId = $videoexplode[5];
+            $response = $service->files->get($fileId, array('alt' => 'media'));
+            $content = $response->getBody()->getContents();
+            file_put_contents($destinationPath.$filenamechange,$content);
+            $servername = $_SERVER['SERVER_NAME'];
+            $selectserver = DB::table('tbl_managesite')->where('txtsiteurl',$servername)->first();
 
-		];
+            $Watermark = DB::table('tblwatermarklogo')->where('vchtype','V')->where('enumstatus','A')->where('vchsiteid',$selectserver->intmanagesiteid)->first();
+            $watermarklogo = public_path().'/upload/watermark/'.$Watermark->vchwatermarklogoname;
+            shell_exec('ffmpeg -i upload/videosearch/'.$lastinsertid.'/'.$filenamechange.' -i '.$watermarklogo.' -filter_complex  "overlay=(main_w-overlay_w)/2:(main_h-overlay_h)/2" -codec:a copy upload/videosearch/'.$lastinsertid.'/'.$selectserver->intmanagesiteid.'/watermark.mp4');
 
-		//['VchTitle'=>$vchvideotitle,'vchgoogledrivelink' => $googlelink,"EnumUploadType"=>'G','VchVideothumbnail'=>$imagelink]
-      DB::table('tbl_Video')->where('IntId', $videoIntId)->update($dataupdate);
-
-	  	if(!empty($_FILES["file"]['name'])){
-        //get provided file information
-      $fileName= $_FILES["file"]['name'];
-	 $fileExtArr  = explode('.',$fileName);//make array of file.name.ext as    array(file,name,ext)
-        $fileExt     = strtolower(end($fileExtArr));//get last item of array of user file input
-        $fileSize    = $_FILES["file"]['size'];
-        $fileTmp     = $_FILES["file"]['tmp_name'];
-
-		$path1 = 'upload/'.'videosearch/'.$videoIntId.'/'.$fileName;
-        if(empty($errors)){
-             move_uploaded_file($fileTmp, $path1);
-
-         DB::table('tbl_Video')->where('IntId', $videoIntId)->update(['Vchcustomthumbnail'=> $fileName]);
-		 $lastinsertid=$videoIntId;
+            $updatefolderpath = [
+                'VchFolderPath' => 'upload/videosearch/'.$lastinsertid,
+            ];
+            DB::table('tbl_Video')->where('IntId', $lastinsertid)->update($updatefolderpath);
         }
 
+            if(!empty($_FILES["file"]['name'])){
 
-}
+            //get provided file information
+          $fileName= $_FILES["file"]['name'];
+         $fileExtArr  = explode('.',$fileName);//make array of file.name.ext as    array(file,name,ext)
+            $fileExt     = strtolower(end($fileExtArr));//get last item of array of user file input
+            $fileSize    = $_FILES["file"]['size'];
+            $fileTmp     = $_FILES["file"]['tmp_name'];
 
-}
+            $path1 = 'upload/'.'videosearch/'.$lastinsertid.'/'.$fileName;
+            if(empty($errors)){
+                 move_uploaded_file($fileTmp, $path1);
 
-}else {
- if(isset($_POST['videoida'])){
+             DB::table('tbl_Video')->where('IntId', $lastinsertid)->update(['Vchcustomthumbnail'=> $fileName]);
 
-	//DB::table('tbl_Video')->where('IntId', $_POST['videoida'])->update(['VchTitle'=>$_POST['vchvideotitle']]);
-    $videoid = $_POST['videoida'];
-	$lastinsertid = $_POST['videoida'];
-	$filteringcategory = $_POST['filteringcategory'];
-
-
-	//$vchvideotitle= $_POST['vchvideotitle'];
-      //DB::table('tbl_Video')->where('IntId', $videoid)->update(['VchTitle'=>$vchvideotitle]);
-
-	$allvideodata = DB::table('tbl_Video')->where("IntId",$videoid)->first();
-	$videotitle = $allvideodata->VchTitle;
-	$VchVideoName = str_replace(' ', '', $allvideodata->VchVideoName);
-	$videoext = pathinfo($VchVideoName, PATHINFO_EXTENSION);
-	$VchVideothumbnail = $allvideodata->VchVideothumbnail;
-	$thumbnailext = pathinfo($VchVideothumbnail, PATHINFO_EXTENSION);
-	$VchFolderPath = $allvideodata->VchFolderPath;
-	$videotype = $allvideodata->EnumType;
-	DB::table('tbl_SearchcategoryVideoRelationship')->where('IntVideoID', '=', $videoid)->delete();
-	if(isset($_POST['tags'])){
-	$tagid= $_POST['tags'];
-    for($j=0;$j<count($tagid);$j++){
-	$mytagid = $tagid[$j];
-
-	$checkexit = DB::table('tbl_Searchcategory')->where("VchCategoryTitle",$tagid[$j])->orWhere("IntId",$tagid[$j])->first();
-		if(empty($checkexit)){
-			DB::table('tbl_Searchcategory')->insert(
-				 array(
-						'VchCategoryTitle'=>$tagid[$j],
-						'VchDescripation'=> "",
-						'IntParent'=> 0
-				 )
-			);
-			$tagnewid = DB::getPdo()->lastInsertId();
-		}else{
-			$tagnewid = $checkexit->IntId;
-		}
-	$searchcategory = DB::table('tbl_Searchcategory')->select('VchCategoryTitle')->where("IntId",$tagnewid)->first();
-	$VchCategoryTitle = $searchcategory->VchCategoryTitle;
-	DB::table('tbl_SearchcategoryVideoRelationship')->insert(['IntCategorid'=>$tagnewid,'VchSearchcategorytitle' =>$VchCategoryTitle,'IntVideoID'=>$videoid]);
-
-	}
-	}
-
-   if(isset($filteringcategory['VchGenderTagid'])){
-	$videotitle .= "_".$filteringcategory['VchGenderTagid'];
-
-	}else {
-		$videotitle .= "_".'0';
-
-	}
-
- foreach ($filteringcategory as $key =>$result) {
+            }
 
 
-	$getvideosearch = DB::table('tbl_Videotagrelations')->select('IntId')->where("VchVideoId",$videoid)->first();
-	if(!empty($getvideosearch)){
-		$videoIntId = $getvideosearch->IntId;
-	}else {
-		$videoIntId = '';
-	}
-		if(!empty($result)){
-		$searchcategory = DB::table('tbl_Tagtype')->select('vchTitle')->where("Intid",$result)->first();
-		//$videotitle .= $searchcategory->VchCategoryTitle."_";
-		//$videotitle .=$searchcategory->vchTitle;
-	   if(!empty($videoIntId)){
-		 DB::table('tbl_Videotagrelations')->where('IntId', $videoIntId)->update([$key => $result]);
-	 }else {
-	   DB::table('tbl_Videotagrelations')->insertGetId([$key =>$result,'VchVideoId'=>$videoid]);
- 	}
+    }
+        $filteringcategory = $_POST['filteringcategory'];
+        $videoid = $lastinsertid;
+        $allvideodata = DB::table('tbl_Video')->where("IntId",$videoid)->first();
+        $videotitle = $allvideodata->VchTitle;
+        $VchVideoName = $allvideodata->VchVideoName;
+        $videoext = pathinfo($VchVideoName, PATHINFO_EXTENSION);
+        $VchVideothumbnail = $allvideodata->VchVideothumbnail;
+        $thumbnailext = pathinfo($VchVideothumbnail, PATHINFO_EXTENSION);
+        $VchFolderPath = $allvideodata->VchFolderPath;
+        $videotype = $allvideodata->EnumType;
+        if(isset($_POST['tags'])){
+        DB::table('tbl_SearchcategoryVideoRelationship')->where('IntVideoID', $videoid)->delete();
+        $tagid= $_POST['tags'];
+        for($j=0;$j<count($tagid);$j++){
+        $mytagid = $tagid[$j];
 
-	 if($key=='VchRaceTagID'){
-	$videotitle .= "R".$result;
-	}
-   if($key=='VchCategoryTagID'){
-	$videotitle .= "C".$result;
-	}
-	}else {
-	$searchcategory = DB::table('tbl_Tagtype')->select('vchTitle')->where("Intid",$result)->first();
-		//$videotitle .= $searchcategory->VchCategoryTitle."_";
-		//$videotitle .=$searchcategory->vchTitle;
-	   if(!empty($videoIntId)){
-		 DB::table('tbl_Videotagrelations')->where('IntId', $videoIntId)->update([$key => 0]);
-	 }else {
-	   DB::table('tbl_Videotagrelations')->insertGetId([$key =>0,'VchVideoId'=>$videoid]);
- 	}
-
-	 if($key=='VchRaceTagID'){
-	$videotitle .= "R".$result;
-	}
-   if($key=='VchCategoryTagID'){
-	$videotitle .= "C".$result;
-	}
-	}
-	}
-	$videoname = $videotitle.'.'.$videoext;
-	if($videotype=='V'){
-	$VchVideothumbnail1 = $videotitle.'.'.$thumbnailext;
-
-	}else {
-
-		$VchVideothumbnail1 = $VchVideothumbnail;
-
-	}
-}
-}
-}
-
-if(!empty($_POST['videoida'])){
-
-	$videoid = $_POST['videoida'];
-	$allvideodata = DB::table('tbl_Video')->where("IntId",$videoid)->first();
-	$videotitle = $allvideodata->VchTitle;
-	$VchVideoName = str_replace(' ', '', $allvideodata->VchVideoName);
-	$videoext = pathinfo($VchVideoName, PATHINFO_EXTENSION);
-	$VchVideothumbnail = $allvideodata->VchVideothumbnail;
-	$thumbnailext = pathinfo($VchVideothumbnail, PATHINFO_EXTENSION);
-	$VchFolderPath = $allvideodata->VchFolderPath;
-	$videotype = $allvideodata->EnumType;
-	 $filteringcategory = $_POST['filteringcategory'];
-	DB::table('tbl_SearchcategoryVideoRelationship')->where('IntVideoID', '=', $videoid)->delete();
-	if(isset($_POST['tags'])){
-	$tagid= $_POST['tags'];
-    for($j=0;$j<count($tagid);$j++){
-	$mytagid = $tagid[$j];
-
-	$checkexit = DB::table('tbl_Searchcategory')->where("VchCategoryTitle",$tagid[$j])->orWhere("IntId",$tagid[$j])->first();
-		if(empty($checkexit)){
-			DB::table('tbl_Searchcategory')->insert(
-				 array(
-						'VchCategoryTitle'=>$tagid[$j],
-						'VchDescripation'=> "",
-						'IntParent'=> 0
-				 )
-			);
-			$tagnewid = DB::getPdo()->lastInsertId();
-		}else{
-			$tagnewid = $checkexit->IntId;
-		}
-
-	$searchcategory = DB::table('tbl_Searchcategory')->select('VchCategoryTitle')->where("IntId",$tagnewid)->first();
-	$VchCategoryTitle = $searchcategory->VchCategoryTitle;
-	/* $videotitle .= $searchcategory->VchCategoryTitle."_"; */
-	DB::table('tbl_SearchcategoryVideoRelationship')->insert(['IntCategorid'=>$tagnewid,'VchSearchcategorytitle' =>$VchCategoryTitle,'IntVideoID'=>$videoid]);
-
-	}
-	}
-
-   if(isset($filteringcategory['VchGenderTagid'])){
-
-	$videotitle .= "_".$filteringcategory['VchGenderTagid'];
-
-	}else {
-		$videotitle .= "_".'0';
-
-	}
-
- foreach ($filteringcategory as $key =>$result) {
+            $checkexit = DB::table('tbl_Searchcategory')->where("VchCategoryTitle",$tagid[$j])->orWhere("IntId",$tagid[$j])->first();
+            if(empty($checkexit)){
+                DB::table('tbl_Searchcategory')->insert(
+                     array(
+                            'VchCategoryTitle'=>$tagid[$j],
+                            'VchDescripation'=> "",
+                            'IntParent'=> 0
+                     )
+                );
+                $tagnewid = DB::getPdo()->lastInsertId();
+            }else{
+                $tagnewid = $checkexit->IntId;
+            }
 
 
-	$getvideosearch = DB::table('tbl_Videotagrelations')->select('IntId')->where("VchVideoId",$videoid)->first();
-	if(!empty($getvideosearch)){
-		$videoIntId = $getvideosearch->IntId;
-	}else {
-		$videoIntId = '';
-	}
-		if(!empty($result)){
-		$searchcategory = DB::table('tbl_Tagtype')->select('vchTitle')->where("Intid",$result)->first();
-		//$videotitle .= $searchcategory->VchCategoryTitle."_";
-		//$videotitle .=$searchcategory->vchTitle;
-	   if(!empty($videoIntId)){
-		 DB::table('tbl_Videotagrelations')->where('IntId', $videoIntId)->update([$key => $result]);
-	 }else {
-	   DB::table('tbl_Videotagrelations')->insertGetId([$key =>$result,'VchVideoId'=>$videoid]);
- 	}
+        $searchcategory = DB::table('tbl_Searchcategory')->select('VchCategoryTitle')->where("IntId",$tagnewid)->first();
+        $VchCategoryTitle = $searchcategory->VchCategoryTitle;
+        DB::table('tbl_SearchcategoryVideoRelationship')->insert(['IntCategorid'=>$tagnewid,'VchSearchcategorytitle' =>$VchCategoryTitle,'IntVideoID'=>$videoid]);
 
-	 if($key=='VchRaceTagID'){
-	$videotitle .= "R".$result;
-	}
-   if($key=='VchCategoryTagID'){
-	$videotitle .= "C".$result;
-	}
-	}else {
-	$searchcategory = DB::table('tbl_Tagtype')->select('vchTitle')->where("Intid",$result)->first();
-		//$videotitle .= $searchcategory->VchCategoryTitle."_";
-		//$videotitle .=$searchcategory->vchTitle;
-	   if(!empty($videoIntId)){
-		 DB::table('tbl_Videotagrelations')->where('IntId', $videoIntId)->update([$key => 0]);
-	 }else {
-	   DB::table('tbl_Videotagrelations')->insertGetId([$key =>0,'VchVideoId'=>$videoid]);
- 	}
-
-	 if($key=='VchRaceTagID'){
-	$videotitle .= "R".$result;
-	}
-   if($key=='VchCategoryTagID'){
-	$videotitle .= "C".$result;
-	}
-
-		}
-	}
-
-	$videoname = $videotitle.'.'.$videoext;
-
-	if($videotype=='V'){
-
-	$VchVideothumbnail1 = $videotitle.'.'.$thumbnailext;
-	}else {
-		$VchVideothumbnail1 = $VchVideothumbnail;
-
-	}
-	//$videotitle
-if(empty($_REQUEST['feature'])){
-$feature='0';
-
-}else{
-$feature='1';
-}
-
-
-if(empty($_REQUEST['transparent'])){
-$transparent='N';
-}else{
-$transparent='Y';
-}
-
-
-$videoname2=str_replace(' ', '', $videoname);
-
-	DB::table('tbl_Video')->where('IntId', $_REQUEST['videoid'])->update(['Enumuploadstatus' => 'N','VchVideoName'=>$videoname2,'VchVideothumbnail'=>$VchVideothumbnail1,'feature'=>$feature,'transparent'=>$transparent,'content_category'=>$_REQUEST['content_category'],'content_category'=>$_REQUEST['content_category'],'stock_category' =>$_REQUEST['stock_category']]);
-	rename(public_path().'/'.$VchFolderPath.'/'.$VchVideoName, public_path().'/'.$VchFolderPath.'/'.$videoname2);
-
-	if($videotype=='V' && $allvideodata->EnumUploadType=='W'){
-	rename(public_path().'/'.$VchFolderPath.'/'.$VchVideothumbnail, public_path().'/'.$VchFolderPath.'/'.$VchVideothumbnail1);
-	}
-
-}
-if(isset($_POST['id'])){
-$vidid= $_REQUEST['id'];
-if(!empty($_FILES["file"])){
-        //get provided file information
-      $fileName= $_FILES["file"]['name'];
-	 $fileExtArr  = explode('.',$fileName);//make array of file.name.ext as    array(file,name,ext)
-        $fileExt     = strtolower(end($fileExtArr));//get last item of array of user file input
-        $fileSize    = $_FILES["file"]['size'];
-        $fileTmp     = $_FILES["file"]['tmp_name'];
-
-		$path1 = 'upload/'.'videosearch/'.$vidid.'/'.$fileName;
-        if(empty($errors)){
-             move_uploaded_file($fileTmp, $path1);
-
-         DB::table('tbl_Video')->where('IntId', $vidid)->update(['Vchcustomthumbnail'=> $fileName]);
-		 $lastinsertid=$vidid;
+        }
         }
 
+       if(isset($filteringcategory['VchGenderTagid'])){
+        $videotitle .= "_".$filteringcategory['VchGenderTagid'];
 
-}
-}
-if(isset($_FILES["file1"])){
-if(!empty($_FILES["file1"]["name"])){
-$filename = pathinfo($_FILES["file1"]["name"]);
+        }else {
+            $videotitle .= "_".'0';
 
-$multisite = ((@$_POST['multisite'] != "")?$_POST['multisite']:"");
-$vchvideotitle = $filename['filename'];
-}else{
-	$vchvideotitle=$_POST['vchvideotitle'];
-}
-}
-if(isset($_POST['action'])){
-	if(!empty($_POST['action'])){
-	$multisite=implode(',',$_POST['multisite']);
-	$vchvideotitle=$_POST['vchvideotitle'];
-	$myvideoid = DB::table('tbl_Video')->where('IntId', $_POST['videoid'])->update(['VchTitle' => $vchvideotitle,'vchsiteid' =>$multisite,'stock_category' =>$_REQUEST['stock_category']]);
-	$lastinsertid = $_POST['videoid'];
-}else{
-	$lastinsertid = DB::table('tbl_Video')->insertGetId(['VchTitle' => $vchvideotitle,'feature' =>$_REQUEST['feature'],'transparent' =>$_REQUEST['transparent'],'content_category' =>$_REQUEST['cont_cat'],'stock_category' =>$_REQUEST['stock_category'],'vchsiteid'=>$multisite]);
-
-	DB::table('tbl_Video')->where('IntId', $lastinsertid)->update(['seo_url'=>$this->stringReplace($vchvideotitle)."-".$lastinsertid]);
-}
-}
-//$structure = '/upload/video/'.$lastinsertid.'/';
-if(!empty($_FILES["file1"])){
-$fileName = $_FILES["file1"]["name"]; // The file name
-$fileTmpLoc = $_FILES["file1"]["tmp_name"]; // File in the PHP tmp folder
-$fileType = $_FILES["file1"]["type"]; // The type of file it is
-$fileSize = $_FILES["file1"]["size"]; // File size in bytes
-$fileErrorMsg = $_FILES["file1"]["error"]; // 0 for false... and 1 for true
-if (!$fileTmpLoc) { // if file not chosen
-    echo "ERROR: Please browse for a file before clicking the upload button.";
-    exit();
-}
-$path = public_path().'/upload/'.'videosearch/'.$lastinsertid;
-$path1 = 'upload/'.'videosearch/'.$lastinsertid;
-File::makeDirectory($path, $mode = 0777, true, true);
- $temp = explode(".", $fileName);
-$newfilename = 'org'.round(microtime(true)) . '.' . end($temp);
-$resizeimage ='';
- $destinationPath = $path.'/resize';
- File::makeDirectory($path.'/resize', $mode = 0777, true, true);
-         $allowedMimeTypes = ['tif','jpg','gif','jpeg','gif','png','bmp','svg+xml'];
-        $image = $request->file('file1');
-		//$watermarklogo = DB::table('tbl_setting')->where('vchcolumnname','watermark')->first();
-		 if(in_array(strtolower($image->getClientOriginalExtension()), $allowedMimeTypes)){
-
-		/* if(!empty($watermarklogo)){
-        $watermark =  Image::make('upload/watermark/'.$watermarklogo->Vchvalues);
-        $img = Image::make($image->getRealPath());
-       $resizeimage = time().'.'.$image->getClientOriginalExtension();
-        $watermarkSize = $img->width() - 20;
-
-     $watermarkSize = $img->width() / 2;
-
-      $resizePercentage = 70;
-     $watermarkSize = round($img->width() * ((100 - $resizePercentage) / 100), 2);
-
-     $watermark->resize($watermarkSize, null, function ($constraint) {
-    $constraint->aspectRatio();
-
-      $img->insert($watermark, 'bottom-right', 10, 10);
-      $img->resize(300, 300, function ($constraint) {$constraint->aspectRatio();})->save($destinationPath.'/'.$resizeimage);
-
-	  });
-		$watermark1 =  Image::make('upload/watermark/'.$watermarklogo->Vchvalues);
-        $img = Image::make($image->getRealPath());
-       $resizeimage1 = "watermark".time().'.'.$image->getClientOriginalExtension();
-        $watermarkSize = $img->width() - 20;
-
-     $watermarkSize = $img->width() / 2;
-
-      $resizePercentage = 70;
-     $watermarkSize = round($img->width() * ((100 - $resizePercentage) / 100), 2);
-
-     $watermark1->resize($watermarkSize, null, function ($constraint) {
-      $constraint->aspectRatio();});
-      $img->insert($watermark1, 'bottom-right', 10, 10);
-      $img->save($path.'/'.$resizeimage1);
-
-		}else { */
-
-		$img = Image::make($image->getRealPath());
-        $resizeimage = time().'.'.$image->getClientOriginalExtension();
-        $img->resize(300, 300, function ($constraint) {$constraint->aspectRatio();})->save($destinationPath.'/'.$resizeimage);
-		//}
-
-
-
-}
-$msite = explode(',',$_POST['multisite']);
-// print_r($msite);
-// exit;
-// $selectserver = DB::table('tbl_managesite')->whereIn('intmanagesiteid',$msite)->toSql();
-// print_r($selectserver);
-
-// exit;
-if(move_uploaded_file($fileTmpLoc, "$path/$newfilename")){
-  $ext = pathinfo($fileName, PATHINFO_EXTENSION);
-if($ext=='webm'||$ext=='wmv'||$ext=='mkv'||$ext=='m4v'||$ext=='flv' ||$ext=='vob'||$ext=='mp4'){
- $video = public_path().'/upload/'.'videosearch/'.$lastinsertid.'/'.$newfilename;
- $thumbnailimage = round(microtime(true)).'thumbnail.jpg';
-$thumbnail = public_path().'/upload/'.'videosearch/'.$lastinsertid.'/'.$thumbnailimage;
-shell_exec("ffmpeg -i $video -deinterlace -an -ss 1 -t 00:00:01 -r 1 -y -vcodec mjpeg -f mjpeg $thumbnail 2>&1");
-
-//$servername = $_SERVER['SERVER_NAME'];
-
-$selectserver = DB::table('tbl_managesite')->whereIn('intmanagesiteid',$msite)->get();
-foreach($selectserver as $selectservers){
- mkdir('upload/videosearch/'.$lastinsertid.'/'.$selectservers->intmanagesiteid, 0777);
-
-$Watermark = DB::table('tblwatermarklogo')->where('vchtype','V')->where('enumstatus','A')->where('vchsiteid',$selectservers->intmanagesiteid)->first();
-if(!empty($Watermark)){
-
-	$watermarklogo = public_path().'/upload/watermark/'.$Watermark->vchwatermarklogoname;
-	shell_exec('ffmpeg -i upload/'.'videosearch/'.$lastinsertid.'/'.$newfilename.' -i '.$watermarklogo.' -filter_complex  "overlay=(main_w-overlay_w)/2:(main_h-overlay_h)/2" -codec:a copy upload/videosearch/'.$lastinsertid.'/'.$selectservers->intmanagesiteid.'/watermark.mp4');
-}
-	}
-
-	if($_REQUEST['stock_category']=='stock'){
-		$stock='3';
-	}else{
-		$stock='4';
-
-	}
- DB::table('tbl_Video')->where('IntId', $lastinsertid)->update(['VchFolderPath'=>$path1,'VchVideoName'=>$newfilename,'VchVideothumbnail'=>$thumbnailimage,'EnumType'=>'V','stock_category' =>$stock]);
-}else {
-
-	if($_REQUEST['stock_category']=='stock'){
-		$stock='1';
-	}else{
-		$stock='2';
-
-	}
-	$vchorginalfile = $newfilename;
-	if(!empty($resizeimage1)){
-	$newfilename = $resizeimage1;
-	}
-DB::table('tbl_Video')->where('IntId', $lastinsertid)->update(['VchTitle'=> $vchvideotitle,'VchFolderPath'=>$path1,'VchVideoName'=>$newfilename,'VchVideothumbnail'=>$newfilename,'VchResizeimage'=>$resizeimage,'EnumType'=>'I','vchorginalfile'=>$vchorginalfile,'stock_category' =>$stock]);
-}
-} else {
- }
-if(!empty($_FILES["thumbfile"])){
-        //get provided file information
-      $fileName= $_FILES["thumbfile"]['name'];
-	 $fileExtArr  = explode('.',$fileName);//make array of file.name.ext as    array(file,name,ext)
-        $fileExt     = strtolower(end($fileExtArr));//get last item of array of user file input
-        $fileSize    = $_FILES["thumbfile"]['size'];
-        $fileTmp     = $_FILES["thumbfile"]['tmp_name'];
-
-		$path1 = 'upload/'.'videosearch/'.$lastinsertid.'/'.$fileName;
-        if(empty($errors)){
-             move_uploaded_file($fileTmp, $path1);
-
-         DB::table('tbl_Video')->where('IntId', $lastinsertid)->update(['Vchcustomthumbnail'=> $fileName]);
         }
 
-
-}
-
-
- }
+     foreach ($filteringcategory as $key =>$result) {
 
 
+        $getvideosearch = DB::table('tbl_Videotagrelations')->select('IntId')->where("VchVideoId",$videoid)->first();
+        if(!empty($getvideosearch)){
+            $videoIntId = $getvideosearch->IntId;
+        }else {
+            $videoIntId = '';
+        }
+            if(!empty($result)){
+            $searchcategory = DB::table('tbl_Tagtype')->select('vchTitle')->where("Intid",$result)->first();
+            //$videotitle .= $searchcategory->VchCategoryTitle."_";
+            //$videotitle .=$searchcategory->vchTitle;
+           if(!empty($videoIntId)){
+             DB::table('tbl_Videotagrelations')->where('IntId', $videoIntId)->update([$key => $result]);
+         }else {
+           DB::table('tbl_Videotagrelations')->insertGetId([$key =>$result,'VchVideoId'=>$videoid]);
+        }
 
-echo $returnarray = json_encode(array('videoid'=>$lastinsertid));
+         if($key=='VchRaceTagID'){
+        $videotitle .= "R".$result;
+        }
+       if($key=='VchCategoryTagID'){
+        $videotitle .= "C".$result;
+        }
+        }else {
+        $searchcategory = DB::table('tbl_Tagtype')->select('vchTitle')->where("Intid",$result)->first();
+            //$videotitle .= $searchcategory->VchCategoryTitle."_";
+            //$videotitle .=$searchcategory->vchTitle;
+           if(!empty($videoIntId)){
+             DB::table('tbl_Videotagrelations')->where('IntId', $videoIntId)->update([$key => 0]);
+         }else {
+           DB::table('tbl_Videotagrelations')->insertGetId([$key =>0,'VchVideoId'=>$videoid]);
+        }
+
+         if($key=='VchRaceTagID'){
+        $videotitle .= "R".$result;
+        }
+       if($key=='VchCategoryTagID'){
+        $videotitle .= "C".$result;
+        }
+
+            }
+        }
+        $videoname = $videotitle.'.'.$videoext;
+        }
+        }
+    }else{
+
+        $videoIntId = $_POST['videoid'];
+        $vchvideotitle = $_POST['vchvideotitle'];
+
+            $dataupdate = [
+                'VchTitle'=>$vchvideotitle,
+                'vchgoogledrivelink' => '',
+                "EnumUploadType"=>'G',
+                "EnumType"=>'V',
+
+            ];
+
+            //['VchTitle'=>$vchvideotitle,'vchgoogledrivelink' => $googlelink,"EnumUploadType"=>'G','VchVideothumbnail'=>$imagelink]
+          DB::table('tbl_Video')->where('IntId', $videoIntId)->update($dataupdate);
+
+            if(!empty($_FILES["file"]['name'])){
+            //get provided file information
+          $fileName= $_FILES["file"]['name'];
+         $fileExtArr  = explode('.',$fileName);//make array of file.name.ext as    array(file,name,ext)
+            $fileExt     = strtolower(end($fileExtArr));//get last item of array of user file input
+            $fileSize    = $_FILES["file"]['size'];
+            $fileTmp     = $_FILES["file"]['tmp_name'];
+
+            $path1 = 'upload/'.'videosearch/'.$videoIntId.'/'.$fileName;
+            if(empty($errors)){
+                 move_uploaded_file($fileTmp, $path1);
+
+             DB::table('tbl_Video')->where('IntId', $videoIntId)->update(['Vchcustomthumbnail'=> $fileName]);
+             $lastinsertid=$videoIntId;
+            }
+
+
+    }
+
+    }
+
+    }else {
+     if(isset($_POST['videoida'])){
+
+        //DB::table('tbl_Video')->where('IntId', $_POST['videoida'])->update(['VchTitle'=>$_POST['vchvideotitle']]);
+        $videoid = $_POST['videoida'];
+        $lastinsertid = $_POST['videoida'];
+        $filteringcategory = $_POST['filteringcategory'];
+
+
+        //$vchvideotitle= $_POST['vchvideotitle'];
+          //DB::table('tbl_Video')->where('IntId', $videoid)->update(['VchTitle'=>$vchvideotitle]);
+
+        $allvideodata = DB::table('tbl_Video')->where("IntId",$videoid)->first();
+        $videotitle = $allvideodata->VchTitle;
+        $VchVideoName = str_replace(' ', '', $allvideodata->VchVideoName);
+        $videoext = pathinfo($VchVideoName, PATHINFO_EXTENSION);
+        $VchVideothumbnail = $allvideodata->VchVideothumbnail;
+        $thumbnailext = pathinfo($VchVideothumbnail, PATHINFO_EXTENSION);
+        $VchFolderPath = $allvideodata->VchFolderPath;
+        $videotype = $allvideodata->EnumType;
+        DB::table('tbl_SearchcategoryVideoRelationship')->where('IntVideoID', '=', $videoid)->delete();
+        if(isset($_POST['tags'])){
+        $tagid= $_POST['tags'];
+        for($j=0;$j<count($tagid);$j++){
+        $mytagid = $tagid[$j];
+
+        $checkexit = DB::table('tbl_Searchcategory')->where("VchCategoryTitle",$tagid[$j])->orWhere("IntId",$tagid[$j])->first();
+            if(empty($checkexit)){
+                DB::table('tbl_Searchcategory')->insert(
+                     array(
+                            'VchCategoryTitle'=>$tagid[$j],
+                            'VchDescripation'=> "",
+                            'IntParent'=> 0
+                     )
+                );
+                $tagnewid = DB::getPdo()->lastInsertId();
+            }else{
+                $tagnewid = $checkexit->IntId;
+            }
+        $searchcategory = DB::table('tbl_Searchcategory')->select('VchCategoryTitle')->where("IntId",$tagnewid)->first();
+        $VchCategoryTitle = $searchcategory->VchCategoryTitle;
+        DB::table('tbl_SearchcategoryVideoRelationship')->insert(['IntCategorid'=>$tagnewid,'VchSearchcategorytitle' =>$VchCategoryTitle,'IntVideoID'=>$videoid]);
+
+        }
+        }
+
+       if(isset($filteringcategory['VchGenderTagid'])){
+        $videotitle .= "_".$filteringcategory['VchGenderTagid'];
+
+        }else {
+            $videotitle .= "_".'0';
+
+        }
+
+     foreach ($filteringcategory as $key =>$result) {
+
+
+        $getvideosearch = DB::table('tbl_Videotagrelations')->select('IntId')->where("VchVideoId",$videoid)->first();
+        if(!empty($getvideosearch)){
+            $videoIntId = $getvideosearch->IntId;
+        }else {
+            $videoIntId = '';
+        }
+            if(!empty($result)){
+            $searchcategory = DB::table('tbl_Tagtype')->select('vchTitle')->where("Intid",$result)->first();
+            //$videotitle .= $searchcategory->VchCategoryTitle."_";
+            //$videotitle .=$searchcategory->vchTitle;
+           if(!empty($videoIntId)){
+             DB::table('tbl_Videotagrelations')->where('IntId', $videoIntId)->update([$key => $result]);
+         }else {
+           DB::table('tbl_Videotagrelations')->insertGetId([$key =>$result,'VchVideoId'=>$videoid]);
+        }
+
+         if($key=='VchRaceTagID'){
+        $videotitle .= "R".$result;
+        }
+       if($key=='VchCategoryTagID'){
+        $videotitle .= "C".$result;
+        }
+        }else {
+        $searchcategory = DB::table('tbl_Tagtype')->select('vchTitle')->where("Intid",$result)->first();
+            //$videotitle .= $searchcategory->VchCategoryTitle."_";
+            //$videotitle .=$searchcategory->vchTitle;
+           if(!empty($videoIntId)){
+             DB::table('tbl_Videotagrelations')->where('IntId', $videoIntId)->update([$key => 0]);
+         }else {
+           DB::table('tbl_Videotagrelations')->insertGetId([$key =>0,'VchVideoId'=>$videoid]);
+        }
+
+         if($key=='VchRaceTagID'){
+        $videotitle .= "R".$result;
+        }
+       if($key=='VchCategoryTagID'){
+        $videotitle .= "C".$result;
+        }
+        }
+        }
+        $videoname = $videotitle.'.'.$videoext;
+        if($videotype=='V'){
+        $VchVideothumbnail1 = $videotitle.'.'.$thumbnailext;
+
+        }else {
+
+            $VchVideothumbnail1 = $VchVideothumbnail;
+
+        }
+    }
+    }
+    }
+
+    if(!empty($_POST['videoida'])){
+
+        $videoid = $_POST['videoida'];
+        $allvideodata = DB::table('tbl_Video')->where("IntId",$videoid)->first();
+        $videotitle = $allvideodata->VchTitle;
+        $VchVideoName = str_replace(' ', '', $allvideodata->VchVideoName);
+        $videoext = pathinfo($VchVideoName, PATHINFO_EXTENSION);
+        $VchVideothumbnail = $allvideodata->VchVideothumbnail;
+        $thumbnailext = pathinfo($VchVideothumbnail, PATHINFO_EXTENSION);
+        $VchFolderPath = $allvideodata->VchFolderPath;
+        $videotype = $allvideodata->EnumType;
+         $filteringcategory = $_POST['filteringcategory'];
+        DB::table('tbl_SearchcategoryVideoRelationship')->where('IntVideoID', '=', $videoid)->delete();
+        if(isset($_POST['tags'])){
+        $tagid= $_POST['tags'];
+        for($j=0;$j<count($tagid);$j++){
+        $mytagid = $tagid[$j];
+
+        $checkexit = DB::table('tbl_Searchcategory')->where("VchCategoryTitle",$tagid[$j])->orWhere("IntId",$tagid[$j])->first();
+            if(empty($checkexit)){
+                DB::table('tbl_Searchcategory')->insert(
+                     array(
+                            'VchCategoryTitle'=>$tagid[$j],
+                            'VchDescripation'=> "",
+                            'IntParent'=> 0
+                     )
+                );
+                $tagnewid = DB::getPdo()->lastInsertId();
+            }else{
+                $tagnewid = $checkexit->IntId;
+            }
+
+        $searchcategory = DB::table('tbl_Searchcategory')->select('VchCategoryTitle')->where("IntId",$tagnewid)->first();
+        $VchCategoryTitle = $searchcategory->VchCategoryTitle;
+        /* $videotitle .= $searchcategory->VchCategoryTitle."_"; */
+        DB::table('tbl_SearchcategoryVideoRelationship')->insert(['IntCategorid'=>$tagnewid,'VchSearchcategorytitle' =>$VchCategoryTitle,'IntVideoID'=>$videoid]);
+
+        }
+        }
+
+       if(isset($filteringcategory['VchGenderTagid'])){
+
+        $videotitle .= "_".$filteringcategory['VchGenderTagid'];
+
+        }else {
+            $videotitle .= "_".'0';
+
+        }
+
+     foreach ($filteringcategory as $key =>$result) {
+
+
+        $getvideosearch = DB::table('tbl_Videotagrelations')->select('IntId')->where("VchVideoId",$videoid)->first();
+        if(!empty($getvideosearch)){
+            $videoIntId = $getvideosearch->IntId;
+        }else {
+            $videoIntId = '';
+        }
+            if(!empty($result)){
+            $searchcategory = DB::table('tbl_Tagtype')->select('vchTitle')->where("Intid",$result)->first();
+            //$videotitle .= $searchcategory->VchCategoryTitle."_";
+            //$videotitle .=$searchcategory->vchTitle;
+           if(!empty($videoIntId)){
+             DB::table('tbl_Videotagrelations')->where('IntId', $videoIntId)->update([$key => $result]);
+         }else {
+           DB::table('tbl_Videotagrelations')->insertGetId([$key =>$result,'VchVideoId'=>$videoid]);
+        }
+
+         if($key=='VchRaceTagID'){
+        $videotitle .= "R".$result;
+        }
+       if($key=='VchCategoryTagID'){
+        $videotitle .= "C".$result;
+        }
+        }else {
+        $searchcategory = DB::table('tbl_Tagtype')->select('vchTitle')->where("Intid",$result)->first();
+            //$videotitle .= $searchcategory->VchCategoryTitle."_";
+            //$videotitle .=$searchcategory->vchTitle;
+           if(!empty($videoIntId)){
+             DB::table('tbl_Videotagrelations')->where('IntId', $videoIntId)->update([$key => 0]);
+         }else {
+           DB::table('tbl_Videotagrelations')->insertGetId([$key =>0,'VchVideoId'=>$videoid]);
+        }
+
+         if($key=='VchRaceTagID'){
+        $videotitle .= "R".$result;
+        }
+       if($key=='VchCategoryTagID'){
+        $videotitle .= "C".$result;
+        }
+
+            }
+        }
+
+        $videoname = $videotitle.'.'.$videoext;
+
+        if($videotype=='V'){
+
+        $VchVideothumbnail1 = $videotitle.'.'.$thumbnailext;
+        }else {
+            $VchVideothumbnail1 = $VchVideothumbnail;
+
+        }
+        //$videotitle
+    if(empty($_REQUEST['feature'])){
+    $feature='0';
+
+    }else{
+    $feature='1';
+    }
+
+
+    if(empty($_REQUEST['transparent'])){
+    $transparent='N';
+    }else{
+    $transparent='Y';
+    }
+
+
+    $videoname2=str_replace(' ', '', $videoname);
+
+        DB::table('tbl_Video')->where('IntId', $_REQUEST['videoid'])->update(['Enumuploadstatus' => 'N','VchVideoName'=>$videoname2,'VchVideothumbnail'=>$VchVideothumbnail1,'feature'=>$feature,'transparent'=>$transparent,'content_category'=>$_REQUEST['content_category'],'content_category'=>$_REQUEST['content_category'],'stock_category' =>$_REQUEST['stock_category']]);
+        rename(public_path().'/'.$VchFolderPath.'/'.$VchVideoName, public_path().'/'.$VchFolderPath.'/'.$videoname2);
+
+        if($videotype=='V' && $allvideodata->EnumUploadType=='W'){
+        rename(public_path().'/'.$VchFolderPath.'/'.$VchVideothumbnail, public_path().'/'.$VchFolderPath.'/'.$VchVideothumbnail1);
+        }
+
+    }
+    if(isset($_POST['id'])){
+    $vidid= $_REQUEST['id'];
+    if(!empty($_FILES["file"])){
+            //get provided file information
+          $fileName= $_FILES["file"]['name'];
+         $fileExtArr  = explode('.',$fileName);//make array of file.name.ext as    array(file,name,ext)
+            $fileExt     = strtolower(end($fileExtArr));//get last item of array of user file input
+            $fileSize    = $_FILES["file"]['size'];
+            $fileTmp     = $_FILES["file"]['tmp_name'];
+
+            $path1 = 'upload/'.'videosearch/'.$vidid.'/'.$fileName;
+            if(empty($errors)){
+                 move_uploaded_file($fileTmp, $path1);
+
+             DB::table('tbl_Video')->where('IntId', $vidid)->update(['Vchcustomthumbnail'=> $fileName]);
+             $lastinsertid=$vidid;
+            }
+
+
+    }
+    }
+    if(isset($_FILES["file1"])){
+    if(!empty($_FILES["file1"]["name"])){
+    $filename = pathinfo($_FILES["file1"]["name"]);
+
+    $multisite = ((@$_POST['multisite'] != "")?$_POST['multisite']:"");
+    $vchvideotitle = $filename['filename'];
+    }else{
+        $vchvideotitle=$_POST['vchvideotitle'];
+    }
+    }
+    if(isset($_POST['action'])){
+        if(!empty($_POST['action'])){
+        $multisite=implode(',',$_POST['multisite']);
+        $vchvideotitle=$_POST['vchvideotitle'];
+        $myvideoid = DB::table('tbl_Video')->where('IntId', $_POST['videoid'])->update(['VchTitle' => $vchvideotitle,'vchsiteid' =>$multisite,'stock_category' =>$_REQUEST['stock_category']]);
+        $lastinsertid = $_POST['videoid'];
+    }else{
+        $lastinsertid = DB::table('tbl_Video')->insertGetId(['VchTitle' => $vchvideotitle,'feature' =>$_REQUEST['feature'],'transparent' =>$_REQUEST['transparent'],'content_category' =>$_REQUEST['cont_cat'],'stock_category' =>$_REQUEST['stock_category'],'vchsiteid'=>$multisite]);
+
+        DB::table('tbl_Video')->where('IntId', $lastinsertid)->update(['seo_url'=>$this->stringReplace($vchvideotitle)."-".$lastinsertid]);
+    }
+    }
+    //$structure = '/upload/video/'.$lastinsertid.'/';
+    if(!empty($_FILES["file1"])){
+    $fileName = $_FILES["file1"]["name"]; // The file name
+    $fileTmpLoc = $_FILES["file1"]["tmp_name"]; // File in the PHP tmp folder
+    $fileType = $_FILES["file1"]["type"]; // The type of file it is
+    $fileSize = $_FILES["file1"]["size"]; // File size in bytes
+    $fileErrorMsg = $_FILES["file1"]["error"]; // 0 for false... and 1 for true
+    if (!$fileTmpLoc) { // if file not chosen
+        echo "ERROR: Please browse for a file before clicking the upload button.";
+        exit();
+    }
+    $path = public_path().'/upload/'.'videosearch/'.$lastinsertid;
+    $path1 = 'upload/'.'videosearch/'.$lastinsertid;
+    File::makeDirectory($path, $mode = 0777, true, true);
+     $temp = explode(".", $fileName);
+    $newfilename = 'org'.round(microtime(true)) . '.' . end($temp);
+    $resizeimage ='';
+     $destinationPath = $path.'/resize';
+     File::makeDirectory($path.'/resize', $mode = 0777, true, true);
+             $allowedMimeTypes = ['tif','jpg','gif','jpeg','gif','png','bmp','svg+xml'];
+            $image = $request->file('file1');
+            //$watermarklogo = DB::table('tbl_setting')->where('vchcolumnname','watermark')->first();
+             if(in_array(strtolower($image->getClientOriginalExtension()), $allowedMimeTypes)){
+
+            /* if(!empty($watermarklogo)){
+            $watermark =  Image::make('upload/watermark/'.$watermarklogo->Vchvalues);
+            $img = Image::make($image->getRealPath());
+           $resizeimage = time().'.'.$image->getClientOriginalExtension();
+            $watermarkSize = $img->width() - 20;
+
+         $watermarkSize = $img->width() / 2;
+
+          $resizePercentage = 70;
+         $watermarkSize = round($img->width() * ((100 - $resizePercentage) / 100), 2);
+
+         $watermark->resize($watermarkSize, null, function ($constraint) {
+        $constraint->aspectRatio();
+
+          $img->insert($watermark, 'bottom-right', 10, 10);
+          $img->resize(300, 300, function ($constraint) {$constraint->aspectRatio();})->save($destinationPath.'/'.$resizeimage);
+
+          });
+            $watermark1 =  Image::make('upload/watermark/'.$watermarklogo->Vchvalues);
+            $img = Image::make($image->getRealPath());
+           $resizeimage1 = "watermark".time().'.'.$image->getClientOriginalExtension();
+            $watermarkSize = $img->width() - 20;
+
+         $watermarkSize = $img->width() / 2;
+
+          $resizePercentage = 70;
+         $watermarkSize = round($img->width() * ((100 - $resizePercentage) / 100), 2);
+
+         $watermark1->resize($watermarkSize, null, function ($constraint) {
+          $constraint->aspectRatio();});
+          $img->insert($watermark1, 'bottom-right', 10, 10);
+          $img->save($path.'/'.$resizeimage1);
+
+            }else { */
+
+            $img = Image::make($image->getRealPath());
+            $resizeimage = time().'.'.$image->getClientOriginalExtension();
+            $img->resize(300, 300, function ($constraint) {$constraint->aspectRatio();})->save($destinationPath.'/'.$resizeimage);
+            //}
+
+
+
+    }
+    // print_r($msite);
+    // exit;
+    // $selectserver = DB::table('tbl_managesite')->whereIn('intmanagesiteid',$msite)->toSql();
+    // print_r($selectserver);
+
+    // exit;
+    if(move_uploaded_file($fileTmpLoc, "$path/$newfilename")){
+      $ext = pathinfo($fileName, PATHINFO_EXTENSION);
+    if($ext=='webm'||$ext=='wmv'||$ext=='mkv'||$ext=='m4v'||$ext=='flv' ||$ext=='vob'||$ext=='mp4'){
+     $video = public_path().'/upload/'.'videosearch/'.$lastinsertid.'/'.$newfilename;
+     $thumbnailimage = round(microtime(true)).'thumbnail.jpg';
+    $thumbnail = public_path().'/upload/'.'videosearch/'.$lastinsertid.'/'.$thumbnailimage;
+    shell_exec("ffmpeg -i $video -deinterlace -an -ss 1 -t 00:00:01 -r 1 -y -vcodec mjpeg -f mjpeg $thumbnail 2>&1");
+
+    //$servername = $_SERVER['SERVER_NAME'];
+
+    $selectserver = DB::table('tbl_managesite')->whereIn('intmanagesiteid',$msite)->get();
+    foreach($selectserver as $selectservers){
+     mkdir('upload/videosearch/'.$lastinsertid.'/'.$selectservers->intmanagesiteid, 0777);
+
+    $Watermark = DB::table('tblwatermarklogo')->where('vchtype','V')->where('enumstatus','A')->where('vchsiteid',$selectservers->intmanagesiteid)->first();
+    if(!empty($Watermark)){
+
+        $watermarklogo = public_path().'/upload/watermark/'.$Watermark->vchwatermarklogoname;
+        shell_exec('ffmpeg -i upload/'.'videosearch/'.$lastinsertid.'/'.$newfilename.' -i '.$watermarklogo.' -filter_complex  "overlay=(main_w-overlay_w)/2:(main_h-overlay_h)/2" -codec:a copy upload/videosearch/'.$lastinsertid.'/'.$selectservers->intmanagesiteid.'/watermark.mp4');
+    }
+        }
+
+        if($_REQUEST['stock_category']=='stock'){
+            $stock='3';
+        }else{
+            $stock='4';
+
+        }
+     DB::table('tbl_Video')->where('IntId', $lastinsertid)->update(['VchFolderPath'=>$path1,'VchVideoName'=>$newfilename,'VchVideothumbnail'=>$thumbnailimage,'EnumType'=>'V','stock_category' =>$stock]);
+    }else {
+
+        if($_REQUEST['stock_category']=='stock'){
+            $stock='1';
+        }else{
+            $stock='2';
+
+        }
+        $vchorginalfile = $newfilename;
+        if(!empty($resizeimage1)){
+        $newfilename = $resizeimage1;
+        }
+    DB::table('tbl_Video')->where('IntId', $lastinsertid)->update(['VchTitle'=> $vchvideotitle,'VchFolderPath'=>$path1,'VchVideoName'=>$newfilename,'VchVideothumbnail'=>$newfilename,'VchResizeimage'=>$resizeimage,'EnumType'=>'I','vchorginalfile'=>$vchorginalfile,'stock_category' =>$stock]);
+    }
+    } else {
+     }
+    if(!empty($_FILES["thumbfile"])){
+            //get provided file information
+          $fileName= $_FILES["thumbfile"]['name'];
+         $fileExtArr  = explode('.',$fileName);//make array of file.name.ext as    array(file,name,ext)
+            $fileExt     = strtolower(end($fileExtArr));//get last item of array of user file input
+            $fileSize    = $_FILES["thumbfile"]['size'];
+            $fileTmp     = $_FILES["thumbfile"]['tmp_name'];
+
+            $path1 = 'upload/'.'videosearch/'.$lastinsertid.'/'.$fileName;
+            if(empty($errors)){
+                 move_uploaded_file($fileTmp, $path1);
+
+             DB::table('tbl_Video')->where('IntId', $lastinsertid)->update(['Vchcustomthumbnail'=> $fileName]);
+            }
+
+
+    }
+
+
+     }
+
+    foreach($msite as $siteId) {
+        try {
+            UpdateDomainPreviewImagesJob::dispatch($siteId, true);
+        } catch (Exception $e) {
+            Log::critical($e);
+        }
+    }
+
+    echo $returnarray = json_encode(array('videoid'=>$lastinsertid));
+
 }
 
 	public function stringReplace($string){
@@ -5561,15 +5572,32 @@ exit;
 
         $date = Carbon::parse($request->date);
 
-//        if($date > now()) {
-//            Log::info('delay');
-//            UpdateDomainPreviewImagesJob::dispatch($request->domainId)->delay($date);
-//        } else {
+        if($date > now()) {
+            Log::info('delay');
+            UpdateDomainPreviewImagesJob::dispatch($request->domainId)->delay($date);
+        } else {
             Log::info('no delay');
 
             UpdateDomainPreviewImagesJob::dispatch($request->domainId);
-//        }
+        }
 
         return response()->json(['status' => 1]);
+    }
+
+    private function getDbImage($lastinsertid)
+    {
+        return DB::table('tbl_Video')->where('IntId', $lastinsertid)->first();
+    }
+
+    private function getWatermarkImage($domainId): \Intervention\Image\Image
+    {
+        $watermark = DB::table('tblwatermarklogo')->where('vchtype','L')->where('vchsiteid', $domainId)->where('enumstatus','A')->first();
+
+        return Image::make(public_path('/upload/watermark/'.$watermark->vchwatermarklogoname));
+    }
+
+    private function getBackgrounds($domainId): \Illuminate\Support\Collection
+    {
+        return DB::table('tbl_backgrounds')->where('siteid', 'like', '%'.$domainId.'%')->get(); // get backgrounds.
     }
 }
