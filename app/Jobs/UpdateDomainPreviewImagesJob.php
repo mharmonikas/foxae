@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -56,7 +57,11 @@ class UpdateDomainPreviewImagesJob implements ShouldQueue
         $images->each(function ($dbImage) use ($watermarkImage, $backgrounds) {
             Log::info("Image ID {$dbImage->IntId}");
 
-            $this->addWatermark($dbImage, $watermarkImage, $backgrounds);
+            try {
+                $this->addWatermark($dbImage, $watermarkImage, $backgrounds);
+            } catch (Exception $e) {
+                Log::critical($e);
+            }
         });
     }
 
@@ -64,7 +69,13 @@ class UpdateDomainPreviewImagesJob implements ShouldQueue
     {
         $imagePath = public_path($dbImage->VchFolderPath.'/'.$dbImage->VchVideoName);
 
-        $image = Image::make($imagePath);
+        try {
+            $image = Image::make($imagePath);
+        } catch (Exception $e) {
+            Log::critical($e);
+
+            return 1;
+        }
 
         $image->resize(852, 480);
 
@@ -77,21 +88,27 @@ class UpdateDomainPreviewImagesJob implements ShouldQueue
         }
 
         foreach ($backgrounds as $background) {
-            $destinationPath = $this->getDestinationPath($background, $dbImage);
+            try {
+                $destinationPath = $this->getDestinationPath($background, $dbImage);
 
-            $backgroundImage = $this->getBackgroundImage($background);
+                $backgroundImage = $this->getBackgroundImage($background);
 
-            $backgroundImage->resize(852, 480);
+                $backgroundImage->resize(852, 480);
 
-            $image->save($destinationPath);
+                $image->save($destinationPath);
 
-            $backgroundImage->insert($destinationPath, 'bottom-left');
+                $backgroundImage->insert($destinationPath, 'bottom-left');
 
-            $backgroundImage->save($destinationPath);
+                $backgroundImage->save($destinationPath);
 
-            $backgroundImage->insert($watermarkImage, 'bottom-left');
+                $backgroundImage->insert($watermarkImage, 'bottom-left');
 
-            $backgroundImage->save();
+                $backgroundImage->save();
+            } catch (Exception $e) {
+                Log::critical($e);
+
+                continue;
+            }
         }
     }
 
