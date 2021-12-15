@@ -41,9 +41,11 @@ class UpdateDomainPreviewImagesJob implements ShouldQueue
     {
         Log::info("UpdateDomainPreviewImagesJob for domain ID {$this->domainId}");
 
-        $images = DB::table('tbl_Video')->orderByDesc('IntId')->when($this->onlyLastImage, function ($query) {
-            $query->limit(1);
-        })->get(['IntId', 'VchFolderPath', 'VchVideoName', 'VchResizeimage', 'vchcacheimages', 'vchorginalfile', 'transparent']);
+        $images = DB::table('tbl_Video')
+            ->orderByDesc('IntId')
+            ->when($this->onlyLastImage, function ($query) {
+                $query->limit(1);
+            })->get(['IntId', 'VchFolderPath', 'VchVideoName', 'VchResizeimage', 'vchcacheimages', 'vchorginalfile', 'transparent']);
 
         Log::info('Number of images: '.$images->count());
 
