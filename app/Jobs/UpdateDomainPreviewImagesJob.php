@@ -81,6 +81,8 @@ class UpdateDomainPreviewImagesJob implements ShouldQueue
         try {
             $image = Image::make($imagePath);
         } catch (Exception $e) {
+            Log::critical('Image path: ' . $imagePath);
+            Log::critical('Can not make main image');
             Log::critical($e);
 
             return 1;
@@ -89,18 +91,31 @@ class UpdateDomainPreviewImagesJob implements ShouldQueue
         $image->resize(852, 480);
 
         if($dbImage->transparent === 'N') {
-            $image->insert($watermarkImage, 'bottom-left');
+            try {
+                $image->insert($watermarkImage, 'bottom-left');
 
-            $this->saveImageWithoutBackground($image, $dbImage);
+                $this->saveImageWithoutBackground($image, $dbImage);
 
-            return 1;
+                return 1;
+            } catch (Exception $e) {
+                Log::critical('Can not add watermark');
+                Log::critical($e);
+
+                return 1;
+            }
+
         }
 
         foreach ($backgrounds as $background) {
+            Log::info("Background ID {$background->bg_id}");
             try {
                 $destinationPath = $this->getDestinationPath($background, $dbImage);
 
                 $backgroundImage = $this->getBackgroundImage($background);
+
+                if(!$backgroundImage) {
+                    Log::info("Background image with ID {$background->id} is missing");
+                }
 
                 $backgroundImage->resize(852, 480);
 
@@ -114,6 +129,7 @@ class UpdateDomainPreviewImagesJob implements ShouldQueue
 
                 $backgroundImage->save();
             } catch (Exception $e) {
+                Log::info("Background image with ID {$background->id} is missing");
                 Log::critical($e);
 
                 continue;
