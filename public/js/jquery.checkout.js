@@ -103,11 +103,9 @@ $(document).ready(function(){
             }if($("#cvv").val() == ""){
                 valid = false;
                 $("#cvv").addClass('error-repot');
-                console.log($('#cvv'))
             }
 
             if(!valid) {
-                console.log($('#missingFieldsMessage'))
                 $('#missingFieldsMessage').css('visibility', 'visible');
             }
 
@@ -156,7 +154,6 @@ var token=$('meta[name="csrf-token"]').attr('content');
 							}, 5000);
 			//$(".availablecount").html(data.available);
 			var response = data.response;
-			console.log(response);
 
 				$(".download-process").html('Download');
 				for(i=0; i<response.length; i++){
@@ -210,7 +207,6 @@ var token=$('meta[name="csrf-token"]').attr('content');
 }
 
 function stripeResponseHandler(status, response) {
-  console.log(response);
 	if (response.error) {
 	    alert('Invalid Card Details');
 		$("#complete-checkout").text('complete checkout').prop("disabled", false);

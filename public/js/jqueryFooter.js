@@ -296,7 +296,6 @@ $(document).on("click",".btn-wishlist",function(event){
 	var wid = $(this).attr('data-value');
 	var pid = $(this).attr('id');
 	var vproductid  = pid.split('_');
-	console.log(vproductid[1]);
 	//alert(pid);
 	$("#productid").val($(this).attr('data-value'));
 		var productnid = $("#productid").val();
@@ -365,7 +364,6 @@ $(document).on("click",".btn-wishlist",function(event){
 
 					$("#incart-credit").html('<span class="title-head">In Cart&nbsp;('+data.count+' items): </span><span><b>'+cartvalue+'</b></span>');
 					//}
-//console.log(vproductid+"_content");
 					$("#"+pid).attr('data-status',changestatus);
 					$("."+vproductid[1]+"_content").attr('cart-status',changestatus);
 					$("#"+pid).html(changehtml);

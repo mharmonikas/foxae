@@ -18,7 +18,7 @@
 		@endforeach
 		</select>
 		</div>
-			
+
 					<div class="row">
 							<div class="col-sm-12">
 								<div class="inputBox ">
@@ -63,7 +63,7 @@
 	</div>
 	<h2>Patment method</h2>
 	<div class="method border">
-	
+
 	<div class="row">
 							<div class="col-sm-12">
 								<div class="inputBox ">
@@ -72,12 +72,12 @@
 								</div>
 							</div>
 					</div>
-	
+
 	<div class="form-group">
 	<label for="text" class="col-sm-12 col-form-label">Credit Card Number <span>*</span></label>
 		<input type="text" class="form-control credit credit-card-number" name="cardnumber" id="cardnumber" inputmode="numeric" autocomplete="cc-number" autocompletetype="cc-number" x-autocompletetype="cc-number"
                   placeholder="&#149;&#149;&#149;&#149; &#149;&#149;&#149;&#149; &#149;&#149;&#149;&#149; &#149;&#149;&#149;&#149;">
-	<div class="pay_img">	
+	<div class="pay_img">
 	<img src="/public/img/payment.png">
 	</div>
 	</div>
@@ -85,7 +85,7 @@
     <div class="form-group col-md-4">
       <label for="text" class="col-sm-12 col-form-label">Expiration Month <span>*</span></label>
       <input type="text" class="form-control card-expiry-month numeric" name="expirationdate" id="expirationdate" placeholder="MM" maxlength="2">
-    
+
     </div>
 	<div class="form-group col-md-4">
       <label for="text" class="col-sm-12 col-form-label">Expiration Year <span>*</span></label>
@@ -95,18 +95,18 @@
     <div class="form-group col-md-4" style="margin-bottom: 30px;">
      <label for="text" class="col-sm-12 col-form-label">CVV <span>*</span></label>
       <input type="text" class="form-control security-code" id="cvv" name="cvv" placeholder="123" placeholder="&#149;&#149;&#149;">
-	  <div class="pay_img credit_im">	
+	  <div class="pay_img credit_im">
 	<img src="/public/img/credit_card.png">
 	</div>
 	</div>
   </div>
-  
+
   <div class="card-type"></div>
-	</div>	
-	</div>	
-		
-		
-		
+	</div>
+	</div>
+
+
+
 		<div class="col-md-5">
 		<h2>Order summary</h2>
 		<div class="border_section">
@@ -118,23 +118,23 @@
 		<div class="order_pay">
 		<p><strong>$29</strong></p>
 		</div>-->
-		
+
 			<p>
 		{!! $getplan->plan_name !!}
-		
+
 		</p>
-		
+
 		</div>
 		<div class="order_pay">
 		<p><strong>$ {!! $getplan->plan_price !!}</strong></p>
 		</div>
-		
+
 		</div>
-		
+
 		<!--<div class="free_sec">
 			<p><span>save 32%</span></p><p><strong class="border"><a href="#">Add</a></strong></p>
 		</div>
-			
+
 		<div class="free_sec">
 			<p>subtotal</p><p><strong>$29</strong></p>
 		</div>
@@ -154,10 +154,10 @@
 		<div class="check_com">
 		<p><i class="fa fa-lock" aria-hidden="true"></i>Secure checkout. For your convenience Shutterstock will store your encrypted payment information for future orders. Manage you payment information in your Account Details.</p>
 		</div>
-		
+
 		</div>
 		</div>
-	
+
 	</div>
 		</form>
 </div>
@@ -170,10 +170,10 @@
 			<p class="transaction">Transaction Id: <span id="transaction_id"> txn_1GAaopBGINKMPLs3Ix01nF8U</span></p>
 			<p>
 			Thanks for being awsome,<br>we hope you enjoy your purchase!</p>
-		
+
 		  </div>
-		  
-</div>		
+
+</div>
 </div>
 <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
 <script type="text/javascript">
@@ -185,7 +185,7 @@
 
       $(".creditly-card-form .submit").click(function(e) {
         e.preventDefault();
-		
+
 		$("#complete-checkout").html('<i class="fa fa-refresh fa-spin"></i>Loading').prop("disabled", true);
 		var $form = $(".creditly-card-form");
 		if (!$form.data('cc-on-file')) {
@@ -198,45 +198,44 @@
 				exp_year: $('.card-expiry-year').val()
 			}, stripeResponseHandler);
 		}
-		setTimeout(function(){ 
+		setTimeout(function(){
 		var token=$('meta[name="csrf-token"]').attr('content');
-		$.ajax({     
+		$.ajax({
 			url: '/payment',
-			type:"POST", 
+			type:"POST",
 			async: true,
-			dataType: 'json',		
+			dataType: 'json',
 			headers: {
 				'X-CSRF-TOKEN':token
-			},        
+			},
 			data: $('.creditly-card-form').serialize(),
-			success:function(data){ 
+			success:function(data){
 				if(data.response == 'done'){
 					$(".thank-container").css('display','block');
 					$("#transaction_id").text(data.transaction);
 					$(".checkout-container").css('display','none').empty();
-					
+
 					 setTimeout(function(){ window.location = "/"; }, 15000);
 				}else{
 					$("#complete-checkout").text('complete checkout').prop("disabled", false);
 				}
 			}
-		}); 
+		});
 		}, 2000);
-	
+
       });
-	  
+
 	   $(".numeric").keypress(function (e) {
 			if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
 				   return false;
 			}
-		}); 
-	  
+		});
+
     });
 
 
 
 function stripeResponseHandler(status, response) {
-  console.log(response);
 	if (response.error) {
 	   alert('Token Error');
 	} else {

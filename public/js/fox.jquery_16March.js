@@ -97,7 +97,6 @@ app.controller('customersCtrl', function ($scope, $http) {
 	}
 
 	function successCallback2(response) {
-		console.log(response.data);
 		if (response.data != '') {
 			$scope.showkeyword = true;
 			$scope.allkeyword = Object.assign({}, response.data);
@@ -108,7 +107,6 @@ app.controller('customersCtrl', function ($scope, $http) {
 	}
 
 	function successCallback1(response) {
-		console.log(response.data);
 		$scope.allsearch = Object.assign({}, response.data);
 
 	}
@@ -396,8 +394,6 @@ $(document).ready(function () {
 		 var elm = $(this);
     var xPos = elm.offset().left - e.pageX;
     var yPos = elm.offset().top - e.pageY;
-
-    console.log(xPos, yPos);
 
 		$(this).toggleClass('big-active').css({
 		'left': parseInt(xPos / 4),

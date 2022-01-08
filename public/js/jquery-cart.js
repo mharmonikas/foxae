@@ -14,7 +14,6 @@ $(document).on("click",".delete",function(){
 			},
 			data:'id='+id+'&_token='+token,
 			success:function(data){
-				//console.log(data);
 			$(".remove_cart_"+id).remove();
 			if(data.value2.totalitems <=0){
 				 $(".crat-popup").addClass("hide");
@@ -201,13 +200,11 @@ var i = '';
 	  }
 } */
 function downloadcart(){
-    console.log('downloadcart')
 	//  if (confirm('Are you sure you want to download  this list?')) {
 		var id = $(this).attr('id');
 		var cartvalue = parseInt($('#cartval').val());
 		var availcreditvalue = parseInt($('#available-credit').val());
         if(availcreditvalue >= cartvalue){
-            console.log('in if')
             var token=$('meta[name="csrf-token"]').attr('content');
              var checked = [];
                             $.each($("input[name='checkbox_status']:checked"), function(){
@@ -251,10 +248,6 @@ function downloadcart(){
                                  cartid.push(response[i]['cartid']);
                                  downloadid += response[i]['downloadid'] + ',';
                             }
-                            console.log('cartid')
-                            console.log(cartid)
-                            console.log('downloadid')
-                            console.log(downloadid)
 
                             i = 0;
                             $("#cartcount").html(data.carticon+'<span>'+data.cartcount+'</span>');
@@ -301,7 +294,6 @@ function downloadcart(){
                             });
                         }
                     } else {
-                        console.log('else')
                         $("#less_credit").removeClass('hide');
                         $("#less_credit").addClass('show');
                         setTimeout(function(){
@@ -313,7 +305,6 @@ function downloadcart(){
             });
 		}
         else {
-            console.log('less credit')
 			$("#less_credit").removeClass('hide');
 			$("#less_credit").addClass('show');
 
@@ -524,17 +515,12 @@ function changebackground(img,id){
 }
 
 $('.open-form').on('click', function() {
-            console.log('click')
 			var uniqueid=$("#uniqueid").val();
 			var cartval=$("#cartval").val();
 			if(uniqueid == ""){
-                console.log('! unique id')
-
 				$("#exampleModal").modal("show");
 				return false
 			}
-
-    console.log('after check unique id')
 
            var token=$('meta[name="csrf-token"]').attr('content');
 				$.ajax({
@@ -547,8 +533,6 @@ $('.open-form').on('click', function() {
 					},
 					data: 'cartval='+cartval+'&_token='+token,
 					success:function(data){
-						 console.log('after ajax');
-						 console.log(data);
 						 var option = [];
 						 option.push('<option value="">Select</option>');
 						 $.each(data.country, function (i) {

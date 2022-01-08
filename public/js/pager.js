@@ -27,10 +27,10 @@ function closeForm() {
 }
 function closebackdrop(){
 	$(".modal-backdrop").addClass("hide");
-	
-	
+
+
 }
-	
+
 // $(document).on("click",".ng-binding",function () {
    // $("html, body").animate({scrollTop: 0}, 0);
 // });
@@ -39,28 +39,28 @@ function closebackdrop(){
 function emailcheck(email){
 	var email = email;
 	var token=$('meta[name="csrf-token"]').attr('content');
-	$.ajax({     
+	$.ajax({
 		url: '/checkmail',
-		type:"POST", 
+		type:"POST",
 		async: true,
-        dataType: 'json',		
+        dataType: 'json',
 		headers: {
 			'X-CSRF-TOKEN':token
-		},        
+		},
 		data:'email='+email+'&_token='+token,
-		success:function(data){ 
+		success:function(data){
 			if(data.response == 3){
 				$("#errorMessage").html('<div class=""><strong>Email already exist.</strong> </div>');
 				myFunction();
-				
+
 			}
 		}
-	}); 	
+	});
 }
 
 
 $(document).ready(function(){
-	
+
     $('#registrationForm').submit(function(e){
 			var password = $("#signuppassword").val();
             var confirmPassword = $("#signupconfirmpassword").val();
@@ -78,7 +78,7 @@ $(document).ready(function(){
           });
         $.post()
         .done(function(data) {
-			
+
 			if(data.response==1){
 				window.location = '/';
 			}if(data.type=='error'){
@@ -89,14 +89,13 @@ $(document).ready(function(){
 					$("#errorMessage").html('<div class=""><strong>Email already exist</strong> </div>');
 					myFunction();
 				}
-            console.log(data);
         })
         .fail(function(data) {
 			$("#errorMessage").html('<div class=""><strong>Invalid Captcha</strong> </div>');
 					myFunction();
-				
-					
-				
+
+
+
         })
     });
 	$('#registrationForm2').submit(function(e){
@@ -116,7 +115,7 @@ $(document).ready(function(){
           });
         $.post()
         .done(function(data) {
-			
+
 			if(data.response==1){
 				location.reload();
 				//window.location = '/';
@@ -128,18 +127,17 @@ $(document).ready(function(){
 					$("#errorMessage").html('<div class=""><strong>Email already exist</strong> </div>');
 					myFunction();
 				}
-            console.log(data);
         })
         .fail(function(data) {
 			$("#errorMessage").html('<div class=""><strong>Invalid Captcha</strong> </div>');
 					myFunction();
-				
-					
-				
+
+
+
         })
     });
 
-	
+
 
 /* 		$('#forgotForm').submit(function(e){
         $.ajaxSetup({
@@ -147,13 +145,13 @@ $(document).ready(function(){
             data: $('#forgotForm').serialize(),
             async: true,
             dataType: 'json',
-            
+
         });
         $.post()
         .done(function(data) {
-			
+
 			if(data.response==1){
-			
+
 				$("#errorMessage").html('<div class=""><strong>Email has been sent on your email. </strong> </div>');
 				myFunction();
 			}if(data.response==0){
@@ -162,11 +160,11 @@ $(document).ready(function(){
 			}
         })
         .fail(function(response) {
-			
+
         })
     }); */
-	
-	
+
+
 });
 
 function myFunction() {
@@ -178,12 +176,12 @@ function myFunction() {
   x.className = "show";
  // y.className = "show";
  // z.className = "show";
-  setTimeout(function(){ 
-  x.className = x.className.replace("show", "hide"); 
-  //y.className = y.className.replace("show", "hide"); 
+  setTimeout(function(){
+  x.className = x.className.replace("show", "hide");
+  //y.className = y.className.replace("show", "hide");
  // z.className = z.className.replace("show", "hide");
 	 $("#errorMessage").empty();
-	 
+
   }, 5000);
 }
 
@@ -221,19 +219,19 @@ if(content!=''){
 					var imagetype='Ultra Premium';
 					$("#image-desc").html(imagetype);
 				}
-				
+
 			}
 var token=$('meta[name="csrf-token"]').attr('content');
 var productid=$('#productid').val();
-$.ajax({     
+$.ajax({
 	url: '/checkstock',
 	type:"post",
 	headers: {
 		'X-CSRF-TOKEN':token
-	},    
+	},
 	dataType: 'json',
 	data:'content='+content+'&stock='+stock+'&productid='+productid+'&_token='+token,
-	success:function(data){ 
+	success:function(data){
 		if(data.response == 'Done'){
 						if(data.stock == 0){
 							if(data.instock == "alreadydownload"){
@@ -251,8 +249,8 @@ $.ajax({
 								$("#after_credits").removeClass("after_bd").css('display',"block");
 								$("#credit-count").text(data.available_stock);
 							}
-							
-							
+
+
 						}else{
 							$("#after_credits").removeClass("after_bd").addClass("after_bd");
 							$("#before_cerdits").removeClass("col-md-12 availHeight").addClass("col-md-6");
@@ -261,13 +259,13 @@ $.ajax({
 							$("#after_credits").css("display","block");
 							$("#no_package").css("display","none");
 							$("#credits-stock").css("display","block");
-							
+
 						}
-						
+
 					}
-		
+
 	}
-}); 
+});
 }
 }
 function XchangePassword() {
@@ -308,7 +306,7 @@ function zPassword() {
   } else {
     x.type = "password";
 	$(".showXpassword").html('<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12 4C7 4 2.73 7.11 1 11.5 2.73 15.89 7 19 12 19s9.27-3.11 11-7.5C21.27 7.11 17 4 12 4zm0 12.5c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" fill="#5B5C5C"/></svg>');
-  } 
+  }
 }
 
 function loginzPassword() {
@@ -319,33 +317,33 @@ function loginzPassword() {
   } else {
     x.type = "password";
 	$(".loginshowXpassword").html('<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12 4C7 4 2.73 7.11 1 11.5 2.73 15.89 7 19 12 19s9.27-3.11 11-7.5C21.27 7.11 17 4 12 4zm0 12.5c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" fill="#5B5C5C"/></svg>');
-  } 
+  }
 }
 
 	function mainlogin(){
-		
+
 		 $.ajaxSetup({
             url: "/login",
             data: $('#loginForm').serialize(),
             async: true,
             dataType: 'json',
-            
+
         });
         $.post()
         .done(function(data) {
 			if(data.response == 1){
 				if(data.pricing_flow==''){
-				location.reload(); 
-			
+				location.reload();
+
 				}else{
-				$('#exampleModal').modal('hide'); 
+				$('#exampleModal').modal('hide');
 				$('#sign-in').remove();
 				$('#log-in').remove();
 				$("#login-form").addClass("close-loginform");
 				$(".modal-backdrop").addClass("hide");
-				
-				$('#login-user').removeClass('close-loginform'); 
-				$('#login-user').addClass('show-logininfo'); 
+
+				$('#login-user').removeClass('close-loginform');
+				$('#login-user').addClass('show-logininfo');
 				$('#user-info').removeClass('close-loginform');
 				$('#user-info').addClass('show-logininfo');
 				$('#log-in').removeClass('show-logininfo');
@@ -359,7 +357,7 @@ function loginzPassword() {
 					$('.Y-'+data.current_packageid).attr("disabled", true);
 					$('#yearly-active-'+data.current_packageid).removeClass("hide");
 					$('#yearly-active-'+data.current_packageid).addClass("show");
-					
+
 				}if(data.package_type=='M'){
 					$('#M-'+data.current_packageid).addClass(' active_package');
 					$('.M-'+data.current_packageid).addClass(' hide-btn');
@@ -367,11 +365,11 @@ function loginzPassword() {
 					$('#monthly-active-'+data.current_packageid).removeClass("hide");
 					$('#monthly-active-'+data.current_packageid).addClass("show");
 				}
-				
+
 				if(data.val=='yes'){
 				$('#package-detail').attr('data-value',data.pack);
 				}
-				$("#uniqueid").val(data.id); 
+				$("#uniqueid").val(data.id);
 				$(".login-details").html('<span class="username-info">Welcome, '+data.name+'</span><img class="user-logo" src="/images/'+data.logo+'">');
 				$("#cartcount").html(data.carticon+'<span>'+data.count+'</span>');
 				 $("#cartcount").attr("href", '/cart');
@@ -390,7 +388,7 @@ function loginzPassword() {
 				//alert(data.availablecredit);
 					$("#credit-count").text(data.availablecredit);
 				getCredit();
-				
+
 					var option = [];
 						 option.push('<option value="">Select</option>');
 						 $.each(data.country, function (i) {
@@ -399,11 +397,11 @@ function loginzPassword() {
 								if(data.billing_address!=null){
 									if(data.billing_address.billing_country==val){
 										selected="Selected";
-								
+
 										}
 								}else{
 									selected='';
-									
+
 								}
 							option.push('<option value="'+ val +'"'+selected+'>'+ val +'</option>');
 							});
@@ -420,54 +418,54 @@ function loginzPassword() {
 						$('#address_line2').val('');
 						$('#city').val('');
 						$('#state').val('');
-						$('#zip').val('');	
-							
+						$('#zip').val('');
+
 						}
 						if(data.card_details!=null){
 						$('#cardname').val(data.card_details.holder_name);
 						$('#cardnumber').val(data.card_details.c_number);
 						$('#expirationdate').val(data.card_details.exp_month);
 						$('#expirationYeardate').val(data.card_details.exp_year);
-						
+
 						}else{
 						$('#cardname').val('');
 						$('#cardnumber').val('');
 						$('#expirationdate').val('');
 						$('#expirationYeardate').val('');
-						
-							
+
+
 						}
-						
+
 						if(data.type=="annual"){
-						
+
 							var price_type='Annual Payment';
 							var price_prefix=' /Annually';
 							$("#plan-price").html('<strong>$'+data.annually_price+price_prefix+'</strong>');
 							$("#plan-name").text(data.getplan.plan_title+' - '+price_type);
-							
+
 						}else if(data.type=="monthly"){
-							
+
 							var price_type='Monthly Payment';
 							var price_prefix=' /Month';
 							$("#plan-price").html('<strong>$'+data.monthly_price+price_prefix+'</strong>');
 							$("#plan-name").text(data.getplan.plan_title+' - '+price_type);
-							
+
 						}else{
 							$("#plan-price").html('<strong>$'+data.onetime_price+'</strong>');
 							$("#plan-name").text(data.getplan.plan_name+' - '+'One Time Purchase');
-							
+
 						}
-						
-							
+
+
 					if(data.buyid==''){
 							$("#checkoutModal").modal("show");
 				}else{
-				
+
 					$("#checkoutModal").modal("show");
 					 $('#old_packageid').val(data.current_packageid);
-				
-							
-					} 
+
+
+					}
 				}
 			}if(data.response == 2){
 				//$("#errorMessage").html('<div class=""><strong>Invalid login credentials.</strong> </div>');
@@ -479,11 +477,11 @@ function loginzPassword() {
 			}
         })
         .fail(function(response) {
-			
+
 			$("#login-error").html('<div class="alert alert-danger"><strong>Invalid login credentials.</strong></div>');
-			
+
         })
-		
+
     }
 
 function forgot_form(){
@@ -492,13 +490,13 @@ function forgot_form(){
             data: $('#forgotForm').serialize(),
             async: true,
             dataType: 'json',
-            
+
         });
         $.post()
         .done(function(data) {
-			
+
 			if(data.response==1){
-				
+
 			$("#forgot-error").html('<div class="alert alert-success"><strong>Email has been sent on your email.</strong></div>');
 				myFunction();
 			}if(data.response==0){
@@ -507,12 +505,12 @@ function forgot_form(){
 			}
         })
         .fail(function(response) {
-			
+
         })
 }
-	
-	
-		
+
+
+
     //$('#registrationForm').submit(function(e){
 		function register(){
 			var password = $("#cartsignuppassword").val();
@@ -536,19 +534,19 @@ function forgot_form(){
 				window.location = '/';
 			}if(data.type=='errors'){
 					$("#signup-error").html('<div class="alert alert-danger"><strong>'+data.text+'</strong></div>');
-					
+
 				}
 			if(data.response=='3'){
 				$("#signup-error").html('<div class="alert alert-danger"><strong>Email already exist.</strong></div>');
-					
+
 				}
-				
+
 		if(data.response=='4'){
 				$("#signup-error").html('<div class="alert alert-danger"><strong>Invalid Captcha Response.</strong></div>');
-					
+
 				}
-           
+
         })
-      
+
 		}
    // });
