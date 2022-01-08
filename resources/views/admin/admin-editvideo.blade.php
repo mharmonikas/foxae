@@ -25,7 +25,7 @@ input#updatebutton {
     margin-top: 20px;
 }
 .videoimages{
-	
+
 	width: 300px;
 height: 100%;
 }
@@ -57,12 +57,12 @@ height: 100%;
     color: #fff;
 }
 
-        
+
         .btn-file {
             position: relative;
             overflow: hidden;
         }
-        
+
         .btn-file input[type=file] {
             position: absolute;
             top: 0;
@@ -87,7 +87,7 @@ height: 100%;
 .img-zone h2 {
             margin-top: 0;
         }
-        
+
 .progress, #img-preview {
     margin-top: 15px;
  }
@@ -224,7 +224,7 @@ input.select2-search__field {
 
 }
 .select2-container--default .select2-selection--multiple .select2-selection__choice {
-   
+
     color: #000000 !important;
 }
 li.no-results span{
@@ -249,18 +249,18 @@ input.content-category {
     font-weight: 600;
     padding: 15px 0px 0;
     margin: 0;
-} 
+}
 </style>
 <script>
 function thumbnailupload(id){
-	var file_data = $('#thumnbfile')[0].files[0]; 
+	var file_data = $('#thumnbfile')[0].files[0];
 					var _token = $('meta[name="csrf_token"]').attr('content');
-					var form_data = new FormData();                  
-					form_data.append('file',file_data);	
+					var form_data = new FormData();
+					form_data.append('file',file_data);
 					form_data.append('id',id);
 					form_data.append("_token", _token);
 					$.ajax({
-					beforeSend: function(){  
+					beforeSend: function(){
    		    	    $(".info-loading-image").css("display","flex");
    		    	    $("body").css("overflow","hidden");
                    },
@@ -273,17 +273,17 @@ function thumbnailupload(id){
 							$(".info-loading-image").css("display","none");
 						window.location.href="/admin/managevideosection";
 					}
-			}) ;	
-	
-	
-	
+			}) ;
+
+
+
 }
 jQuery(document).ready(function() {
     var allfiles = '';
 	count=0;
 	var totalupload = 0;
     $('#updatebutton').click(function() {
-	
+
 		$(this).prop('disabled', true);
 	var videotypes = $('#videotypes').val();
 	if(videotypes=='W'){
@@ -291,8 +291,8 @@ jQuery(document).ready(function() {
 	  if(startingfile!=undefined){
       ajax_upload(allfiles,allfiles.length,startingfile);
 	  }else {
-		    
-			//alert('hello');	  
+
+			//alert('hello');
 		 //formdata.append("feature", feature);
 		//var thumfiles = $('#thumnbfile')[0].files[0];
 	  	var formdata = $('#forvideo').serialize();
@@ -311,12 +311,12 @@ jQuery(document).ready(function() {
 				}
 			}
 		});
-	  
+
 	  }
-	  
-	
+
+
 	  }else {
-		  
+
 		var token= $('meta[name="csrf_token"]').attr('content');
 	     var formdata =  $('#forvideo').serialize();
 			$.ajax({
@@ -333,7 +333,7 @@ jQuery(document).ready(function() {
 				}
 				}
 			});
-		
+
 	}
     });
     var img_zone = document.getElementById('img-zone'),
@@ -356,13 +356,13 @@ jQuery(document).ready(function() {
     function ajax_upload(files,totalvideo,startingfile) {
       $('.showvideo'+totalupload).removeClass("waiting");
 	 $('.showvideo'+totalupload).addClass("progress");
-       
+
 		  $('#progressBar'+totalupload).css("width","0%");
 	    $('#progressBar'+totalupload).html('0% complete');
 		$('#progressBar'+totalupload).removeClass('progress-bar-warning');
 	    //
 		 $('#progressBar'+totalupload).addClass('progress-bar-success');
-		
+
         //$('.progress-bar span').html('0% complete');
         var formData = new FormData();
          $('.progress').css("display", "block");
@@ -370,9 +370,9 @@ jQuery(document).ready(function() {
             var vchvideotitle = $('#vchvideotitle').val();
 			  var cont_cat = $("input[name='content_category']:checked").val();
 			  var stock_category = $("input[name='stock_category']:checked").val();
-			  
+
 			 if($('.featurey').prop("checked") == true){
-                var feature = 1; 
+                var feature = 1;
 				}else{
 					 var feature = 0;
 				}
@@ -403,7 +403,6 @@ jQuery(document).ready(function() {
             ajax.send(formdata);
 
             function progressHandler(event) {
-                 console.log(event);
                 _("loaded_n_total").innerHTML = "Uploaded " + event.loaded + " bytes of " + event.total;
                 var percent = (event.loaded / event.total) * 100;
                 _("progressBar").value = Math.round(percent);
@@ -422,13 +421,13 @@ jQuery(document).ready(function() {
 				type:'POST',
 				data:formdata,
 				success:function(ress1){
-				window.location.href="/admin/managevideosection";	
-	
+				window.location.href="/admin/managevideosection";
+
 
 				}
 			});
-				 
-			
+
+
 			}
             function errorHandler(event) {
                 _("status").innerHTML = "Upload Failed";
@@ -449,7 +448,6 @@ jQuery(document).ready(function() {
         };
         element.ondrop = function(e) {
             e.preventDefault();
-            console.log(e.dataTransfer.files);
             //ajax_upload(e.dataTransfer.files);
 			 var r = confirm("are you sure to replace current video/Images");
 		    if(r){
@@ -459,7 +457,7 @@ jQuery(document).ready(function() {
 		    $('.progresslist').append('<li class="waiting showvideo'+k+'"> <div class="lit_txt">'+allfiles[k]['name']+'</div><div id="progressBar'+k+'" class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" style="width:100%">Waiting</div></li>');
 			}
 			}else {
-				
+
 				return false;
 			}
         }
@@ -472,7 +470,7 @@ jQuery(document).ready(function() {
 
     // Call AJAX upload function on image selection using file browser button
     $(document).on('change', '.btn-file :file', function() {
-		
+
 		 var r = confirm("are you sure to replace current video/Images");
 		if(r){
         //ajax_upload(this.files);
@@ -483,7 +481,7 @@ jQuery(document).ready(function() {
 		   $('.progresslist').append('<li class="waiting showvideo'+k+'"> <div class="lit_txt">'+allfiles[k]['name']+'</div><div id="progressBar'+k+'" class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" style="width:100%">Waiting </div></li>');
 			}
 	    }else {
-			
+
 			return false;
 		}
     });
@@ -516,7 +514,7 @@ jQuery(document).ready(function() {
 		<!-- /top navigation -->
         <!-- /top navigation -->
 	   <div class="row">
-	
+
 		<div class="col-md-12 mar-auto">
 		<div class="back-strip top-side srch-byr">
 					<div class="inner-top">
@@ -532,28 +530,28 @@ jQuery(document).ready(function() {
 	<input type="hidden" name="action" id="action" value="edit">
         <input class="form-control" type="text" id="vchvideotitle" name="vchvideotitle" placeholder="Enter Your Video Title" value="<?php echo $videotags->VchTitle; ?>">
 		<input type="hidden" name="videoid" id="videoid" value="<?php echo $_GET['editvideo']; ?>">
-		
+
 		<input type="hidden" name="videoida" id="videoida" value="<?php echo $_GET['editvideo']; ?>">
-     
+
       <div class="videotype">
-	  <?php 
+	  <?php
 	  if($videotags->EnumUploadType=='W'){
 	  if($videotags->EnumType=='V'){ ?>
-	
+
      <video width="320" height="240" controls>
   <source src="/<?php echo $videotags->VchFolderPath; ?>/<?php echo $videotags->VchVideoName; ?>" type="video/mp4">
   <source src="/<?php echo $videotags->VchFolderPath; ?>/<?php echo $videotags->VchVideoName; ?>" type="video/ogg">
 
-</video>     
+</video>
 
-	 
-     <?php 		  
+
+     <?php
 	  }else {
 	  ?>
 	  <img src="/<?php echo $videotags->VchFolderPath; ?>/<?php echo $videotags->VchVideoName; ?>" height="200px;" width="200px"/>
-	  
-	  <?php 
-	  } 
+
+	  <?php
+	  }
 	  }else {
 	  ?>
 	  @if(empty($videotags->VchFolderPath))
@@ -563,15 +561,15 @@ jQuery(document).ready(function() {
   <source src="/<?php echo $videotags->VchFolderPath; ?>/<?php echo $videotags->VchVideoName; ?>" type="video/mp4">
   <source src="/<?php echo $videotags->VchFolderPath; ?>/<?php echo $videotags->VchVideoName; ?>" type="video/ogg">
 
-</video>    
+</video>
 	  @endif
-	  
-	  
-	  
-	  <?php } 
-	  
+
+
+
+	  <?php }
+
 	   if($videotags->EnumUploadType=='W'){ ?>
-	  
+
 	   <div class="col-sm-12 col-sm-offset-2">
 			<div class="upld-vd-sec">
                 <div  class="img-zone text-center" id="img-zone">
@@ -583,51 +581,51 @@ jQuery(document).ready(function() {
                         Click to Open File Browser<input type="file" >
                     </span>
                     </div>
-                </div> 
-				
+                </div>
+
 				<div class="list_div">
 					<ul class="progresslist">
 					</ul>
 				</div>
 				</div>
 			   </div>
-	  
-	  
-	  
+
+
+
 	   <?php }else { ?>
 	   <div class="googledrivelink">
 		<div class="col-md-12">
-        
-	
+
+
 		 <input type="text" class="form-control" name="googlelink" id="googlelink" value="<?php echo $videotags->vchgoogledrivelink; ?>" >
 
         </div>
 			 </div>
-	   
+
 	   <?php } ?>
 	   				 <div class="col-md-12">
 					 <label> Thumbnail</label>
 						<input type="file"  id="thumnbfile" name="image1">
 						<input type="hidden"  id="" name="image2" value="<?php echo $videotags->Vchcustomthumbnail; ?>">
-						<?php     
+						<?php
 						if(!empty($videotags->Vchcustomthumbnail)){
 						?>
 						<img src="/<?php echo $videotags->VchFolderPath; ?>/<?php echo $videotags->Vchcustomthumbnail; ?>" height="200px;" width="200px"/>
-						
+
 						<?php
 						}
-						
+
 						?>
 					  </div>
 	  </div>
 	  </div>
-	 
+
 	  <div class="col-md-6">
 	   <div class="searchtags">
-					
+
 							@csrf
 						<div class="form-group">
-						<?php 
+						<?php
 						if(isset($_GET['editvideo'])){
 						$videoid = $_GET['editvideo'];
 						}else {
@@ -642,75 +640,75 @@ jQuery(document).ready(function() {
 							<label>Place Tags</label>
 							<select id="multiple" name="tags[]" class="form-control form-control-chosen" data-placeholder="Place tags" multiple>
 								<option></option>
-								<?php 
+								<?php
 									foreach($allvideo['searchtags'] as $videouploads){
 									$selected='';
 									if(in_array($videouploads->IntId,$allsearchtags)){
 										$selected="selected";
-										
+
 									}
 									?>
-                                     									
+
 									<option <?php echo $selected; ?> value="<?php echo $videouploads->IntId; ?>"><?php echo $videouploads->VchCategoryTitle; ?></option>
 								<?php } ?>
 							</select>
 						</div>
-					
-						
-						
+
+
+
 						<div class="iconsdsf">
 <ul class="row">
 @foreach ($allvideo['alltags'] as $allcategory)
-<?php 
+<?php
  $myalltagid = explode(',',$allcategory->tagid);
  $myallcategorytag = explode(',',$allcategory->tagTitle);
  $totalitems = count(explode(',',$allcategory->tagTitle));
 ?>
 @if ($allcategory->IntId == 1)
-	<?php 
+	<?php
 for($i=0;$i<$totalitems;$i++){
 	  $selected="";
-	
+
       $tagrelation = $allvideo['allvideorelation'];
-	
+
 	  if(!empty($tagrelation)){
-		  
-		 
-	  $columnname = $allcategory->VchColumnType;	 
+
+
+	  $columnname = $allcategory->VchColumnType;
 	 $genderid = $tagrelation->$columnname;
-   
+
      if($genderid==$myalltagid[$i]){
-	 
-	  $selected="checked"; 
+
+	  $selected="checked";
       }
-	 }	  
+	 }
  ?>
-  <li class="check-view col-md-6 "> 
-<input type="checkbox" class="racecategory racecategory1" name="filteringcategory[<?php echo $allcategory->VchColumnType; ?>]" category="<?php echo $allcategory->VchColumnType; ?>"  ng-model="gender<?php echo $myalltagid[$i];  ?>" id="box-<?php echo $myalltagid[$i];  ?>" ng-click="changegeneder(gender<?php echo $myalltagid[$i];  ?>,<?php echo $myalltagid[$i];  ?>)" value="<?php echo $myalltagid[$i];  ?>" <?php echo $selected; ?>> 
+  <li class="check-view col-md-6 ">
+<input type="checkbox" class="racecategory racecategory1" name="filteringcategory[<?php echo $allcategory->VchColumnType; ?>]" category="<?php echo $allcategory->VchColumnType; ?>"  ng-model="gender<?php echo $myalltagid[$i];  ?>" id="box-<?php echo $myalltagid[$i];  ?>" ng-click="changegeneder(gender<?php echo $myalltagid[$i];  ?>,<?php echo $myalltagid[$i];  ?>)" value="<?php echo $myalltagid[$i];  ?>" <?php echo $selected; ?>>
   <label for="box-<?php echo $myalltagid[$i];  ?>">
   <?php echo $myallcategorytag[$i];?>
   </label>
   </li>
-<?php } ?>		
+<?php } ?>
 @else
-	<?php 
-   $columnname = $allcategory->VchColumnType;	 
-	 
+	<?php
+   $columnname = $allcategory->VchColumnType;
+
     $tagrelation = $allvideo['allvideorelation'];
-	
+
 	 if(!empty($tagrelation)){
 	 $genderid = $tagrelation->$columnname;
     $selected="";
-   
+
  }
 ?>
 	   <li class="col-md-5">
-     <div class="image-icon"> 
+     <div class="image-icon">
 	 <div class="dropdown">
 <label>	 {{$allcategory->VchTitle}}</label>
 <select class="racecategory form-control" name="filteringcategory[<?php echo $allcategory->VchColumnType; ?>]" category="<?php echo $allcategory->VchColumnType; ?>">
     <option value="0">All <?php echo $allcategory->VchTitle; ?></option>
-   <?php 
+   <?php
  for($i=0;$i<$totalitems;$i++){
 	 $selected="";
 	  $tagrelation = $allvideo['allvideorelation'];
@@ -718,20 +716,20 @@ for($i=0;$i<$totalitems;$i++){
 	 $columnname = $allcategory->VchColumnType;
     $genderid = $tagrelation->$columnname;
 
- if($genderid==$myalltagid[$i]){	 
-	$selected="selected"; 
+ if($genderid==$myalltagid[$i]){
+	$selected="selected";
  }
-} 
-	 
-	 
+}
+
+
 		 ?>
 	 <option <?php echo $selected; ?> value="<?php echo $myalltagid[$i];  ?>"><?php echo $myallcategorytag[$i];  ?></option>
 <?php } ?>
 </select>
-	 
+
 		</div>
 		</div>
-		 </li>  
+		 </li>
 
 @endif
 @endforeach
@@ -741,74 +739,74 @@ for($i=0;$i<$totalitems;$i++){
  <div class="iconsdsf">
 						<ul class="main">
 							<li>
-							
+
 							<label class="container-checkbox">All Domains
 								  <input type="checkbox"  id="select_all">
 								  <span class="checkmark"></span>
 								</label>
-						
-							<ul style="margin-top: -10px;">  
+
+							<ul style="margin-top: -10px;">
 							@foreach($allvideo['managesites'] as $managesite)
 								<li>
-							  <?php 
-							 
+							  <?php
+
 								$selected="";
 								$arr=explode(',',$videotags->vchsiteid);
 								$genderid = $managesite->intmanagesiteid;
 								if (in_array($genderid, $arr)){
-								$selected="checked"; 
+								$selected="checked";
 							 }
-						
-	 
-	 
+
+
+
 		 ?>
 								<label class="container-checkbox">{{$managesite->vchsitename}}
 								  <input type="checkbox" class="checkbox multisite"  name="multisite[]" value="{{$managesite->intmanagesiteid}}"<?php echo $selected; ?>>
 								  <span class="checkmark"></span>
 								</label>
-							
+
 
 
 								</li>
-							@endforeach	
+							@endforeach
 							</ul>
 						</ul>
-						</div>	
+						</div>
 		 <div class="iconsdsf">
          <label>Feature Option</label>
          <label class="container-checkbox">
          Feature
-		 <?php  
+		 <?php
 			$selected='';
-		  if($videotags->feature=='1'){	 
-			$selected="checked"; 
+		  if($videotags->feature=='1'){
+			$selected="checked";
 			}
-		 
+
 		 ?>
          <input type="checkbox" name="feature" class="featurey" value="@if($videotags->feature=='1'){{$videotags->feature}} @else {{1}} @endif" <?php if($videotags->feature=='1') echo $selected; ?>  >
          <span class="checkmark"></span>
          </label>
          </div>
-		 
+
 		 <div class="iconsdsf">
          <h5>Content Category</h5>
 		 <div class="flex-radio">
 		<label class="container-radio">
          Standard
           <input type="radio" name="content_category" class="content-category" value="1" <?php if($videotags->content_category=='1') echo 'checked'; ?>>
-         
+
          </label>
-		 
+
 		 <label class="container-radio">
          Premium
           <input type="radio" name="content_category" class="content-category" value="2" <?php if($videotags->content_category=='2') echo 'checked'; ?>>
-         
+
          </label>
 
 		 <label class="container-radio">
          Deluxe
           <input type="radio" name="content_category" class="content-category" value="3" <?php if($videotags->content_category=='3') echo 'checked'; ?>>
-         
+
          </label>
 		 </div>
          </div>
@@ -820,7 +818,7 @@ for($i=0;$i<$totalitems;$i++){
 				$stock='3';
 				$custom='4';
 		  }
-		 
+
 		 @endphp
 		<div class="iconsdsf">
          <h5>Stock Category</h5>
@@ -828,21 +826,21 @@ for($i=0;$i<$totalitems;$i++){
 			<label class="container-radio">
 			Stock
 			 <input type="radio" name="stock_category" class="content-category" value="{{$stock}}"
-			 @if($videotags->stock_category== $stock){{'checked'}} @elseif($videotags->stock_category== $stock){{'checked'}} 
+			 @if($videotags->stock_category== $stock){{'checked'}} @elseif($videotags->stock_category== $stock){{'checked'}}
 			 @endif >
-			 
+
 			 </label>
 			 <label class="container-radio">
 			Custom
 			 <input type="radio" name="stock_category" class="content-category" value="{{$custom}}"
-			 @if($videotags->stock_category== $custom){{'checked'}} @elseif($videotags->stock_category== $custom){{'checked'}} 
+			 @if($videotags->stock_category== $custom){{'checked'}} @elseif($videotags->stock_category== $custom){{'checked'}}
 			 @endif >
-			 
+
 			 </label>
-		 
+
 		 </div>
       </div>
-	  
+
 		 <div class="iconsdsf">
          <label>Image Background</label>
          <label class="container-checkbox">
@@ -850,16 +848,16 @@ for($i=0;$i<$totalitems;$i++){
          <input type="checkbox" name="transparent" class="transparent" value="Y" <?php if($videotags->transparent=='Y') echo 'Checked' ?>>
          <span class="checkmark"></span>
          </label>
-         </div> 
-		 
-		 
-		 
-		 
-		 
+         </div>
+
+
+
+
+
 		</div>
- 
-      
-	  
+
+
+
 	  </div>
 	  <div class="col-md-12">
 	   <input class="btn btn-dafualt" type="button" id="updatebutton" name="submit" value="Submit" id="uploadimage">
@@ -867,13 +865,13 @@ for($i=0;$i<$totalitems;$i++){
 	  </div>
 	  </div>
 	  </div>
-	  
 
-    
 
-  </form>	
 
-	
+
+  </form>
+
+
 
 <div class="space100"></div>
 
@@ -886,11 +884,11 @@ for($i=0;$i<$totalitems;$i++){
 <script type="text/javascript">
  //addcategory
  $('.searchtags').on('click','.addcategory',function(){
-	 
+
 	var searchtext = $('.chosen-search-input').val();
-	var categorytitle = searchtext;	
+	var categorytitle = searchtext;
 	var category = '';
-    var parentcat = '';		
+    var parentcat = '';
     var token= $('meta[name="csrf_token"]').attr('content');
 	$.ajax({
 				url:'{{ URL::to("/admin/addeditsearchcategory") }}',
@@ -898,14 +896,14 @@ for($i=0;$i<$totalitems;$i++){
 				data:{'categorytitle':categorytitle,'category':'','parentcat':'','_token':token},
 				success:function(ress){
 				window.location.href="";
-				
+
 $('.form-control-chosen').append($("<option/>", {
         value:ress.lastinsertid,
         text: searchtext
     }));
 	$(".form-control-chosen option[value='"+ress.lastinsertid+"']").prop("selected", true);
 $('.form-control-chosen').trigger("chosen:updated");
- 
+
 				}
 			});
 	});
@@ -938,7 +936,7 @@ $('.form-control-chosen').trigger("chosen:updated");
 <script>
 
 	$(document).ready(function(){
-		var allselectedvideo = [];	
+		var allselectedvideo = [];
 			$('.selectedli').click(function(){
 		$(this).toggleClass("active");
 	var videoid = $(this).attr("videoid");
@@ -952,9 +950,9 @@ $('.form-control-chosen').trigger("chosen:updated");
 
 		$('#selectedvideo').val(allselectedvideostring);
 		});
-	
+
 	 $('.racecategory1').on('change', function() {
-		    $('.racecategory1').not(this).prop('checked', false);  
+		    $('.racecategory1').not(this).prop('checked', false);
 		});
 	});
 </script>
@@ -970,15 +968,15 @@ function deletevideo(deleteid){
 				    $("#msg").fadeIn();
 					$('#remove'+deleteid).remove();
                   $("#msg").html("Video successfully deleted");
-				  
+
 				  setTimeout(function(){
-				  
+
 				   $("#msg").fadeOut();
 				   }, 3000);
                }
             });
 }
-	
+
 }
 
   $(document).ready(function(){
@@ -993,7 +991,7 @@ function deletevideo(deleteid){
                });
            }
        });
-       
+
        $('.checkbox').on('click',function(){
            if($('.checkbox:checked').length == $('.checkbox').length){
                $('#select_all').prop('checked',true);
@@ -1001,18 +999,18 @@ function deletevideo(deleteid){
                $('#select_all').prop('checked',false);
            }
        });
-	   
+
 	   if($('.checkbox:checked').length == $('.checkbox').length){
                $('#select_all').prop('checked',true);
            }else{
                $('#select_all').prop('checked',false);
            }
    });
-   
+
    $(document).ready(function() {
     $(".taggingSelect2").select2({
       tags: true,
     });
 });
-</script>		
+</script>
 @include('admin/admin-footer')

@@ -26,7 +26,7 @@
     padding: 0 15px;
 }
 .page-item{
-	
+
 	width:4%!important;
 }
 .divpagination{
@@ -167,7 +167,7 @@ ul.recentlyuploaded {
     });
 $(document).ready(function()
 {
-	
+
 	$("#mysearchtags").submit(function(e){
    var formdata = $(this).serialize(); // here $(this) refere to the form its submitting
     $.ajax({
@@ -182,27 +182,27 @@ $(document).ready(function()
     }, 2000);
         },
     });
-    e.preventDefault(); 
+    e.preventDefault();
 });
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
+
+
+
      $(document).on('click', '.pagination a',function(event)
     {
         $('li').removeClass('active');
         $(this).parent('li').addClass('active');
 		var href = $(this).attr("href");
-		
+
         event.preventDefault();
         var myurl = $(this).attr('href');
        var page=$(this).attr('href').split('page=')[1];
@@ -217,13 +217,11 @@ function getData(page){
             datatype: "html",
             // beforeSend: function()
             // {
-            //     you can show your loader 
+            //     you can show your loader
             // }
         })
         .done(function(data)
         {
-            console.log(data);
-            
             $("#product_container").empty().html(data);
            $('html, body').animate({
         scrollTop: $("#product_container").offset().top
@@ -237,10 +235,10 @@ function getData(page){
 
 
 	$(document).ready(function(){
-		var allselectedvideo = [];	
+		var allselectedvideo = [];
 			//$('.selectedli').click(function(){
 		$(document).on('click', '.selectedli',function(){
-			
+
 		$(this).toggleClass("active");
 	var videoid = $(this).attr("videoid");
 
@@ -253,12 +251,12 @@ function getData(page){
 
 		$('#selectedvideo').val(allselectedvideostring);
 		});
-	
+
 	 $('.racecategory').on('change', function() {
-		    $('.racecategory').not(this).prop('checked', false);  
+		    $('.racecategory').not(this).prop('checked', false);
 		});
-	
-	
+
+
 	});
 </script>
 <div class="admin-page-area">
@@ -286,65 +284,65 @@ function getData(page){
 					</ul>
 					</div>
 					</div>
-					
+
 					<div class="iconsdsf">
 					<div class="frmal_sd"><b>Gender</b>
 <?php $count=1;  ?>
 @foreach ($allvideo['alltags'] as $allcategory)
-<?php 
+<?php
  $myalltagid = explode(',',$allcategory->tagid);
  $myallcategorytag = explode(',',$allcategory->tagTitle);
  $totalitems = count(explode(',',$allcategory->tagTitle));
 ?>
 @if ($allcategory->IntId == 1)
-	<?php 
+	<?php
 for($i=0;$i<$totalitems;$i++){
 	  $selected="";
-	
+
       $tagrelation = $allvideo['allvideorelation'];
-	
+
 	  if(!empty($tagrelation)){
-		  
-		 
-	  $columnname = $allcategory->VchColumnType;	 
+
+
+	  $columnname = $allcategory->VchColumnType;
 	 $genderid = $tagrelation->$columnname;
-   
+
      if($genderid==$myalltagid[$i]){
-	 
-	  $selected="checked"; 
+
+	  $selected="checked";
       }
-	 }	  
+	 }
  ?>
-  <div class="check-view col-md-1 "> 
-<input type="checkbox" class="racecategory" name="searchfilteringcategory[<?php echo $allcategory->VchColumnType; ?>]" category="<?php echo $allcategory->VchColumnType; ?>"  ng-model="gender<?php echo $myalltagid[$i];  ?>" id="box1-<?php echo $myalltagid[$i];  ?>" ng-click="changegeneder(gender<?php echo $myalltagid[$i];  ?>,<?php echo $myalltagid[$i];  ?>)" value="<?php echo $myalltagid[$i];  ?>" <?php echo $selected; ?>> 
+  <div class="check-view col-md-1 ">
+<input type="checkbox" class="racecategory" name="searchfilteringcategory[<?php echo $allcategory->VchColumnType; ?>]" category="<?php echo $allcategory->VchColumnType; ?>"  ng-model="gender<?php echo $myalltagid[$i];  ?>" id="box1-<?php echo $myalltagid[$i];  ?>" ng-click="changegeneder(gender<?php echo $myalltagid[$i];  ?>,<?php echo $myalltagid[$i];  ?>)" value="<?php echo $myalltagid[$i];  ?>" <?php echo $selected; ?>>
   <label for="box1-<?php echo $myalltagid[$i];  ?>">
   <?php echo $myallcategorytag[$i];?>
   </label>
   </div>
-<?php } ?>		
+<?php } ?>
 @else
-	<?php 
-  
+	<?php
+
     $tagrelation = $allvideo['allvideorelation'];
 	 if(!empty($tagrelation)){
 	 $genderid = $tagrelation->$columnname;
     $selected="";
     if($myalltagid[$i]==$genderid){
-	 $selected="selected"; 
+	 $selected="selected";
    }
  }
 ?>
-<?php if($count==1){ ?> 
+<?php if($count==1){ ?>
 </div>
 <ul class="row">
 <?php } ?>
 	   <li class="col-md-6">
-     <div class="image-icon"> 
+     <div class="image-icon">
 	 <div class="dropdown">
 <label>	 {{$allcategory->VchTitle}}</label>
 <select class="racecategory form-control" name="filteringcategory[<?php echo $allcategory->VchColumnType; ?>]" category="<?php echo $allcategory->VchColumnType; ?>">
     <option value="0">All <?php echo $allcategory->VchTitle; ?></option>
-   <?php 
+   <?php
  for($i=0;$i<$totalitems;$i++){
 	 $selected="";
 	  $tagrelation = $allvideo['allvideorelation'];
@@ -352,18 +350,18 @@ for($i=0;$i<$totalitems;$i++){
 	 $columnname = $allcategory->VchColumnType;
     $genderid = $tagrelation->$columnname;
 
- if($genderid==$myalltagid[$i]){	 
-	$selected="selected"; 
+ if($genderid==$myalltagid[$i]){
+	$selected="selected";
  }
-} 
+}
 ?>
 <option <?php echo $selected; ?> value="<?php echo $myalltagid[$i];  ?>"><?php echo $myallcategorytag[$i];  ?></option>
 <?php } ?>
 </select>
-	 
+
 		</div>
 		</div>
-		 </li>  
+		 </li>
 		 <?php $count++;
  ?>
 @endif
@@ -376,14 +374,14 @@ for($i=0;$i<$totalitems;$i++){
                       </div>
 					  </div>
 				</form>
-				</div>	
-				
+				</div>
+
 				<div class="searchtags secnd_tags">
 					<form action ="/admin/posttaggedvideo" method="POST" id="mysearchtag" name="searchtag" class="searchtag">
 					<div class="form_inner_parts">
 							@csrf
 						<div class="form-group">
-						<?php 
+						<?php
 						if(isset($_GET['videoid'])){
 						$videoid = $_GET['videoid'];
 						}else {
@@ -398,80 +396,80 @@ for($i=0;$i<$totalitems;$i++){
 						<input type="hidden" name="selectedvideo" value="<?php echo $videoid; ?>" id="selectedvideo">
 							<select id="multiple" name="tags[]" class="form-control form-control-chosen" data-placeholder="Place tags" multiple>
 								<option></option>
-								<?php 
+								<?php
 									foreach($allvideo['searchtags'] as $videouploads){
 									$selected='';
 									if(in_array($videouploads->IntId,$allsearchtags)){
 										$selected="selected";
-										
+
 									}
 									?>
-                                     									
+
 									<option <?php echo $selected; ?> value="<?php echo $videouploads->IntId; ?>"><?php echo $videouploads->VchCategoryTitle; ?></option>
 								<?php } ?>
 							</select>
 						</div>
-					
-						
-						
+
+
+
 						<div class="iconsdsf">
 					<div class="frmal_sd"><b>Gender</b>
 <?php $count=1;  ?>
 @foreach ($allvideo['alltags'] as $allcategory)
-<?php 
+<?php
  $myalltagid = explode(',',$allcategory->tagid);
  $myallcategorytag = explode(',',$allcategory->tagTitle);
  $totalitems = count(explode(',',$allcategory->tagTitle));
 ?>
 @if ($allcategory->IntId == 1)
-	<?php 
+	<?php
 for($i=0;$i<$totalitems;$i++){
 	  $selected="";
-	
+
       $tagrelation = $allvideo['allvideorelation'];
-	
+
 	  if(!empty($tagrelation)){
-		  
-		 
-	  $columnname = $allcategory->VchColumnType;	 
+
+
+	  $columnname = $allcategory->VchColumnType;
 	 $genderid = $tagrelation->$columnname;
-   
+
      if($genderid==$myalltagid[$i]){
-	 
-	  $selected="checked"; 
+
+	  $selected="checked";
       }
-	 }	  
+	 }
  ?>
-  <div class="check-view col-md-1 "> 
-<input type="checkbox" class="racecategory" name="searchfilteringcategory[<?php echo $allcategory->VchColumnType; ?>]" category="<?php echo $allcategory->VchColumnType; ?>"  ng-model="gender<?php echo $myalltagid[$i];  ?>" id="box1-<?php echo $myalltagid[$i];  ?>" ng-click="changegeneder(gender<?php echo $myalltagid[$i];  ?>,<?php echo $myalltagid[$i];  ?>)" value="<?php echo $myalltagid[$i];  ?>" <?php echo $selected; ?>> 
+  <div class="check-view col-md-1 ">
+<input type="checkbox" class="racecategory" name="searchfilteringcategory[<?php echo $allcategory->VchColumnType; ?>]" category="<?php echo $allcategory->VchColumnType; ?>"  ng-model="gender<?php echo $myalltagid[$i];  ?>" id="box1-<?php echo $myalltagid[$i];  ?>" ng-click="changegeneder(gender<?php echo $myalltagid[$i];  ?>,<?php echo $myalltagid[$i];  ?>)" value="<?php echo $myalltagid[$i];  ?>" <?php echo $selected; ?>>
   <label for="box1-<?php echo $myalltagid[$i];  ?>">
   <?php echo $myallcategorytag[$i];?>
   </label>
   </div>
-<?php } ?>		
+<?php } ?>
 @else
-	<?php 
-  
+	<?php
+
     $tagrelation = $allvideo['allvideorelation'];
 	 if(!empty($tagrelation)){
 	 $genderid = $tagrelation->$columnname;
     $selected="";
     if($myalltagid[$i]==$genderid){
-	 $selected="selected"; 
+	 $selected="selected";
    }
  }
 ?>
-<?php if($count==1){ ?> 
+<?php if($count==1){ ?>
 </div>
 <ul class="row">
 <?php } ?>
 	   <li class="col-md-6">
-     <div class="image-icon"> 
+     <div class="image-icon">
 	 <div class="dropdown">
 <label>	 {{$allcategory->VchTitle}}</label>
 <select class="racecategory form-control" name="filteringcategory[<?php echo $allcategory->VchColumnType; ?>]" category="<?php echo $allcategory->VchColumnType; ?>">
     <option value="0">All <?php echo $allcategory->VchTitle; ?></option>
-   <?php 
+   <?php
  for($i=0;$i<$totalitems;$i++){
 	 $selected="";
 	  $tagrelation = $allvideo['allvideorelation'];
@@ -479,18 +477,18 @@ for($i=0;$i<$totalitems;$i++){
 	 $columnname = $allcategory->VchColumnType;
     $genderid = $tagrelation->$columnname;
 
- if($genderid==$myalltagid[$i]){	 
-	$selected="selected"; 
+ if($genderid==$myalltagid[$i]){
+	$selected="selected";
  }
-} 
+}
 ?>
 <option <?php echo $selected; ?> value="<?php echo $myalltagid[$i];  ?>"><?php echo $myallcategorytag[$i];  ?></option>
 <?php } ?>
 </select>
-	 
+
 		</div>
 		</div>
-		 </li>  
+		 </li>
 		 <?php $count++;
  ?>
 @endif
@@ -500,7 +498,7 @@ for($i=0;$i<$totalitems;$i++){
 <div class="form-group">
 <button type="submit" class="btn btn-primary">Save</button>
 </div>
-</div>						
+</div>
 </form>
 				</div>
 			</div>
@@ -508,28 +506,28 @@ for($i=0;$i<$totalitems;$i++){
 		<div class="cl_12">
 			<h3>Recently Uploaded Content</h3>
 		<div class="selectall">
-<input type="checkbox" class="racecategory" id="boxcheck"> 
+<input type="checkbox" class="racecategory" id="boxcheck">
   <label for="boxcheck">
   Select All
     </label>
 	</div>
-	
+
 	</div>
   <div class="up_videos">
   <div id="product_container">
 			  @include('admin.admin-videotagslist')
-  </div>			  
+  </div>
 		<div class="clearfix"></div>
-					
-	
+
+
 				</div>
-				
+
 		</div>
-		
-	</div>  
+
+	</div>
 </div>
-	
-	 
+
+
 <script src="/js/choosen5.js?v=2">
 </script>
 <script type="text/javascript">
@@ -537,25 +535,25 @@ for($i=0;$i<$totalitems;$i++){
  $(document).ready(function(){
   $("#mysearchtitle").keyup(function(){
   var keyword = $(this).val();
-   $.ajax({ 
-    type: 'GET', 
-    url: '/getkeywords?type=&category=1&Tagid=[]&searchtext='+keyword+'&startlimit=0', 
+   $.ajax({
+    type: 'GET',
+    url: '/getkeywords?type=&category=1&Tagid=[]&searchtext='+keyword+'&startlimit=0',
     dataType: 'json',
-    success: function (data) { 
-	$('.allpagecontent').html('');	   
+    success: function (data) {
+	$('.allpagecontent').html('');
     $.each(data, function( index, value ) {
-	$('.allpagecontent').append('<li class="srchtitles">'+value.VchCategoryTitle+'</li>');	   
-	 });	   
+	$('.allpagecontent').append('<li class="srchtitles">'+value.VchCategoryTitle+'</li>');
+	 });
     }
 });
- });  
+ });
 $('.searchtags').on('click','.srchtitles',function(){
 	var searchingtext = $(this).text();
     $('#mysearchtitle').val(searchingtext);
-	$('.allpagecontent').html('');	
-}); 
-	 
-	 
+	$('.allpagecontent').html('');
+});
+
+
  $('#mysearchtag').submit(function(){
    var selectedvideo = $('#selectedvideo').val();
    if(selectedvideo==''){
@@ -563,18 +561,18 @@ $('.searchtags').on('click','.srchtitles',function(){
 	 return false
 	}
  });
- 
- 
+
+
  $('#boxcheck').click(function(){
-if ($(this).prop('checked')==true){ 
-var allselectedvideo = [];	
-$('#selectedvideo').val('');	
- $('.selectedli').removeClass("active"); 
+if ($(this).prop('checked')==true){
+var allselectedvideo = [];
+$('#selectedvideo').val('');
+ $('.selectedli').removeClass("active");
  $('.selectedli').each(function(){
-	 
+
   $(this).addClass("active");
 	   var videoid = $(this).attr("videoid");
-        
+
 		if($.inArray(videoid, allselectedvideo)!== -1){
 			allselectedvideo.splice($.inArray(allselectedvideo,videoid) ,1);
 		}else {
@@ -583,30 +581,30 @@ $('#selectedvideo').val('');
 		var allselectedvideostring = allselectedvideo.join(',');
 
 		$('#selectedvideo').val(allselectedvideostring);
-	 
-	 
+
+
  });
 }else {
-	allselectedvideo = [];	
-	$('#selectedvideo').val('');	
- $('.selectedli').removeClass("active"); 
-	
+	allselectedvideo = [];
+	$('#selectedvideo').val('');
+ $('.selectedli').removeClass("active");
+
 }
-	 
+
  });
- 
- 
- 
- 
- 
- 
- 
+
+
+
+
+
+
+
  });
  $('.searchtags').on('click','.addcategory',function(){
 	var searchtext = $('.chosen-search-input').val();
-	var categorytitle = searchtext;	
+	var categorytitle = searchtext;
 	var category = '';
-    var parentcat = '';		
+    var parentcat = '';
     var token= $('meta[name="csrf_token"]').attr('content');
 	$.ajax({
 				url:'{{ URL::to("/admin/addeditsearchcategory") }}',
@@ -614,7 +612,7 @@ $('#selectedvideo').val('');
 				data:{'categorytitle':categorytitle,'category':'','parentcat':'','_token':token},
 				success:function(ress){
 				 //window.location.href="";
-				
+
 $('.form-control-chosen').append($("<option/>", {
         value:ress.lastinsertid,
         text: searchtext
@@ -648,9 +646,9 @@ $('.form-control-chosen').trigger("chosen:updated");
 			});
 		}
 	});
-	
-	
-	
+
+
+
 </script>
-		
+
 @include('admin/admin-footer')

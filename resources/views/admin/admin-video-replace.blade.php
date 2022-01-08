@@ -26,7 +26,7 @@ span.btn_txt {
   height: 34px;
 }
 
-.switch input { 
+.switch input {
   opacity: 0;
   width: 0;
   height: 0;
@@ -137,7 +137,7 @@ label.switch {
 <link href="/css/component-chosen.min.css" rel="stylesheet"/>
 <script>
 	$(document).ready(function(){
-		var allselectedvideo = [];	
+		var allselectedvideo = [];
 			$('.selectedli').click(function(){
 		    $(this).toggleClass("active");
 	        var videoid = $(this).attr("videoid");
@@ -150,12 +150,12 @@ label.switch {
 		var allselectedvideostring = allselectedvideo.join(',');
 		$('#selectedvideo').val(allselectedvideostring);
 		});
-	
+
 	   $('.racecategorycheckbox').on('change', function() {
-		    $('.racecategorycheckbox').not(this).prop('checked', false);  
+		    $('.racecategorycheckbox').not(this).prop('checked', false);
 		});
-	
-	
+
+
 	});
 </script>
 <script>
@@ -167,16 +167,16 @@ jQuery(document).ready(function() {
 	var confirmation = confirm("Are You sure to replace media with Content");
      if(confirmation){
 		var error=false;
-		
+
 		 if($('.changedvideo').prop("checked")==true){
 	      var googlelink = $('#googlelink').val();
 	   if(googlelink==''){
-		$('#googlelink').after("<div class='alert alert-danger' style='margin-top:10px;'>Please Enter Your Google drive link</div>");	   
+		$('#googlelink').after("<div class='alert alert-danger' style='margin-top:10px;'>Please Enter Your Google drive link</div>");
 	 error = true;
 	   }
-	 }else {	 
+	 }else {
 		if(allfiles==''){
-		$('#img-zone').after("<div class='alert alert-danger' style='margin-top:10px;'>Please Select any Content</div>");	
+		$('#img-zone').after("<div class='alert alert-danger' style='margin-top:10px;'>Please Select any Content</div>");
 		error = true;
 		}
 	  }
@@ -184,20 +184,18 @@ jQuery(document).ready(function() {
 		return false;
 		}
 		$(this).prop('disabled', true);
-    if($('.changedvideo').prop("checked")==true){	
+    if($('.changedvideo').prop("checked")==true){
 		var googlelink = $('#googlelink').val().replace("/view", "/preview");
 		googlelink = googlelink.replace("?usp=sharing", "");
 		$('#uploadtype').val('G');
 		$('#googlelink').val(googlelink);
 		var formserailise =  $('#forvideo').serialize();
-		console.log(formserailise);
         ajax_upload1(googlelink,'G',formserailise);
 	}
 	else {
 	$('#uploadtype').val('W');
 	var startingfile = allfiles[totalupload];
     ajax_upload(allfiles,allfiles.length,startingfile);
-	console.log(startingfile);
 	}
 	}
     });
@@ -218,9 +216,9 @@ jQuery(document).ready(function() {
     }
 	  function ajax_upload1(googlelink,type,formdata) {
 	    var token= $('meta[name="csrf_token"]').attr('content');
-		
+
 		$.ajax({
-				beforeSend: function(){  
+				beforeSend: function(){
 		    	    $(".info-loading-image").css("display","flex");
 		    	    $("body").css("overflow","hidden");
                 },
@@ -254,7 +252,7 @@ jQuery(document).ready(function() {
 		$('#updatebutton').prop('disabled', false);
         },
 			});
-	
+
 	  }
     // Function to upload image through AJAX
     function ajax_upload(files,totalvideo,startingfile) {
@@ -269,7 +267,7 @@ jQuery(document).ready(function() {
 		 $('.progress').css("display", "block");
             var _token = $('meta[name="csrf_token"]').attr('content');
             var vchvideotitle = $('#vchvideotitle').val();
-			
+
             var formdata = new FormData();
 			var videoid = $('#videoid').val();
 			formdata.append("file1", startingfile);
@@ -284,7 +282,6 @@ jQuery(document).ready(function() {
             ajax.open("POST", "/admin/replacemedia",true);
             ajax.send(formdata);
             function progressHandler(event) {
-                 console.log(event);
                 _("loaded_n_total").innerHTML = "Uploaded " + event.loaded + " bytes of " + event.total;
                 var percent = (event.loaded / event.total) * 100;
                 _("progressBar").value = Math.round(percent);
@@ -304,7 +301,7 @@ jQuery(document).ready(function() {
 				 	var myvideoid = jQuery.parseJSON(event.target.responseText);
 					$('#videoid').val(myvideoid.videoid);
 			        window.location.href="/admin/managevideosection";
-					
+
 				/* $.ajax({
 				url:'{{ URL::to("/admin/saveuploadvideo") }}',
 				type:'POST',
@@ -314,14 +311,12 @@ jQuery(document).ready(function() {
 
 				}
 			});	 */
-			
+
 				ajax_upload(files,totalvideo,startingfile)
 				}else {
 					var myvideoid = jQuery.parseJSON(event.target.responseText);
-					console.log(myvideoid);
 					$('#videoid').val(myvideoid.videoid);
 					var formdata = $('#forvideo').serialize();
-					console.log(formdata);
 				/* $.ajax({
 				url:'{{ URL::to("/admin/saveuploadvideo") }}',
 				type:'POST',
@@ -334,12 +329,10 @@ jQuery(document).ready(function() {
 				}
 			}
             function errorHandler(event) {
-				console.log(event);
                 //_("status").innerHTML = "Upload Failed";
             }
 
             function abortHandler(event) {
-				console.log(event);
                 _("status").innerHTML = "Upload Aborted";
             }
         //}
@@ -354,7 +347,6 @@ jQuery(document).ready(function() {
         };
         element.ondrop = function(e) {
             e.preventDefault();
-            console.log(e.dataTransfer.files);
             //ajax_upload(e.dataTransfer.files);
             allfiles = e.dataTransfer.files;
 			$('.progresslist').html('');
@@ -378,7 +370,7 @@ jQuery(document).ready(function() {
 		for(var k=0;k<allfiles.length;k++){
 		   $('.progresslist').append('<li class="waiting showvideo'+k+'"> <div class="lit_txt">'+allfiles[k]['name']+'</div><div id="progressBar'+k+'" class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" style="width:100%">Waiting </div></li>');
 			}
-	
+
     });
 
     // File upload progress event listener
@@ -418,15 +410,15 @@ jQuery(document).ready(function() {
 		<form action="/admin/saveuploadvideo" id="forvideo" method="Post" enctype="multipart/form-data">
 		@csrf
     <div class="row">
-		<?php 
+		<?php
 
 		if($allvideo->EnumUploadType=='G'){
 			$vidoestatus = "checked";
 		}else {
-		
+
 		$vidoestatus = "";
 		 } ?>
-	
+
 	<div class="col-md-12">
 		<div class="uploadvideo"><span class="btn_txt">Replace Google Drive Link:</span><label class="switch">
   <input class="changedvideo" type="checkbox" value="G" <?php echo $vidoestatus; ?>>
@@ -437,24 +429,24 @@ jQuery(document).ready(function() {
 	 <div class="col-md-12">
      <div class="col-md-12">
         <input type="hidden" name="videoid" id="videoid" value="<?php echo $allvideo->IntId; ?>" >
-		
+
         <input class="form-control" type="text" id="vchvideotitle" name="vchvideotitle" placeholder="Enter Your Content Title">
       <input type="hidden" name="uploadtype" id="uploadtype">
 	  </div>
-	   <?php   
-	  if($vidoestatus=='checked'){     
+	   <?php
+	  if($vidoestatus=='checked'){
 	 $style="style=display:none;";
 	  $style1="style=display:block;";
 	  }else {
 	 $style1="style=display:none;";
 	  $style="style=display:block;";
-	  
+
 	  ?>
 	  <?php } ?>
 <div class="videouploadsection" <?php echo $style; ?>>
-	
+
     <div class="col-sm-12 col-sm-offset-2">
-	
+
                 <div  class="img-zone text-center" id="img-zone"  >
                     <div class="img-drop">
                         <h2><small>Drag &amp; Drop Files Here</small></h2>
@@ -465,33 +457,33 @@ jQuery(document).ready(function() {
                     </span>
                     </div>
                 </div>
-				
+
 				<div class="list_div">
 					<ul class="progresslist">
-					
+
 					</ul>
 				</div>
 			 </div>
 		     </div>
 			 <div class="googledrivelink" <?php echo $style1; ?>>
 			  <div class="col-md-12">
-          
-		 
+
+
 		 <input type="text" class="form-control" name="googlelink" id="googlelink">
 
         </div>
 			 </div>
 			</div>
 		  <div class="col-md-6">
-		 	  		  
-		  </div>	
+
+		  </div>
 		 <div class="col-md-12"><div class="btndiv"> <input class="btn btn-dafualt" type="button" id="updatebutton" name="submit" value="Replace Media"></div></div>
 	</div>
-  
- 
-  </form>	
+
+
+  </form>
 </div>
-	</div>  
+	</div>
 </div>
 <div class="space100"></div>
 <script src="/js/choosen5.js">
@@ -504,19 +496,19 @@ $(document).ready(function(){
 	 if($(this).prop("checked") == true){
 		 $('.videouploadsection').css("display","none");
 		 $('.googledrivelink').fadeIn();
-		 
+
 	 }else {
 		 $('.googledrivelink').css("display","none");
 		 $('.videouploadsection').fadeIn();
-		 }	 
-     
+		 }
+
  });
  });
  $('.palce-all').on('click','.addcategory',function(){
 	var searchtext = $('.chosen-search-input').val();
-	var categorytitle = searchtext;	
+	var categorytitle = searchtext;
 	var category = '';
-    var parentcat = '';		
+    var parentcat = '';
     var token= $('meta[name="csrf_token"]').attr('content');
 	$.ajax({
 				url:'{{ URL::to("/admin/addeditsearchcategory") }}',
@@ -524,7 +516,7 @@ $(document).ready(function(){
 				data:{'categorytitle':categorytitle,'category':'','parentcat':'','_token':token},
 				success:function(ress){
 				 //window.location.href="";
-				
+
 $('.form-control-chosen').append($("<option/>", {
         value:ress.lastinsertid,
         text: searchtext
@@ -560,5 +552,5 @@ $('.form-control-chosen').trigger("chosen:updated");
 		}
 	});
 </script>
-	
+
 @include('admin/admin-footer')

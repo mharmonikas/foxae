@@ -9,7 +9,7 @@
    .recentlyuploaded{
    width:100%
    display:block;
-   } 
+   }
    .recentlyuploaded img {
    width: 100%;
    }
@@ -25,7 +25,7 @@
    width: 60px;
    height: 34px;
    }
-   .switch input { 
+   .switch input {
    opacity: 0;
    width: 0;
    height: 0;
@@ -111,7 +111,7 @@
     font-weight: 600;
     padding: 15px 0px 0;
     margin: 0;
-} 
+}
    .check-view {
    margin-top:10px;
    }
@@ -154,32 +154,32 @@ input.content-category {
 <script src="/js/choosen7.js?v=1">
 <script>
    $(document).ready(function(){
-   	var allselectedvideo = [];	
+   	var allselectedvideo = [];
    		$('.selectedli').click(function(){
    	$(this).toggleClass("active");
    var videoid = $(this).attr("videoid");
-   
+
    	if($.inArray(videoid, allselectedvideo)!== -1){
    		allselectedvideo.splice($.inArray(allselectedvideo,videoid) ,1);
    	}else {
    		allselectedvideo.push(videoid);
              }
    	var allselectedvideostring = allselectedvideo.join(',');
-   
+
    	$('#selectedvideo').val(allselectedvideostring);
    	});
-   
+
     $('.racecategorycheckbox').on('change', function() {
-   	    $('.racecategorycheckbox').not(this).prop('checked', false);  
+   	    $('.racecategorycheckbox').not(this).prop('checked', false);
    	});
-   
-   
+
+
    });
    function thumbfileupload(id){
-	   var file_data = $('#thumnbfile')[0].files[0]; 
+	   var file_data = $('#thumnbfile')[0].files[0];
 				var _token = $('meta[name="csrf_token"]').attr('content');
-					var form_data = new FormData();                  
-					form_data.append('file',file_data);	
+					var form_data = new FormData();
+					form_data.append('file',file_data);
 					form_data.append('id',id);
 					form_data.append("_token", _token);
 					$.ajax({
@@ -191,10 +191,10 @@ input.content-category {
 						success:function(ress1){
 						 window.location.href="/admin/taggedvideo";
 					}
-			}) ;   
-	   
-	   
-	   
+			}) ;
+
+
+
    }
 </script>
 <script>
@@ -205,46 +205,45 @@ input.content-category {
        $('#updatebutton').click(function() {
    		var error=false;
    		 if($('.changedvideo').prop("checked")==true){
-   		
+
           var googlelink = $('#googlelink').val();
    	   if(googlelink==''){
-   		$('#googlelink').after("<div class='alert alert-danger' style='margin-top:10px;'>Please Enter Your Google drive link</div>");	   
+   		$('#googlelink').after("<div class='alert alert-danger' style='margin-top:10px;'>Please Enter Your Google drive link</div>");
    	 error = true;
    	   }
-          
-   	 }else {	 
-   		
+
+   	 }else {
+
    		var vchvideotitle = $('#vchvideotitle').val();
    		/* if(vchvideotitle==''){
-   		$('#vchvideotitle').after("<div class='alert alert-danger' style='margin-top:10px;'>Please enter Your Video Title</div>");	
+   		$('#vchvideotitle').after("<div class='alert alert-danger' style='margin-top:10px;'>Please enter Your Video Title</div>");
    			error = true;
-   			
+
    		} */
    		if(allfiles==''){
-   		$('#img-zone').after("<div class='alert alert-danger' style='margin-top:10px;'>Please Select any Content</div>");	
+   		$('#img-zone').after("<div class='alert alert-danger' style='margin-top:10px;'>Please Select any Content</div>");
    			error = true;
-   			
+
    		}
    	 }
    		if(error){
-   			
+
    			return false;
    		}
    		$(this).prop('disabled', true);
-       if($('.changedvideo').prop("checked")==true){	
+       if($('.changedvideo').prop("checked")==true){
    		var googlelink = $('#googlelink').val().replace("/view", "/preview");
    		googlelink = googlelink.replace("?usp=sharing", "");
    		$('#uploadtype').val('G');
    		$('#googlelink').val(googlelink);
-   		
+
    		 var formserailise =  $('#forvideo').serialize();
-		
+
          ajax_upload1(googlelink,'G',formserailise);
    	 }else {
    		$('#uploadtype').val('W');
    	  var startingfile = allfiles[totalupload];
          ajax_upload(allfiles,allfiles.length,startingfile);
-   	  console.log(startingfile);
    	}
        });
        var img_zone = document.getElementById('img-zone'),
@@ -253,7 +252,7 @@ input.content-category {
                zone: 'draggable' in document.createElement('span'),
                formdata: !!window.FormData
            };
-   
+
        // Function to show messages
        function ajax_msg(status, msg) {
            var the_msg = '<div class="alert alert-' + (status ? 'success' : 'danger') + '">';
@@ -265,12 +264,12 @@ input.content-category {
    	  function ajax_upload1(googlelink,type,formdata) {
    	var token= $('meta[name="csrf_token"]').attr('content');
 		var thumfiles = $('#thumnbfile')[0].files;
-               // var formdata = new FormData(); 
+               // var formdata = new FormData();
 			    // formdata.append("thumbfile", thumfiles);
 				// formdata.append("_token",token);
-				 
+
    			$.ajax({
-   				beforeSend: function(){  
+   				beforeSend: function(){
    		    	    $(".info-loading-image").css("display","flex");
    		    	    $("body").css("overflow","hidden");
                    },
@@ -288,7 +287,7 @@ input.content-category {
 			}else{
 					 window.location.href="/admin/taggedvideo";
 				}
-                     	
+
    				},
        error: function (jqXHR, exception) {
            var msg = '';
@@ -308,10 +307,10 @@ input.content-category {
                msg = 'Uncaught Error.\n' + jqXHR.responseText;
            }
          //  alert("There are some problem in your Google drive Video.Please recheck and upload it again");
-				var file_data = $('#thumnbfile')[0].files[0]; 
+				var file_data = $('#thumnbfile')[0].files[0];
 				var _token = $('meta[name="csrf_token"]').attr('content');
-					var form_data = new FormData();                  
-					form_data.append('file',file_data);	
+					var form_data = new FormData();
+					form_data.append('file',file_data);
 					form_data.append("_token", _token);
 					$.ajax({
 						url:'{{ URL::to("/admin/saveuploadvideo") }}',
@@ -322,12 +321,12 @@ input.content-category {
 						success:function(ress1){
 						 window.location.href="/admin/taggedvideo";
 					}
-			}) ; 
+			}) ;
    		$('#googlelink').val('');
    		$('#updatebutton').prop('disabled', false);
        },
    			});
-   	
+
    	  }
        // Function to upload image through AJAX
        function ajax_upload(files,totalvideo,startingfile) {
@@ -360,9 +359,9 @@ input.content-category {
    				$('.multisite:checked').each(function(i){
    				  multisite[i] = $(this).val();
    				});
-				
+
 				var thumfiles = $('#thumnbfile')[0].files[0];
-		
+
                var formdata = new FormData();
    			formdata.append("file1", startingfile);
                formdata.append("_token", _token);
@@ -374,7 +373,7 @@ input.content-category {
                formdata.append("action", action);
                formdata.append("cont_cat", cont_cat);
                formdata.append("stock_category", stock_category);
-			  
+
                var ajax = new XMLHttpRequest();
                ajax.upload.addEventListener("progress", progressHandler, false);
                ajax.addEventListener("load", completeHandler, false);
@@ -383,7 +382,6 @@ input.content-category {
                ajax.open("POST", "/admin/saveuploadvideo",true);
                ajax.send(formdata);
                function progressHandler(event) {
-                    console.log(event);
                    _("loaded_n_total").innerHTML = "Uploaded " + event.loaded + " bytes of " + event.total;
                    var percent = (event.loaded / event.total) * 100;
                    _("progressBar").value = Math.round(percent);
@@ -399,13 +397,10 @@ input.content-category {
    				//alert(totalupload);
    				var startingfile = files[totalupload];
    				if(totalupload<files.length){
-   					
+
    				 	var myvideoid = jQuery.parseJSON(event.target.responseText);
-					//alert(myvideoid);
-   					console.log(myvideoid);
    					$('#videoid').val(myvideoid.videoid);
    					var formdata = $('#forvideo').serialize();
-   					console.log(formdata);
    				$.ajax({
    				url:'{{ URL::to("/admin/saveuploadvideo") }}',
    				type:'POST',
@@ -413,38 +408,34 @@ input.content-category {
    				data:formdata,
    				success:function(ress1){
    				 window.location.href="/admin/taggedvideo";
-   
+
    				}
-   			});	
-   			
+   			});
+
    				ajax_upload(files,totalvideo,startingfile)
    				}else {
    					var myvideoid = jQuery.parseJSON(event.target.responseText);
-   					console.log(myvideoid);
    					$('#videoid').val(myvideoid.videoid);
    					var formdata = $('#forvideo').serialize();
-   					console.log(formdata);
-   					
+
    				$.ajax({
    				url:'{{ URL::to("/admin/saveuploadvideo") }}',
    				type:'POST',
    				data:formdata,
    				success:function(ress1){
    					 window.location.href="/admin/taggedvideo";
-   
+
    				}
    			});
-   			
+
    					window.location.href="/admin/taggedvideo";
    				}
    			}
                function errorHandler(event) {
-   				console.log(event);
                    //_("status").innerHTML = "Upload Failed";
                }
-   
+
                function abortHandler(event) {
-   				console.log(event);
                    _("status").innerHTML = "Upload Aborted";
                }
            //}
@@ -459,7 +450,6 @@ input.content-category {
            };
            element.ondrop = function(e) {
                e.preventDefault();
-               console.log(e.dataTransfer.files);
                //ajax_upload(e.dataTransfer.files);
                allfiles = e.dataTransfer.files;
    			$('.progresslist').html('');
@@ -473,19 +463,19 @@ input.content-category {
        } else {
            alert("Drag & Drop isn't supported, use Open File Browser to upload photos.");
        }
-   
+
        // Call AJAX upload function on image selection using file browser button
        $(document).on('change', '.btn-file :file', function() {
            //ajax_upload(this.files);
            allfiles = this.files;
-   
+
    		$('.progresslist').html('');
    		for(var k=0;k<allfiles.length;k++){
    		   $('.progresslist').append('<li class="waiting showvideo'+k+'"> <div class="lit_txt">'+allfiles[k]['name']+'</div><div id="progressBar'+k+'" class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" style="width:100%">Waiting </div></li>');
    			}
-   	
+
        });
-   
+
        // File upload progress event listener
        (function($, window, undefined) {
            var hasOnProgress = ("onprogress" in $.ajaxSettings.xhr());
@@ -498,11 +488,11 @@ input.content-category {
                if (xhr instanceof window.XMLHttpRequest) {
                    xhr.addEventListener('progress', this.progress, false);
                }
-   
+
                if (xhr.upload) {
                    xhr.upload.addEventListener('progress', this.progress, false);
                }
-   
+
                return xhr;
            };
        })(jQuery, window);
@@ -549,7 +539,7 @@ input.content-category {
                                  Click to Open File Browser<input type="file" multiple="">
                                  </span>
                               </div>
-					
+
                            </div>
                            <div class="list_div">
                               <ul class="progresslist">
@@ -560,10 +550,10 @@ input.content-category {
                      <div class="googledrivelink" style="display:none;">
                         <div class="col-md-12">
                            <a href="http://blogs.acu.edu/adamscenter/2015/01/20/how-to-embed-google-drive-videos/" target="_blank">(Click here to view how to get Google Drive Embed Link) </a></br>
-                           <span>Note : Enter Each Link In next line(Press enter to paste new link)</span> 
+                           <span>Note : Enter Each Link In next line(Press enter to paste new link)</span>
                            <textarea class="form-control" name="googlelink" id="googlelink" rows="4" cols="50"></textarea>
                         </div>
-						
+
                      </div>
 				 <div class="col-md-12">
 					 <label> Thumbnail</label>
@@ -578,7 +568,7 @@ input.content-category {
          <input type="hidden" name="videoida" id="videoid">
          <input type="hidden" name="selectedvideo" value="" id="selectedvideo">
          <div class="form-group">
-         <?php 
+         <?php
             if(isset($_GET['videoid'])){
             $videoid = $_GET['videoid'];
             }else {
@@ -593,12 +583,12 @@ input.content-category {
          <input type="hidden" name="selectedvideo" value="<?php echo $videoid; ?>" id="selectedvideo">
          <select id="multiple" name="tags[]" class="form-control form-control-chosen" data-placeholder="Place tags" multiple>
          <option></option>
-         <?php 
+         <?php
             foreach($allvideo['searchtags'] as $videouploads){
             $selected='';
             if(in_array($videouploads->IntId,$allsearchtags)){
             	$selected="selected";
-            	
+
             }
             ?>
          <option <?php echo $selected; ?> value="<?php echo $videouploads->IntId; ?>"><?php echo $videouploads->VchCategoryTitle; ?></option>
@@ -608,74 +598,74 @@ input.content-category {
          <div class="iconsdsf">
          <ul class="">
          @foreach ($allvideo['alltags'] as $allcategory)
-         <?php 
+         <?php
             $myalltagid = explode(',',$allcategory->tagid);
             $myallcategorytag = explode(',',$allcategory->tagTitle);
             $totalitems = count(explode(',',$allcategory->tagTitle));
             ?>
          @if ($allcategory->IntId == 1)
-         <?php 
+         <?php
             for($i=0;$i<$totalitems;$i++){
             	  $selected="";
-            	
+
                   $tagrelation = $allvideo['allvideorelation'];
-            	
+
             	  if(!empty($tagrelation)){
-            		  
-            		 
-            	  $columnname = $allcategory->VchColumnType;	 
+
+
+            	  $columnname = $allcategory->VchColumnType;
             	 $genderid = $tagrelation->$columnname;
-               
+
                  if($genderid==$myalltagid[$i]){
-            	 
-            	  $selected="checked"; 
+
+            	  $selected="checked";
                   }
             	 }
             if($i==0){
-            	
+
             	$class="col-md-2";
             }else {
             	$class="col-md-6";
-            	
-            }	 
+
+            }
              ?>
-         <li class="check-view <?php echo $class; ?>"> 
-         <input type="checkbox" class="racecategory racecategorycheckbox" name="filteringcategory[<?php echo $allcategory->VchColumnType; ?>]" category="<?php echo $allcategory->VchColumnType; ?>"  ng-model="gender<?php echo $myalltagid[$i];  ?>" id="box-<?php echo $myalltagid[$i];  ?>" ng-click="changegeneder(gender<?php echo $myalltagid[$i];  ?>,<?php echo $myalltagid[$i];  ?>)" value="<?php echo $myalltagid[$i];  ?>" <?php echo $selected; ?>> 
+         <li class="check-view <?php echo $class; ?>">
+         <input type="checkbox" class="racecategory racecategorycheckbox" name="filteringcategory[<?php echo $allcategory->VchColumnType; ?>]" category="<?php echo $allcategory->VchColumnType; ?>"  ng-model="gender<?php echo $myalltagid[$i];  ?>" id="box-<?php echo $myalltagid[$i];  ?>" ng-click="changegeneder(gender<?php echo $myalltagid[$i];  ?>,<?php echo $myalltagid[$i];  ?>)" value="<?php echo $myalltagid[$i];  ?>" <?php echo $selected; ?>>
          <label for="box-<?php echo $myalltagid[$i];  ?>">
          <?php echo $myallcategorytag[$i];?>
          </label>
          </li>
-         <?php } ?>		
+         <?php } ?>
          @else
-         <?php 
+         <?php
             $tagrelation = $allvideo['allvideorelation'];
             if(!empty($tagrelation)){
             $genderid = $tagrelation->$columnname;
             $selected="";
             if($myalltagid[$i]==$genderid){
-            
-            $selected="selected"; 
+
+            $selected="selected";
             }
             }
             ?>
          <li class="col-md-6">
-         <div class="image-icon"> 
+         <div class="image-icon">
          <div class="dropdown">
          <label>	 {{$allcategory->VchTitle}}</label>
          <select class="racecategory form-control" name="filteringcategory[<?php echo $allcategory->VchColumnType; ?>]" category="<?php echo $allcategory->VchColumnType; ?>">
          <option value="0">All <?php echo $allcategory->VchTitle; ?></option>
-         <?php 
+         <?php
             for($i=0;$i<$totalitems;$i++){
              $selected="";
               $tagrelation = $allvideo['allvideorelation'];
               if(!empty($tagrelation)){
              $columnname = $allcategory->VchColumnType;
                $genderid = $tagrelation->$columnname;
-            
-            if($genderid==$myalltagid[$i]){	 
-            $selected="selected"; 
+
+            if($genderid==$myalltagid[$i]){
+            $selected="selected";
             }
-            } 
+            }
             ?>
          <option <?php echo $selected; ?> value="<?php echo $myalltagid[$i];  ?>"><?php echo $myallcategorytag[$i];  ?></option>
          <?php } ?>
@@ -695,7 +685,7 @@ input.content-category {
          <input type="checkbox"  id="select_all" checked>
          <span class="checkmark"></span>
          </label>
-         <ul style="margin-top: -10px;">  
+         <ul style="margin-top: -10px;">
          @foreach($allvideo['managesites'] as $managesite)
          <li>
          <label class="container-checkbox">{{$managesite->txtsiteurl}}
@@ -703,7 +693,7 @@ input.content-category {
          <span class="checkmark"></span>
          </label>
          </li>
-         @endforeach	
+         @endforeach
          </ul>
          </ul>
          </div>
@@ -721,41 +711,41 @@ input.content-category {
 		<label class="container-radio">
          Standard
          <input type="radio" name="content_category" class="content-category" value="1" required checked>
-         
+
          </label>
-		 
+
 		 <label class="container-radio">
          Premium
          <input type="radio" name="content_category" class="content-category" value="2" required>
-         
+
          </label>
 
 		 <label class="container-radio">
          Deluxe
          <input type="radio" name="content_category" class="content-category" value="3" required>
-         
+
          </label>
 		 </div>
-         </div>	
+         </div>
 
 		 <div class="iconsdsf">
 			 <h5>Stock Category</h5>
 			 <div class="flex-radio">
-			
+
 			<label class="container-radio">
 			Stock
 			 <input type="radio" name="stock_category" class="content-category" value="stock" required checked>
-			 
+
 			 </label>
 			 <label class="container-radio">
 			Custom
 			 <input type="radio" name="stock_category" class="content-category" value="custom" required>
-			 
+
 			 </label>
-			 
+
 			</div>
-         </div> 
-		
+         </div>
+
 	 <div class="iconsdsf">
          <label>Image Background</label>
          <label class="container-checkbox">
@@ -766,17 +756,17 @@ input.content-category {
          </div>
 		 </form>
          </div>
-         </div>		  
-         <div class="col-md-12"><div class="btndiv"> 
+         </div>
+         <div class="col-md-12"><div class="btndiv">
 		 @if(strstr($allvideo['access'], "1"))
 		 <input class="btn btn-dafualt" type="button" id="updatebutton" name="submit" value="Submit" id="uploadimage">
 		 @else
 			<p style="color:red;font-size: 23px;"> You don't have to access to add contect</p>
 		 @endif
-		 
+
 		 </div></div>
          </div>
-         </form>	
+         </form>
       </div>
    </div>
 </div>
@@ -848,30 +838,30 @@ input.content-category {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
 <script type="text/javascript">
    //addcategory
-   
+
    $(document).ready(function(){
     $('.changedvideo').change(function(){
    var checked  = $(this).val();
     if($(this).prop("checked") == true){
    	 $('.videouploadsection').css("display","none");
    	 $('.googledrivelink').fadeIn();
-   	 
+
     }else {
    	  $('.googledrivelink').css("display","none");
    	 $('.videouploadsection').fadeIn();
-   	 
-    }	 
-       
+
+    }
+
    });
-   
-   
+
+
    });
-   
+
    $('.palce-all').on('click','.addcategory',function(){
    var searchtext = $('.chosen-search-input').val();
-   var categorytitle = searchtext;	
+   var categorytitle = searchtext;
    var category = '';
-      var parentcat = '';		
+      var parentcat = '';
       var token= $('meta[name="csrf_token"]').attr('content');
    $.ajax({
    			url:'{{ URL::to("/admin/addeditsearchcategory") }}',
@@ -880,7 +870,7 @@ input.content-category {
    			success:function(ress){
    			 //window.location.href="";
    $.each(ress, function(index, value) {
-   			
+
              $('.form-control-chosen').append($("<option/>", {
               value:value.lastinsertid,
                text:value.vchtitle
@@ -888,16 +878,16 @@ input.content-category {
         $(".form-control-chosen option[value='"+value.lastinsertid+"']").prop("selected", true);
            $('.form-control-chosen').trigger("chosen:updated");
           });
-   
+
    			}
    		});
    });
-   
+
    $('.form-control-chosen').chosen({
    		allow_single_deselect: false,
    	width: '100%'
    });
-   
+
    // $('.form-control-chosen-search-threshold-100').chosen({
    	// allow_single_deselect: false,
    		// disable_search_threshold: 100,
@@ -929,17 +919,17 @@ input.content-category {
    				    $("#msg").fadeIn();
    					$('#remove'+deleteid).remove();
                      $("#msg").html("Video successfully deleted");
-   				  
+
    				  setTimeout(function(){
-   				  
+
    				   $("#msg").fadeOut();
    				   }, 3000);
                   }
                });
    }
-   	
+
    }
-   
+
    $(document).ready(function(){
        $('#select_all').on('click',function(){
            if(this.checked){
@@ -952,7 +942,7 @@ input.content-category {
                });
            }
        });
-       
+
        $('.checkbox').on('click',function(){
            if($('.checkbox:checked').length == $('.checkbox').length){
                $('#select_all').prop('checked',true);
@@ -960,19 +950,19 @@ input.content-category {
                $('#select_all').prop('checked',false);
            }
        });
-	   
+
 	   $('#video').on('click',function(){
 			$("#stock-image").css("display", "none");
 			$("#stock-animation").css("display", "block");
-	   
+
 		});
 		$('#image').on('click',function(){
 			$("#stock-image").css("display", "block");
 			$("#stock-animation").css("display", "none");
-	   
+
 		});
    });
-   
+
 
 $(document).ready(function() {
     $(".taggingSelect2").select2({
@@ -980,5 +970,5 @@ $(document).ready(function() {
     });
 });
 
-</script>		
+</script>
 @include('admin/admin-footer')
