@@ -22,14 +22,14 @@ class CouponController extends Controller {
 		->where('coupon', $couponcode)
 		->where('delete_status', 'N')
 		->where('end_date', '>=', \DB::raw('NOW()'))
-		->whereIn('place', [$place])
+        ->where('place', 'like',"%{$place}%")
 		->first();
-
-        $userCoupons = DB::table('users_coupons')->where('coupon_id', $coupon->id)->where('user_id', Session::get('userid'))->get();
 
         $code = '201';
 
         if($coupon) {
+            $userCoupons = DB::table('users_coupons')->where('coupon_id', $coupon->id)->where('user_id', Session::get('userid'))->get();
+
             if ($coupon->type == 'O' && $userCoupons->count() > 1) {
                 $code = '201';
             }
@@ -64,15 +64,17 @@ class CouponController extends Controller {
             ->where('coupon',$couponcode)
             ->where('delete_status','N')
             ->where('end_date', '>=', \DB::raw('NOW()'))
-            ->whereIn('place', [$place])
-            ->whereIn('domain_id', [$siteInfo->intmanagesiteid])
+            ->where('place', 'like',"%{$place}%")
+            ->where(function ($query) use ($siteInfo) {
+                $query->where('domain_id', 'like',"%{$siteInfo->intmanagesiteid}%")->orWhere('domain_id', 'A');
+            })
             ->first();
-
-        $userCoupons = DB::table('users_coupons')->where('coupon_id',$coupon->id)->where('user_id', Session::get('userid'))->get();
 
         $code = '201';
 
         if($coupon) {
+            $userCoupons = DB::table('users_coupons')->where('coupon_id',$coupon->id)->where('user_id', Session::get('userid'))->get();
+
             if ($coupon->type == 'O' && $userCoupons->count() > 1) {
                 $code = '201';
             }

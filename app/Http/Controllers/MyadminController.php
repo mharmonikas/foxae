@@ -5365,13 +5365,12 @@ exit;
 	}
 
 	public static function getmenuaccess(){
-		$response = DB::table('tbl_roles')
-		->leftjoin('tbl_permission','tbl_roles.id','tbl_permission.user_id')
-		->leftjoin('tbl_module','tbl_module.id','tbl_permission.permission')
-		->where('tbl_roles.id', Session::get('vchRole'))
-		->where('tbl_permission.role','!=','')
-		->get();
-		return $response;
+        return DB::table('tbl_roles')
+        ->leftjoin('tbl_permission','tbl_roles.id','tbl_permission.user_id')
+        ->leftjoin('tbl_module','tbl_module.id','tbl_permission.permission')
+        ->where('tbl_roles.id', Session::get('vchRole'))
+        ->where('tbl_permission.role','!=','')
+        ->get();
 	}
 	public function gettingroleinfo(Request $request){
 		$id = $request->id;
