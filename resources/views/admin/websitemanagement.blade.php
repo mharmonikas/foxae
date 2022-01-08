@@ -542,7 +542,7 @@
                 <h4 class="modal-title">Schedule Images Caching </h4>
             </div>
             <div class="modal-body">
-                <p>When should we start caching images for this domain ?</p>
+                <p>When should we start caching images for this domain ? (UTC time)</p>
                 <input id="cacheImagesTime" size="16" type="text" value="<?=date('Y-m-d H:i:s')?>" placeholder="2021-06-15 14:45" readonly class="form-control form_datetime">
                 <p id="caching-error" class="d-none text-danger"></p>
             </div>

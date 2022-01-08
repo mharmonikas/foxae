@@ -572,7 +572,6 @@ if(response.data.allvideo==''){
 
 }
 function successCallback2(response){
-  console.log(response.data);
   if(response.data!=''){
    $scope.showkeyword = true;
   $scope.allkeyword = Object.assign({}, response.data);
@@ -582,9 +581,7 @@ function successCallback2(response){
   }
  }
 function successCallback1(response){
-  console.log(response.data);
   $scope.allsearch = Object.assign({}, response.data);
-
 }
 function errorCallback2(error){
 }

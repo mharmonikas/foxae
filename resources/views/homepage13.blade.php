@@ -101,7 +101,6 @@ app.controller('customersCtrl', function ($scope, $http) {
 	}
 
 	function successCallback2(response) {
-		console.log(response.data);
 		if (response.data != '') {
 			$scope.showkeyword = true;
 			$scope.allkeyword = Object.assign({}, response.data);
@@ -112,9 +111,7 @@ app.controller('customersCtrl', function ($scope, $http) {
 	}
 
 	function successCallback1(response) {
-		console.log(response.data);
 		$scope.allsearch = Object.assign({}, response.data);
-
 	}
 
 	function errorCallback2(error) {}
@@ -220,37 +217,37 @@ app.controller('customersCtrl', function ($scope, $http) {
 		//alert(VchTitle);
 		if (uploadtype == 'W') {
 			if (type == 'V') {
-				
+
 				$("#video-div").css("display", "block");
 				$("#image-div").css("display", "none");
 				$scope.videoname = 'watermark.mp4';
 				$scope.videopath = videopath+'/'+<?php echo $managesite->intmanagesiteid;?>;
 				$('.big-image').fadeIn("slow");
 				$(".bigimagename").text(VchTitle);
-				
+
 						if(tags == ""){
 					var taglisting = [];
 				}else{
 					var taglisting = tags.split(",");
 				}
-				
-			
+
+
 				var tag = "<span>Related keywords:</span>";
 				for(i=0; i<taglisting.length; i++){
 					tag += "<a href='/?s="+$.trim(taglisting[i])+"'>"+taglisting[i]+"</a>";
 				}
-				
+
 				if(taglisting.length == 0){
 					tag += "<a>No tags</a>";
 				}
 				$(".rlt-key").html(tag);
-				
+
 				var video = document.getElementById('videoID');
 				video.load();
 				video.play();
 			}
 		} else {
-			
+
 			if (type == 'V') {
 				$scope.videoname = 'watermark.mp4';
 				$scope.videopath = videopath+'/'+<?php echo $managesite->intmanagesiteid;?>;
@@ -261,13 +258,13 @@ app.controller('customersCtrl', function ($scope, $http) {
 		}else{
 			var taglisting = tags.split(",");
 		}
-		
-	
+
+
 		var tag = "<span>Related keywords:</span>";
 		for(i=0; i<taglisting.length; i++){
 			tag += "<a href='/?s="+$.trim(taglisting[i])+"'>"+taglisting[i]+"</a>";
 		}
-		
+
 		if(taglisting.length == 0){
 			tag += "<a>No tags</a>";
 		}
@@ -276,7 +273,7 @@ app.controller('customersCtrl', function ($scope, $http) {
 				video.load();
 				video.play();
 			}
-			
+
 
 			// var newdrivelink = vchgoogledrivelink.split("https://drive.google.com/file/d/");
 			// var myvideonameid = newdrivelink[1].split("/preview");
@@ -373,7 +370,7 @@ app.controller('customersCtrl', function ($scope, $http) {
 
 	});
 	$('.homepage').on("click", ".group1", function () {
-		
+
 		$("#image-div").css("display", "block");
 		$("#video-div").css("display", "none");
 		document.getElementsByClassName('login_form')[0].style.display = "none";
@@ -381,34 +378,34 @@ app.controller('customersCtrl', function ($scope, $http) {
   		document.getElementsByClassName('forgot_form')[0].style.display = "none";
 		   $("#bigimagesize").removeClass("big-active");
 		   $("#bigimagesize").addClass("non-active");
-		   
+
 		   $('#zoomCheck').prop('checked', false);
 		var img = $(this).attr('data-image');
 		var tags = $(this).attr('data-tags');
 		var name = $(this).attr('data-name');
-		
+
 		$(".bigimagename").text(name);
-		
+
 		if(tags == ""){
 			var taglisting = [];
 		}else{
 			var taglisting = tags.split(",");
 		}
-		
-	
+
+
 		var tag = "<span>Related keywords:</span>";
 		for(i=0; i<taglisting.length; i++){
 			tag += "<a href='/?s="+$.trim(taglisting[i])+"'>"+taglisting[i]+"</a>";
 		}
-		
+
 		if(taglisting.length == 0){
 			tag += "<a>No tags</a>";
 		}
 		$(".rlt-key").html(tag);
-		
+
 		var res = img.replace("%20", "W3Schools")
 		$("#bigimagesize").attr("src",res);
-		
+
 		//$(".photo").css("background-image","url('"+res+"')");
 		openbigForm();
 		// $(this).colorbox({
@@ -422,11 +419,11 @@ app.controller('customersCtrl', function ($scope, $http) {
 $(document).ready(function () {
 	var tech = getUrlParameter('s');
 	$("#searchkeyword").val(tech);
-	
+
 	$("#bigimagesize").draggable();
 	$('#bigimagesize').click(function() {
 		$(this).toggleClass('big-active').css({
-		'left': '0', 
+		'left': '0',
 		'top': '0'
 	});
     $(this).toggleClass('non-active');
@@ -471,14 +468,14 @@ function closelist() {
 function disperlist() {
 	$(".searchresult").show();
 	//$(".fox-list").
-	
+
 }
 </script>
 <style>
 #agree{
 	display: block;
 	 height: 17px;
-	
+
 }
 </style>
 <div class="container">
@@ -505,13 +502,13 @@ function disperlist() {
 		<div class="iconsdsf">
 			<ul>
 				@foreach ($alltags as $allcategory)
-				<?php 
+				<?php
 				$myalltagid = explode(',',$allcategory->tagid);
 				$myallcategorytag = explode(',',$allcategory->tagTitle);
 				$totalitems = count(explode(',',$allcategory->tagTitle));
 				?>
 				@if ($allcategory->IntId == 1)
-				<?php 
+				<?php
 				for($i=0;$i<$totalitems;$i++){ ?>
 					<li>
 					<label class="check-box-container"><?php echo $myallcategorytag[$i];?>
@@ -519,14 +516,14 @@ function disperlist() {
 					<span class="checkmark"></span>
 					</label>
 					</li>
-				<?php } ?>		
+				<?php } ?>
 				@else
 					<li>
-					<div class="image-icon"> 
-					<div class="dropdown dropdownlabel"> 
+					<div class="image-icon">
+					<div class="dropdown dropdownlabel">
 					<select class="racecategory" category="<?php echo $allcategory->VchColumnType; ?>">
 					<option value="">Select Your <?php echo $allcategory->VchTitle; ?></option>
-					<?php 
+					<?php
 					for($i=0;$i<$totalitems;$i++){
 					?>
 					<option value="<?php echo $myalltagid[$i];  ?>"><?php echo $myallcategorytag[$i];  ?></option>
@@ -534,7 +531,7 @@ function disperlist() {
 					</select>
 					</div>
 					</div>
-					</li>  
+					</li>
 				@endif
 				@endforeach
 			</ul>
@@ -565,11 +562,11 @@ function disperlist() {
 	<div class="banner-image1">
 		<div class="container" style="position:relative;">
 			<div class="myloadercontainer">
-				<div class="loder_innes">   
-					<div class="loaderview1">     
+				<div class="loder_innes">
+					<div class="loaderview1">
 						<img src="{{ asset('images/loader11.gif') }}" alt="img" style="width:300px;height:300px;">
 					</div>
-				</div> 	
+				</div>
 			</div>
 		<div class="row">
 			<ul class="keyword" ng-if="showkeyword">
@@ -581,8 +578,8 @@ function disperlist() {
 
 			<ul class="video-parts">
 				<li class="inner-parts"  ng-repeat="tpname in allvideo" ng-click="showvideo(tpname.VchVideoName,tpname.VchFolderPath,tpname.EnumType,tpname.EnumUploadType,tpname.vchgoogledrivelink,tpname.VchTitle,tpname.videotags)">
-					<div class="hover-play-icon" ng-if="tpname.EnumType=='V'"> 
-					<img src="{{ asset('images') }}/{{$tblthemesetting->vchvideoicon}}" alt="img"> 
+					<div class="hover-play-icon" ng-if="tpname.EnumType=='V'">
+					<img src="{{ asset('images') }}/{{$tblthemesetting->vchvideoicon}}" alt="img">
 					</div>
 					<div class="proper_fit" ng-if="tpname.EnumUploadType=='W'">
 						<span class="colorwhite" style="color:#fff;">@{{tpname.VchTitle}}</span>
@@ -590,26 +587,26 @@ function disperlist() {
 
 
 								<div class="image"  ng-if="tpname.Vchcustomthumbnail!=''">
-									<img ng-if="tpname.Vchcustomthumbnail!=''" src="/@{{tpname.VchFolderPath}}/@{{tpname.Vchcustomthumbnail}}" > 
+									<img ng-if="tpname.Vchcustomthumbnail!=''" src="/@{{tpname.VchFolderPath}}/@{{tpname.Vchcustomthumbnail}}" >
 								</div>
 
 								<div class="image" ng-if="tpname.Vchcustomthumbnail==''">
-									<img ng-if="tpname.vchcacheimages==''" src="/resize1/showimage/@{{tpname.IntId}}/{{$managesite->intmanagesiteid}}/@{{tpname.VchResizeimage}}/?=@{{tpname.intsetdefault}}" > 
+									<img ng-if="tpname.vchcacheimages==''" src="/resize1/showimage/@{{tpname.IntId}}/{{$managesite->intmanagesiteid}}/@{{tpname.VchResizeimage}}/?=@{{tpname.intsetdefault}}" >
 
-									<img ng-if="tpname.vchcacheimages!=''" src="/resize1/showimage/@{{tpname.IntId}}/{{$managesite->intmanagesiteid}}/@{{tpname.VchResizeimage}}/?=@{{tpname.intsetdefault}}" > 
+									<img ng-if="tpname.vchcacheimages!=''" src="/resize1/showimage/@{{tpname.IntId}}/{{$managesite->intmanagesiteid}}/@{{tpname.VchResizeimage}}/?=@{{tpname.intsetdefault}}" >
 								</div>
 
-							</a> 
+							</a>
 
 							<a href="@{{tpname.VchFolderPath}}/@{{tpname.VchVideothumbnail}}" ng-if="tpname.EnumType=='V'">
 								<div class="image" ng-if="tpname.Vchcustomthumbnail!=''">
-								<!--<img ng-if="tpname.Vchcustomthumbnail!=''" src="@{{tpname.VchFolderPath}}/@{{tpname.Vchcustomthumbnail}}" >--> 
-									<img ng-if="tpname.Vchcustomthumbnail!=''" src="/resize2/showimage/@{{tpname.IntId}}/{{$managesite->intmanagesiteid}}/@{{tpname.Vchcustomthumbnail}}/?={{rand(10,100)}}" > 
+								<!--<img ng-if="tpname.Vchcustomthumbnail!=''" src="@{{tpname.VchFolderPath}}/@{{tpname.Vchcustomthumbnail}}" >-->
+									<img ng-if="tpname.Vchcustomthumbnail!=''" src="/resize2/showimage/@{{tpname.IntId}}/{{$managesite->intmanagesiteid}}/@{{tpname.Vchcustomthumbnail}}/?={{rand(10,100)}}" >
 								</div>
 								<div class="image" ng-if="tpname.Vchcustomthumbnail==''">
 								<!--<img ng-if="tpname.Vchcustomthumbnail==''" src="@{{tpname.VchFolderPath}}/@{{tpname.VchVideothumbnail}}"> -->
 
-									<img ng-if="tpname.Vchcustomthumbnail==''" src="/resize2/showimage/@{{tpname.IntId}}/{{$managesite->intmanagesiteid}}/@{{tpname.VchVideothumbnail}}/?={{rand(10,100)}}"> 
+									<img ng-if="tpname.Vchcustomthumbnail==''" src="/resize2/showimage/@{{tpname.IntId}}/{{$managesite->intmanagesiteid}}/@{{tpname.VchVideothumbnail}}/?={{rand(10,100)}}">
 								</div>
 							</a>
 					</div>
@@ -622,14 +619,14 @@ function disperlist() {
 								<img ng-if="tpname.Vchcustomthumbnail!=''" src="@{{tpname.VchFolderPath}}/@{{tpname.Vchcustomthumbnail}}" >
 							</div>
 							<div class="image" ng-if="tpname.Vchcustomthumbnail==''">
-								<img ng-if="tpname.Vchcustomthumbnail==''" src="@{{tpname.VchVideothumbnail}}"> 
+								<img ng-if="tpname.Vchcustomthumbnail==''" src="@{{tpname.VchVideothumbnail}}">
 							</div>
 						</a>
 
 
 					</div>
 
-				</li> 
+				</li>
 			</ul>
 		</div>
 		<pagination total-items="totalItems"  ng-change="pageChanged(currentPage)" ng-model="currentPage" max-size="maxSize" class="pagination" boundary-links="true" rotate="false" num-pages="numPages" items-per-page="itemsPerPage"></pagination>
@@ -650,7 +647,7 @@ function disperlist() {
 					Your browser does not support the video tag.
 				</video>
 				<br>
-				<div class="speed-scroll">	
+				<div class="speed-scroll">
 					<label> playback speed</label>
 					<Select onchange="setPlaySpeed2(this.value)">
 						<option value="0.25">0.25</option>
@@ -663,14 +660,14 @@ function disperlist() {
 						<option value="4.0">4.0</option>
 						<option value="5.0">5.0</option>
 					</select>
-				</div>	
+				</div>
 				<div class="closediv1">
 					<a href="javascript:void(0);" class="closebutton">&#10005;</a>
 				</div>
 			</div>
-		</div>	
+		</div>
 	</div>
-</div> 
+</div>
 
 <!--<button class="open-button" onclick="openbigForm()">Open Form</button>-->
 
@@ -683,7 +680,7 @@ function disperlist() {
 </div>
 		<div class="col-md-8">
 			<div class="image-center">
-			
+
 				<div class="imgs-setup" id="image-div">
 					<div class="bigimgcontainer">
 						<input type="checkbox" id="zoomCheck">
@@ -691,7 +688,7 @@ function disperlist() {
 							<img src="" class="non-active" id="bigimagesize">
 						</label>
 					</div>
-					
+
 				</div>
 				<div class="imgs-setup" id="video-div">
 				<div class="bigimgcontainer">
@@ -701,11 +698,11 @@ function disperlist() {
 					Your browser does not support the video tag.
 				</video>
 					</div>
-				</div> 
-	
-			
-		
-			
+				</div>
+
+
+
+
 				<div class="img-btm ">
 					<span>Not quite what you are looking for?</span>
 					<a href="/custom">Request Custom Graphics</a>
@@ -717,14 +714,14 @@ function disperlist() {
 		 @if(empty($userdetail))
 			<div class="login_form2" >
 		<form class="form-container" id="loginForm2" autocomplete="off">
-		
-		 
+
+
 			@csrf
-			
+
 			<h3>
 				Login your account
 			</h3>
-		
+
 			<div class="form-group">
 				<input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Email or username" name="email" requried>
 				</div>
@@ -732,7 +729,7 @@ function disperlist() {
 					<input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" name="password" requried>
 					</div>
 					<button type="submit" class="btn btn-primary org">Log in</button>
-				
+
 				<div class="botm">
 					<p>Don't have free account yet?</p>
 					<button type="submit" class="btn btn-primary trans" onclick="openForm2('signup2')">Create your account</button>
@@ -743,13 +740,13 @@ function disperlist() {
 			<form class="form-container" id="registrationForm2" autocomplete="off">
 				@csrf
 
-				<h3>Create your free account 
-					
+				<h3>Create your free account
+
 				</h3>
 				<div class="form-group">
 					<input type="text" class="form-control" id="" aria-describedby="emailHelp" placeholder="Full Name" name="first_name" required>
 					</div>
-					
+
 						<div class="form-group">
 							<input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Email" name="email" required>
 							</div>
@@ -777,21 +774,21 @@ function disperlist() {
 										<label>
 										<input class="form-control" type="checkbox" id="agree" name="" value="y" required>Agree with Terms and condition</label>
 									</div>
-									 
-										
-									
-									
+
+
+
+
 							<button type="submit" class="btn btn-primary org">Download</button>
 							</form>
 						</div>
 						@endif
 						<div class="rlt-key"></div>
-						
+
 		</div>
-		
+
 	</div>
-  
-    
+
+
 
 </div>
 
@@ -818,32 +815,32 @@ function openbigForm() {
 }
 
 function closebigForm() {
-	
+
   document.getElementById("bigimg").style.display = "none";
 }
 
 
 //var videoID = document.getElementById("videoID");
 var videoID = $('#videoID');
-function setPlaySpeed(speed) { 
+function setPlaySpeed(speed) {
   videoID.playbackRate = speed;
-} 
+}
 var videoID2 = document.getElementById("fvideoID");
-function setPlaySpeed2(speed) { 
+function setPlaySpeed2(speed) {
   videoID2.playbackRate = speed;
 }
 $(document).ready(function(){
   $(".info-advance-search").click(function(){
-	
+
     $(".iconsdsf").toggleClass("show");
 	if($(this).find("i").attr('class') == 'fa fa-plus'){
-		$(this).find("i").attr('class','fa fa-minus'); 
+		$(this).find("i").attr('class','fa fa-minus');
 	}else{
-		$(this).find("i").attr('class','fa fa-plus'); 
+		$(this).find("i").attr('class','fa fa-plus');
 	}
   });
 });
 
- 
+
 </script>
 @include('footer')
