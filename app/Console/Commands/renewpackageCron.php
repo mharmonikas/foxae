@@ -49,6 +49,8 @@ class renewpackageCron extends Command
 		$getapidetail = DB::table('tblapidetail')->where('id','1')->first();
         Stripe\Stripe::setApiKey($getapidetail->stripe_secret);
 
+        Log::info('Renew package cron');
+
         foreach($getresponse as $res){
             Log::info('Res');
 

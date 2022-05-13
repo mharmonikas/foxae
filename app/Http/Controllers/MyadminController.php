@@ -422,7 +422,7 @@ class MyadminController extends Controller
 		$VchRaceTagID = "";
 		$servername = $_SERVER['SERVER_NAME'];
 		$selectserver = DB::table('tbl_managesite')->where('txtsiteurl',$servername)->first();
-		$managesiteid=$selectserver->intmanagesiteid;
+        $managesiteid = !app()->isLocal() ? $selectserver->intmanagesiteid : 1;
 		$searchtitle =  $request->searchtitle;
 
 		$VchGenderTagid =  '';
@@ -1696,6 +1696,29 @@ $getvideosearch = $getvideosearch->paginate(10)->appends('search',"$search");
 $parentcategory = DB::table('tbl_Searchcategory')->select('*')->where('IntParent','0')->get();
 return view('admin.admin-ManageSearchCategory',compact('parentcategory','search'))->with('getvideosearch', $getvideosearch);
 }
+
+    public function ManageGroups(Request $request){
+        echo $this->checklogin();
+        $search = $request->search;
+        $groups = DB::table('tbl_group')
+            ->when($request->search, function ($query, $search) {
+                return $query->where('groupname', 'like', "%{$search}%");
+            })
+            ->paginate(10)
+            ->appends('search',"$search");
+
+        return view('admin.admin-ManageGroups', ['groups' => $groups, 'search' => $search]);
+    }
+
+    public function updateGroup(Request $request, $id)
+    {
+        DB::table('tbl_group')->where('intgroupid', $id)->update(['groupname' => $request->groupname]);
+    }
+    public function deleteGroup(Request $request, $id)
+    {
+        DB::table('tbl_group')->where('intgroupid', $id)->delete();
+    }
+
 public function ManageSearchSubCategory(Request $request){
 	 echo $this->checklogin();
 
@@ -5566,7 +5589,12 @@ exit;
     public function scheduleImageCaching(Request $request)
     {
         if($job = DB::table('jobs')->where('payload', 'like','%UpdateDomainPreviewImagesJob%')->first()) {
-            return response()->json(['status' => 0, 'message' => 'Caching has already been scheduled. Please try again after it finishes.', 'available_at' => Carbon::parse($job->available_at)]);
+            if(data_get($job, 'attempts', 0) > 0) {
+                DB::table('jobs')->where('id', $job->id)->delete();
+            } else {
+                $in = Carbon::parse($job->available_at);
+                return response()->json(['status' => 0, 'message' => $this->getMessage($in)]);
+            }
         }
 
         $date = Carbon::parse($request->date);
@@ -5598,5 +5626,18 @@ exit;
     private function getBackgrounds($domainId): \Illuminate\Support\Collection
     {
         return DB::table('tbl_backgrounds')->where('siteid', 'like', '%'.$domainId.'%')->get(); // get backgrounds.
+    }
+
+    /**
+     * @param Carbon $in
+     * @return string
+     */
+    private function getMessage(Carbon $in): string
+    {
+        if($in > now()) {
+            return "Caching has already been scheduled and starts {$in->diffForHumans()}. Please try again after it finishes.";
+        }
+
+        return "Caching process is currently in progress and has started {$in->diffForHumans()}. Please try again after it finishes.";
     }
 }
