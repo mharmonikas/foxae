@@ -219,7 +219,7 @@ form.form-inline.from-search input.form-control {
                 $('#selectedGroupId').val('')
             } else {
                 $.ajax({
-                    url:'{{ URL::to("/admin/createGroup") }}/' + id,
+                    url:'{{ URL::to("/admin/createGroup") }}',
                     type:'POST',
                     data:{'groupname':groupname,'_token':token},
                     success:function(ress){
