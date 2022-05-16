@@ -178,6 +178,7 @@ Route::get('/admin/managetags', 'MyadminController@managetags');
 Route::post('/admin/saveuploadvideo', 'MyadminController@saveuploadvideo');
 Route::get('/admin/ManageSearchCategory', 'MyadminController@ManageSearchCategory');
 Route::get('/admin/ManageGroups', 'MyadminController@ManageGroups');
+Route::post('/admin/createGroup', 'MyadminController@createGroup');
 Route::post('/admin/updateGroup/{id}', 'MyadminController@updateGroup');
 Route::post('/admin/deleteGroup/{id}', 'MyadminController@deleteGroup');
 Route::get('/admin/ManageSearchSubCategory', 'MyadminController@ManageSearchSubCategory');

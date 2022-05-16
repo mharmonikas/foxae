@@ -1709,10 +1709,15 @@ return view('admin.admin-ManageSearchCategory',compact('parentcategory','search'
         return view('admin.admin-ManageGroups', ['groups' => $groups, 'search' => $search]);
     }
 
+    public function createGroup(Request $request)
+    {
+        DB::table('tbl_group')->insert(['groupname' => $request->groupname]);
+    }
     public function updateGroup(Request $request, $id)
     {
         DB::table('tbl_group')->where('intgroupid', $id)->update(['groupname' => $request->groupname]);
     }
+
     public function deleteGroup(Request $request, $id)
     {
         DB::table('tbl_group')->where('intgroupid', $id)->delete();

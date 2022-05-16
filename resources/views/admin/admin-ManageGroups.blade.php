@@ -83,8 +83,7 @@ form.form-inline.from-search input.form-control {
   <button type="submit" class="btn btn-primary btn-header-button">Search</button>
 </form>
 
-<button  onclick="window.history.go(-1); return false;" type="button" class="btn btn-primary pull-right btn-header-button">  Back <i class="fa fa-arrow-right" aria-hidden="true"></i></button>
-<a href="/admin/ManageSearchSubCategory" class="btn btn-primary pull-right btn-header-button">  Manage Sub Tag</a>
+<button  onclick="window.history.go(-1); return false;" type="button" class="btn btn-primary pull-right btn-header-button"> <i class="fa fa-arrow-left" aria-hidden="true"></i> Back </button>
 <a href="javascript:void(0);" class="btn btn-primary pull-right btn-header-button btn-add-new"><i class="fa fa-plus-square"></i>  Add New</a>
 
 
@@ -142,7 +141,7 @@ form.form-inline.from-search input.form-control {
         <div class="modal-content">
         <form action="" name="form1" style="padding: 0;">
           <div class="modal-header">
-            <h5 class="modal-title">Tag</h5>
+            <h5 class="modal-title">Group</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -183,11 +182,6 @@ form.form-inline.from-search input.form-control {
             $('#myModal').modal('show');
         });
 
-
-
-
-
-
 		// edit data
 		$('.edit').click(function(){
 			 var id= $(this).attr('id');
@@ -200,6 +194,7 @@ form.form-inline.from-search input.form-control {
 			  $('#myModal').modal('show');
 		});
         $('#updateGroup').click(function(){
+            console.log('update group')
 		    var groupname = $('#groupname').val();
             if(groupname==''){
 
@@ -211,14 +206,27 @@ form.form-inline.from-search input.form-control {
             var id = $('#selectedGroupId').val() ?? ''
             var token= $('meta[name="csrf_token"]').attr('content');
 
-            $.ajax({
-                url:'{{ URL::to("/admin/updateGroup") }}/' + id,
-                type:'POST',
-                data:{'groupname':groupname,'_token':token},
-                success:function(ress){
-                    window.location.href="";
-                }
-            });
+            if(id){
+                $.ajax({
+                    url:'{{ URL::to("/admin/updateGroup") }}/' + id,
+                    type:'POST',
+                    data:{'groupname':groupname,'_token':token},
+                    success:function(ress){
+                        window.location.href="";
+                    }
+                });
+
+                $('#selectedGroupId').val('')
+            } else {
+                $.ajax({
+                    url:'{{ URL::to("/admin/createGroup") }}/' + id,
+                    type:'POST',
+                    data:{'groupname':groupname,'_token':token},
+                    success:function(ress){
+                        window.location.href="";
+                    }
+                });
+            }
 		});
 		//delete data
 		$('.delete').click(function(){
