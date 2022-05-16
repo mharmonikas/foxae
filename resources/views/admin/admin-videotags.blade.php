@@ -30,7 +30,7 @@ li.active p.sitelist{
 	bottom: -15px !important;
 }
 .page-item{
-	
+
 	width:4%!important;
 }
 .divpagination{
@@ -174,7 +174,7 @@ li.srchtitles {
 }
 .search_col_1 .btn-info:hover, .place_tag_col .btn-info:hover {
     color: #fff !important;
-   
+
 }
 label.container-radio {
     font-size: 15px;
@@ -194,15 +194,15 @@ input.content-category {
 <link href="/css/component-chosen.min.css" rel="stylesheet"/>
 <script>
 	$(document).ready(function(){
-			
+
 		$('.selectedli').click(function(event){
-			
+
 			if(event.shiftKey){
                 $(this).toggleClass('active2');
                 var index1 = $( "#multiple-select li.active" ).last().index();
                 var index2 = $( "#multiple-select li.active2" ).last().index();
-                var k =0;     
-				var s = 0;				
+                var k =0;
+				var s = 0;
 				if(index2 > 0){
                 $( "#multiple-select li" ).each(function(index) {
 					if(s == 0){
@@ -219,9 +219,9 @@ input.content-category {
             }else{
             $(this).toggleClass('active').removeClass('active2');
             }
-			
+
 	var allselectedvideo = [];
-	 $( "#multiple-select li.active" ).each(function(index) {	
+	 $( "#multiple-select li.active" ).each(function(index) {
 		var videoid = $(this).attr("videoid");
 //alert(videoid);
 		if($.inArray(videoid, allselectedvideo)!== -1){
@@ -229,21 +229,21 @@ input.content-category {
 		}else {
 			allselectedvideo.push(videoid);
 		}
-	 }); 
+	 });
 		var allselectedvideostring = allselectedvideo.join(',');
 //alert(allselectedvideostring);
 		$('#selectedvideo').val(allselectedvideostring);
 		$('#videolists').val(allselectedvideostring);
 		});
-		
-		
+
+
 	 $('.myracecategory').on('change', function() {
-		    $('.myracecategory').not(this).prop('checked', false);  
+		    $('.myracecategory').not(this).prop('checked', false);
 		});
 		 $('.racecategory1').on('change', function() {
-		    $('.racecategory1').not(this).prop('checked', false);  
+		    $('.racecategory1').not(this).prop('checked', false);
 		});
-		
+
 		//myracecategory
 	});
 </script>
@@ -256,50 +256,50 @@ input.content-category {
 		<div class="col-md-12 mar-auto">
 			<div class="ful-top">
 				<div class="back-strip top-side srch-byr">
-				<?php 
-				
-				if(isset($_GET['msg'])){ 
-				if($_GET['msg']=='1'){ 
-				
+				<?php
+
+				if(isset($_GET['msg'])){
+				if($_GET['msg']=='1'){
+
 				?>
 					<div class="alert alert-success">
                   Your Tags successfully Saved
                          </div>
-				<?php 	
+				<?php
 				}
 				?>
-				<?php 
-				
+				<?php
+
 				if($_GET['msg']=='2'){ ?>
 					<div class="alert alert-success">
                   Your Tags successfully Removed
                          </div>
-				<?php 	
+				<?php
 				}
 				if($_GET['msg']=='3'){  ?>
-				
+
 				<div class="alert alert-success">
                   Your Domain successfully Saved
                          </div>
-						 
-				<?php 	
+
+				<?php
 				}
 				if($_GET['msg']=='4'){  ?>
-				
+
 				<div class="alert alert-success">
                   Your Domain successfully Removed
                          </div>
-				
+
 				<?php
 				}
 				}
 				?>
-				
+
 					<div class="inner-top">
 						Save Tags
 					</div>
-					
-				
+
+
 				</div>
 				<div class="searchtags cat_Search_tag">
 				<div class="search_col_1">
@@ -307,13 +307,14 @@ input.content-category {
 				  @if(strstr($alldata['access'], "1"))
 					 <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo3">Add/Remove Domains <i class="fa fa-plus"></i></button>
 					 <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo2">Add/Remove Tags <i class="fa fa-plus"></i></button>
-					 
-					 
+
+
 					 <a href="/admin/ManageSearchCategory" class="btn btn-info" class="btn btn-primary">Manage Tags</a>
-					 <a href="/admin/ManageSearchSubCategory" class="btn btn-info" class="btn btn-primary">Manage Sub Tags</a> 
+					 <a href="/admin/ManageGroups" class="btn btn-info" class="btn btn-primary">Manage Groups</a>
+					 <a href="/admin/ManageSearchSubCategory" class="btn btn-info" class="btn btn-primary">Manage Sub Tags</a>
 					 <a href="/admin/exportsearchcategory" class="btn btn-info" class="btn btn-primary"> Export Search Tags</a>
 				 @endif
-				 
+
   <div id="demo" class="collapse <?php if(isset($_GET['searchtitle'])){ echo 'show'; } ?>">
    <form action ="/admin/taggedvideo" method="Get" id="mysearchtags" name="searchtag" class="searchtag">
 				<div class="form_inner_parts">
@@ -326,114 +327,114 @@ input.content-category {
 					</ul>
 					</div>
 					</div>
-					
+
 					<div class="iconsdsf">
 					<div class="frmal_sd"><b>Gender</b>
-					
+
 <?php $count=1;  ?>
 @foreach ($alldata['alltags'] as $allcategory)
-<?php 
+<?php
  $myalltagid = explode(',',$allcategory->tagid);
  $myallcategorytag = explode(',',$allcategory->tagTitle);
  $totalitems = count(explode(',',$allcategory->tagTitle));
 ?>
 @if ($allcategory->IntId == 1)
-	<?php 
+	<?php
 for($i=0;$i<$totalitems;$i++){
 	  $selected="";
-	
+
       $tagrelation = $alldata['allvideorelation'];
-	
+
 	  if(!empty($tagrelation)){
-		  
-		 
-	  $columnname = $allcategory->VchColumnType;	 
+
+
+	  $columnname = $allcategory->VchColumnType;
 	  $genderid = $tagrelation->$columnname;
-   
+
      if($genderid==$myalltagid[$i]){
-	 
-	  $selected="checked"; 
+
+	  $selected="checked";
       }
-	 
-	
+
+
 	 }
 
 	 if($VchGenderTagid==$myalltagid[$i]){
-		  $selected="Checked";  
+		  $selected="Checked";
 	 }
  ?>
-  <div class="check-view col-md-2 "> 
-<input type="checkbox" class="myracecategory" name="searchfilteringcategory[<?php echo $allcategory->VchColumnType; ?>]" category="<?php echo $allcategory->VchColumnType; ?>"  ng-model="gender<?php echo $myalltagid[$i];  ?>" id="boxsearch1-<?php echo $myalltagid[$i];  ?>" ng-click="changegeneder(gender<?php echo $myalltagid[$i];  ?>,<?php echo $myalltagid[$i];  ?>)" value="<?php echo $myalltagid[$i];  ?>" <?php echo $selected; ?>> 
+  <div class="check-view col-md-2 ">
+<input type="checkbox" class="myracecategory" name="searchfilteringcategory[<?php echo $allcategory->VchColumnType; ?>]" category="<?php echo $allcategory->VchColumnType; ?>"  ng-model="gender<?php echo $myalltagid[$i];  ?>" id="boxsearch1-<?php echo $myalltagid[$i];  ?>" ng-click="changegeneder(gender<?php echo $myalltagid[$i];  ?>,<?php echo $myalltagid[$i];  ?>)" value="<?php echo $myalltagid[$i];  ?>" <?php echo $selected; ?>>
   <label for="boxsearch1-<?php echo $myalltagid[$i];  ?>">
   <?php echo $myallcategorytag[$i];?>
   </label>
   </div>
-<?php } ?>		
+<?php } ?>
 @else
-	<?php 
-  
+	<?php
+
     $tagrelation = $alldata['allvideorelation'];
 	 if(!empty($tagrelation)){
 	 $genderid = $tagrelation->$columnname;
     $selected="";
     if($myalltagid[$i]==$genderid){
-	 $selected="selected"; 
+	 $selected="selected";
    }
  }
 ?>
-<?php if($count==1){ ?> 
+<?php if($count==1){ ?>
 </div>
-                   
+
  <div class="iconsdsf">
  <label>Domains: </label>
  <ul class="main">
 							<li>
-							
+
 							<label class="container-checkbox">All Domains
 								  <input type="checkbox"  id="select_all" @if($alldata['getdomains'] == $multisite) checked @endif>
 								  <span class="checkmark"></span>
 								</label>
 							</li>
-							
-							<ul style="margin-top: -10px;">  
+
+							<ul style="margin-top: -10px;">
 							@foreach($alldata['getdomains'] as $getdomain)
 								<li>
 								<label class="container-checkbox">{{$getdomain->txtsiteurl}}
 								  <input type="checkbox" class="checkbox multisite"  name="multisite[]" value="{{$getdomain->intmanagesiteid}}" @if(@in_array($getdomain->intmanagesiteid,$multisite)) checked @endif>
 								  <span class="checkmark"></span>
 								</label>
-							</li>	
+							</li>
 							@endforeach
-						
-							
+
+
 							</ul>
 						</ul>
 						</div>
-						
-				
+
+
 
 <ul class="">
-<?php } 
+<?php }
 
 ?>
 	   <li class="col-md-6">
-     <div class="image-icon"> 
+     <div class="image-icon">
 	 <div class="dropdown">
 <label>	 {{$allcategory->VchTitle}}</label>
 <select class="racecategory form-control" name="filteringcategory[<?php echo $allcategory->VchColumnType; ?>]" category="<?php echo $allcategory->VchColumnType; ?>">
     <option value="0">All <?php echo $allcategory->VchTitle; ?></option>
-   <?php 
+   <?php
  for($i=0;$i<$totalitems;$i++){
 	 $selected="";
 	  $tagrelation = $alldata['allvideorelation'];
 	  if(!empty($tagrelation)){
-	 $columnname = $allcategory->VchColumnType; 
+	 $columnname = $allcategory->VchColumnType;
     $genderid = $tagrelation->$columnname;
 
- if($genderid==$myalltagid[$i]){	 
-	$selected="selected"; 
+ if($genderid==$myalltagid[$i]){
+	$selected="selected";
  }
-} 
+}
 if(!empty($VchCategoryTagID)){
 	if($VchCategoryTagID== $myalltagid[$i]){
 		$selected="Selected";
@@ -449,10 +450,10 @@ if(!empty($VchRaceTagID)){
 <option <?php echo $selected; ?> value="<?php echo $myalltagid[$i];  ?>"><?php echo $myallcategorytag[$i];  ?></option>
 <?php } ?>
 </select>
-	 
+
 		</div>
 		</div>
-		 </li>  
+		 </li>
 		 <?php $count++;
  ?>
 @endif
@@ -469,19 +470,19 @@ if(!empty($VchRaceTagID)){
 					  </div>
 				</form>
   </div>
-				
+
 				</div>
-				</div>	
-				
+				</div>
+
 				<div class="searchtags secnd_tags">
 				<div class="place_tag_col">
-				 
+
   <div id="demo2" class="collapse">
    <form action ="/admin/posttaggedvideo" method="POST" id="mysearchtag" name="searchtag" class="searchtag">
 					<div class="form_inner_parts">
 							@csrf
 						<div class="form-group">
-						<?php 
+						<?php
 						if(isset($_GET['videoid'])){
 						$videoid = $_GET['videoid'];
 						}else {
@@ -496,90 +497,90 @@ if(!empty($VchRaceTagID)){
 							<label>	 Tags </label>
 						<input type="hidden" name="selectedvideo" value="<?php echo $videoid; ?>" id="selectedvideo">
 							<select id="multiple" name="tags[]" class="form-control form-control-chosen" data-placeholder="Place tags" multiple>
-							
-								<?php 
+
+								<?php
 									foreach($alldata['searchtags'] as $videouploads){
 									$selected='';
 									if(in_array($videouploads->IntId,$allsearchtags)){
 										$selected="selected";
-										
-									} 
+
+									}
 									?>
-                                     									
+
 									<option <?php echo $selected; ?> value="<?php echo $videouploads->IntId; ?>"><?php echo $videouploads->VchCategoryTitle; ?></option>
 								<?php } ?>
 							</select>
 
 						</div>
-					
+
 						<label>	 Groups </label>
 						<select  name="groupid[]" class="form-control form-control-chosen-2" data-placeholder="Place group" multiple>
 							@foreach($alldata['getgrouplists'] as $getgrouplist)
 								<option value="{{$getgrouplist->intgroupid}}">{{$getgrouplist->groupname}}</option>
 							@endforeach
 						</select>
-					
-						
-						
+
+
+
 						<div class="iconsdsf">
 					<div class="frmal_sd"><b>Gender</b>
 <?php $count=1;  ?>
 @foreach ($alldata['alltags'] as $allcategory)
-<?php 
+<?php
  $myalltagid = explode(',',$allcategory->tagid);
  $myallcategorytag = explode(',',$allcategory->tagTitle);
  $totalitems = count(explode(',',$allcategory->tagTitle));
 ?>
 @if ($allcategory->IntId == 1)
-	<?php 
+	<?php
 for($i=0;$i<$totalitems;$i++){
 	  $selected="";
-	
+
       $tagrelation = $alldata['allvideorelation'];
-	
+
 	  if(!empty($tagrelation)){
-		  
-		 
-	  $columnname = $allcategory->VchColumnType;	 
+
+
+	  $columnname = $allcategory->VchColumnType;
 	 $genderid = $tagrelation->$columnname;
-   
+
      if($genderid==$myalltagid[$i]){
-	 
-	  $selected="checked"; 
+
+	  $selected="checked";
       }
-	 }	  
+	 }
  ?>
-  <div class="check-view col-md-2 "> 
-<input type="checkbox" class="racecategory1" name="searchfilteringcategory[<?php echo $allcategory->VchColumnType; ?>]" category="<?php echo $allcategory->VchColumnType; ?>"  ng-model="gender<?php echo $myalltagid[$i];  ?>" id="box1-<?php echo $myalltagid[$i];  ?>" ng-click="changegeneder(gender<?php echo $myalltagid[$i];  ?>,<?php echo $myalltagid[$i];  ?>)" value="<?php echo $myalltagid[$i];  ?>" <?php echo $selected; ?>> 
+  <div class="check-view col-md-2 ">
+<input type="checkbox" class="racecategory1" name="searchfilteringcategory[<?php echo $allcategory->VchColumnType; ?>]" category="<?php echo $allcategory->VchColumnType; ?>"  ng-model="gender<?php echo $myalltagid[$i];  ?>" id="box1-<?php echo $myalltagid[$i];  ?>" ng-click="changegeneder(gender<?php echo $myalltagid[$i];  ?>,<?php echo $myalltagid[$i];  ?>)" value="<?php echo $myalltagid[$i];  ?>" <?php echo $selected; ?>>
   <label for="box1-<?php echo $myalltagid[$i];  ?>">
   <?php echo $myallcategorytag[$i];?>
   </label>
   </div>
-<?php } ?>		
+<?php } ?>
 @else
-	<?php 
-  
+	<?php
+
     $tagrelation = $alldata['allvideorelation'];
 	 if(!empty($tagrelation)){
 	 $genderid = $tagrelation->$columnname;
     $selected="";
     if($myalltagid[$i]==$genderid){
-	 $selected="selected"; 
+	 $selected="selected";
    }
  }
 ?>
-<?php if($count==1){ ?> 
+<?php if($count==1){ ?>
 </div>
 
 <ul class="">
 <?php } ?>
 	   <li class="col-md-6">
-     <div class="image-icon"> 
+     <div class="image-icon">
 	 <div class="dropdown">
 <label>	 {{$allcategory->VchTitle}}</label>
 <select class="racecategory form-control" name="filteringcategory[<?php echo $allcategory->VchColumnType; ?>]" category="<?php echo $allcategory->VchColumnType; ?>">
     <option value="0">All <?php echo $allcategory->VchTitle; ?></option>
-   <?php 
+   <?php
  for($i=0;$i<$totalitems;$i++){
 	 $selected="";
 	  $tagrelation = $alldata['allvideorelation'];
@@ -587,18 +588,18 @@ for($i=0;$i<$totalitems;$i++){
 	 $columnname = $allcategory->VchColumnType;
     $genderid = $tagrelation->$columnname;
 
- if($genderid==$myalltagid[$i]){	 
-	$selected="selected"; 
+ if($genderid==$myalltagid[$i]){
+	$selected="selected";
  }
-} 
+}
 ?>
 <option <?php echo $selected; ?> value="<?php echo $myalltagid[$i];  ?>"><?php echo $myallcategorytag[$i];  ?></option>
 <?php } ?>
 </select>
-	 
+
 		</div>
 		</div>
-		 </li>  
+		 </li>
 		 <?php $count++;
  ?>
 @endif
@@ -619,35 +620,35 @@ for($i=0;$i<$totalitems;$i++){
 		<label class="container-radio">
          Standard
          <input type="radio" name="content_category" class="content-category" value="1" required checked>
-         
+
          </label>
-		 
+
 		 <label class="container-radio">
          Premium
          <input type="radio" name="content_category" class="content-category" value="2" required>
-         
+
          </label>
 
 		 <label class="container-radio">
          Deluxe
          <input type="radio" name="content_category" class="content-category" value="3" required>
-         
+
          </label>
 		 </div>
-         </div>	
+         </div>
 <div class="form-group">
 <button type="submit" name="action" value="addtags" class="btn btn-primary">Add Tags</button>
 <button type="submit" id="remove" name="action" value="removetags" class="btn btn-primary">Remove Tags</button>
 </div>
-</div>						
+</div>
 </form>
-  </div> 
-  
+  </div>
+
     <div id="demo3" class="collapse">
    <form action ="/admin/adddomaintovideo" method="POST" id="myvideodomain" name="searchtag" class="searchtag">
 					<div class="form_inner_parts">
 							@csrf
-							<?php 
+							<?php
 						if(isset($_GET['videoid'])){
 						$videoid = $_GET['videoid'];
 						}else {
@@ -658,36 +659,36 @@ for($i=0;$i<$totalitems;$i++){
 					 <label>Domains: </label>
 					 <ul class="main">
 						<li>
-							
+
 							<label class="container-checkbox">All Domains
 								  <input type="checkbox"  id="select_all2" @if(($alldata['getdomains']) == ($multisite)) checked @endif>
 								  <span class="checkmark"></span>
 								</label>
 							</li>
-							
-							<ul style="margin-top: -10px;">  
+
+							<ul style="margin-top: -10px;">
 							@foreach($alldata['getdomains'] as $getdomain)
 								<li>
 								<label class="container-checkbox">{{$getdomain->txtsiteurl}}
 								  <input type="checkbox" class="checkbox2 multisite"  name="multisitename[]" value="{{$getdomain->intmanagesiteid}}" @if(@in_array($getdomain->intmanagesiteid,$multisite)) checked @endif>
 								  <span class="checkmark"></span>
 								</label>
-							</li>	
+							</li>
 							@endforeach
-						
-							
+
+
 							</ul>
 						</ul>
 						</div>
-						
+
 <div class="form-group">
 <button type="submit" name="action" value="adddomain" class="btn btn-primary">Add Domain</button>
 <button type="submit" id="remove" name="action" value="removedomain" class="btn btn-primary">Remove Domain</button>
 </div>
-</div>						
+</div>
 </form>
-  </div> 
-					
+  </div>
+
 				</div>
 				</div>
 			</div>
@@ -695,29 +696,29 @@ for($i=0;$i<$totalitems;$i++){
 		<div class="cl_12">
 			<h3>Recently Uploaded Content</h3>
 		<div class="selectall">
-<input type="checkbox" class="racecategory" id="boxcheck"> 
+<input type="checkbox" class="racecategory" id="boxcheck">
   <label for="boxcheck">
   Select All
     </label>
 	</div>
-	
-	
-	</div>		
+
+
+	</div>
 	<div class="cl_12">
-			
+
 		<div class="selectall" >
 		<form action ="/admin/taggedvideo" method="Get" style="padding:0;">
 		<input type="hidden" name="searchtitle" value="@if(!empty($searchtitle)){{$searchtitle}}@endif" >
 		@if(!empty($VchGenderTagid))
 		<input type="hidden" name="searchfilteringcategory[VchGenderTagid]" value="@if(!empty($VchGenderTagid)){{$VchGenderTagid}}@endif" >
 		@endif
-		
+
 		<input type="hidden" name="filteringcategory[VchRaceTagID]" value="
 		@if(!empty($VchRaceTagID)){{$VchRaceTagID}}@endif" >
-		
-		
+
+
 		<input type="hidden" name="filteringcategory[VchCategoryTagID]" value="@if(!empty($VchCategoryTagID)){{$VchCategoryTagID}}@endif" >
-		
+
 	 <label class="dropdownlabel info-label show">Number of Show</label>
 		<select class="showitemperpage" name="show" onchange="this.form.submit();">
 			<option value="15" @if(!empty($show))@if($show=='15')Selected @endif @endif>15</option>
@@ -728,16 +729,16 @@ for($i=0;$i<$totalitems;$i++){
 			<option value="500" @if(!empty($show))@if($show=='500')Selected @endif @else Selected @endif >500</option>
 			<option value="1000" @if(!empty($show))@if($show=='1000')Selected @endif @endif >1000</option>
 			<option value="all" @if(!empty($show))@if($show=='all')selected @endif @endif >All</option>
-			
+
 		 </select>
 	 </form>
 	</div>
-	
-	
+
+
 	</div>
   <div class="up_videos">
 			<ul class="recentlyuploaded" id="multiple-select">
-					<?php 
+					<?php
 					// echo "<pre>";
 					// print_r($alldata['allvideo']);
 					// exit;
@@ -747,99 +748,99 @@ for($i=0;$i<$totalitems;$i++){
 						}else {
 							$class="";
 						}
-						
+
 					?>
 					<li class="selectedli <?php echo $class; ?>" videoid="<?php echo $videouploads->videoid; ?>">
-						
-						<?php 
+
+						<?php
 						if($videouploads->EnumUploadType=='W'){
 						if($videouploads->EnumType=='I'){
 						?>
-						<div class="activesclass"> 
+						<div class="activesclass">
 						<!--<img src="/<?php echo $videouploads->VchFolderPath; ?>/<?php echo $videouploads->VchVideoName; ?>" width="100%" height="200px">-->
 						<img src="/resize1/showimage/{{$videouploads->videoid}}/{{$managesiteid}}/{{$videouploads->VchResizeimage}}"/>
 						<div class="pagetitle">
 						<?php echo $videouploads->VchTitle;  ?>
-					
-						
-						<?php 
+
+
+						<?php
 						$groupcategorys = explode(",",$videouploads->group_category);
 						foreach($groupcategorys as $gkey => $gvalue){
 							echo "<span class='video-tag'>".$gvalue."</span>";
 						}
 						?>
-						
+
 						</div>
-						
-						
+
+
 						<p class="sitelist">{{$videouploads->sitename}}</p>
-						
-						
-						
+
+
+
 						</div>
-						<?php 
+						<?php
 						}else {
 						?>
-						
+
 							<video width="100%" height="190px" controls>
                          <source src="/<?php echo $videouploads->VchFolderPath; ?>/<?php echo $videouploads->VchVideoName; ?>" type="video/mp4">
                         <source src="/<?php echo $videouploads->VchFolderPath; ?>/<?php echo $videouploads->VchVideoName; ?>" type="video/ogg">
                              </video>
 						<div class="pagetitle">
 						<?php echo $videouploads->VchTitle;  ?>
-						<?php 
+						<?php
 						$groupcategorys = explode(",",$videouploads->group_category);
 						foreach($groupcategorys as $gkey => $gvalue){
 							echo "<span class='video-tag'>".$gvalue."</span>";
 						}
 						?>
 						</div>
-						<?php } 
+						<?php }
 					}else {
-						?>	
+						?>
 						@if(!empty($videouploads->VchFolderPath))
 							<video width="100%" height="190px" controls>
                          <source src="/<?php echo $videouploads->VchFolderPath; ?>/<?php echo $videouploads->VchVideoName; ?>" type="video/mp4">
                         <source src="/<?php echo $videouploads->VchFolderPath; ?>/<?php echo $videouploads->VchVideoName; ?>" type="video/ogg">
                              </video>
 						@else
-							
-						
+
+
 						 <iframe src="<?php echo $videouploads->vchgoogledrivelink; ?>" width="100%" height="190px"></iframe>
 						 @endif
 						<div class="pagetitle">
 						<?php echo $videouploads->VchTitle;  ?>
-						<?php 
+						<?php
 						$groupcategorys = explode(",",$videouploads->group_category);
 						foreach($groupcategorys as $gkey => $gvalue){
 							echo "<span class='video-tag'>".$gvalue."</span>";
 						}
 						?>
 						</div>
-					<?php } ?>	
-						
+					<?php } ?>
+
 					</li>
-					<?php 
-					
+					<?php
+
 					} ?>
-					
+
 					<div class="clearfix"></div>
-					
+
 				</ul>
-				
+
 		<div class="divpagination">
 		{{ $alldata['allvideo']->links() }}
-					
-					
+
+
 					</div>
 		<div class="clearfix"></div>
-					
-	
+
+
 				</div>
-				
+
 		</div>
-		
-	</div>  
+
+	</div>
 </div>
 	<style>
 /* The container-checkbox */
@@ -918,24 +919,24 @@ for($i=0;$i<$totalitems;$i++){
 }
 }
 </style>
-	 
+
 <script src="/js/choosen7.js?v=1">
 </script>
 <script type="text/javascript">
  //addcategory
  $(document).ready(function(){
   $("#mysearchtitle").keyup(function(e){
-	 
+
   var keyword = $(this).val();
-   $.ajax({ 
-    type: 'GET', 
-    url: '/getkeywords?type=&category=1&Tagid=[]&searchtext='+keyword+'&startlimit=0', 
+   $.ajax({
+    type: 'GET',
+    url: '/getkeywords?type=&category=1&Tagid=[]&searchtext='+keyword+'&startlimit=0',
     dataType: 'json',
-    success: function (data) { 
-	$('.allpagecontent').html('');	   
+    success: function (data) {
+	$('.allpagecontent').html('');
     $.each(data, function( index, value ) {
-	$('.allpagecontent').append('<li class="srchtitles">'+value.VchCategoryTitle+'</li>');	   
-	 });	   
+	$('.allpagecontent').append('<li class="srchtitles">'+value.VchCategoryTitle+'</li>');
+	 });
     }
 });
 //alert(e.keyCode);
@@ -944,22 +945,22 @@ for($i=0;$i<$totalitems;$i++){
         }else{
 
 		 $(".allpagecontent").show();
-		}			
- });  
+		}
+ });
 $('.searchtags').on('click','.srchtitles',function(){
 	var searchingtext = $(this).text();
     $('#mysearchtitle').val(searchingtext);
-	$('.allpagecontent').html('');	
-}); 
-	 
-	 
+	$('.allpagecontent').html('');
+});
+
+
  $('#mysearchtag').submit(function(){
    var selectedvideo = $('#selectedvideo').val();
    if(selectedvideo==''){
 	 alert("Please select atleast one video");
 	 return false
 	}
- }); 
+ });
  $('#myvideodomain').submit(function(){
    var selectedvideo = $('#selectedvideo').val();
    if(selectedvideo==''){
@@ -967,25 +968,25 @@ $('.searchtags').on('click','.srchtitles',function(){
 	 return false
 	}
  });
- 
+
    $("#remove").click(function(){
     if (!confirm("Are you sure you want to remove tags from selected videos.")){
       return false;
     }
   });
- 
- 
+
+
  $('#boxcheck').click(function(){
-if ($(this).prop('checked')==true){ 
-var allselectedvideo = [];	
-$('#selectedvideo').val('');	
-$('#videolists').val('');	
- $('.selectedli').removeClass("active").removeClass("active2"); 
+if ($(this).prop('checked')==true){
+var allselectedvideo = [];
+$('#selectedvideo').val('');
+$('#videolists').val('');
+ $('.selectedli').removeClass("active").removeClass("active2");
  $('.selectedli').each(function(){
-	 
+
   $(this).addClass("active");
 	   var videoid = $(this).attr("videoid");
-        
+
 		if($.inArray(videoid, allselectedvideo)!== -1){
 			allselectedvideo.splice($.inArray(allselectedvideo,videoid) ,1);
 		}else {
@@ -994,35 +995,35 @@ $('#videolists').val('');
 		var allselectedvideostring = allselectedvideo.join(',');
 
 		$('#selectedvideo').val(allselectedvideostring);
-		
+
 		$('#videolists').val(allselectedvideostring);
-	 
-	 
+
+
  });
 }else {
-	allselectedvideo = [];	
-	$('#selectedvideo').val('');	
-	$('#videolists').val('');	
- $('.selectedli').removeClass("active"); 
-	
+	allselectedvideo = [];
+	$('#selectedvideo').val('');
+	$('#videolists').val('');
+ $('.selectedli').removeClass("active");
+
 }
-	 
+
  });
- 
- 
- 
- 
- 
- 
- 
+
+
+
+
+
+
+
  });
  $('.searchtags').on('click','.addcategory',function(){
 	var searchtext = $('.Place_tags').val();
 	var grouptag = $('.Place_group').val();
-	var categorytitle = searchtext;	
-	
+	var categorytitle = searchtext;
+
 	var category = '';
-    var parentcat = '';		
+    var parentcat = '';
     var token= $('meta[name="csrf_token"]').attr('content');
 	$.ajax({
 				url:'{{ URL::to("/admin/addeditsearchcategory") }}',
@@ -1032,7 +1033,7 @@ $('#videolists').val('');
 				success:function(ress){
 			if(categorytitle != "" && categorytitle != "Place tags"){
 			$.each(ress, function(index, value) {
-				
+
 				   $('.form-control-chosen').append($("<option/>", {
 					value:value.lastinsertid,
 					 text:value.vchtitle
@@ -1082,7 +1083,7 @@ $('#videolists').val('');
 			});
 		}
 	});
-	
+
 	$(document).ready(function(){
     $('#select_all').on('click',function(){
         if(this.checked){
@@ -1095,7 +1096,7 @@ $('#videolists').val('');
             });
         }
     });
-    
+
     $('.checkbox').on('click',function(){
         if($('.checkbox:checked').length == $('.checkbox').length){
             $('#select_all').prop('checked',true);
@@ -1103,8 +1104,8 @@ $('#videolists').val('');
             $('#select_all').prop('checked',false);
         }
     });
-	
-	
+
+
 
     $('#select_all2').on('click',function(){
         if(this.checked){
@@ -1117,7 +1118,7 @@ $('#videolists').val('');
             });
         }
     });
-	
+
 	$('.checkbox2').on('click',function(){
         if($('.checkbox2:checked').length == $('.checkbox2').length){
             $('#select_all2').prop('checked',true);
@@ -1126,8 +1127,8 @@ $('#videolists').val('');
         }
     });
 });
-	
-	
+
+
 </script>
-		
+
 @include('admin/admin-footer')
