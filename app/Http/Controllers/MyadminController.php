@@ -801,7 +801,7 @@ public function managevideosection(Request $request){
 		$perpage = $request->perpage;
 		$servername = $_SERVER['SERVER_NAME'];
 		$selectserver = DB::table('tbl_managesite')->where('txtsiteurl',$servername)->first();
-		$siteid=$selectserver->intmanagesiteid;
+		$siteid=!app()->isLocal() ? $selectserver->intmanagesiteid : 1;
 		$multisite =  $request->multisite;
 			if(isset($_GET['deletevideoid'])){
 				if(isset($_GET['multiple'])){
@@ -1667,16 +1667,15 @@ public function saveuploadvideo(Request $request){
 
     foreach($msite as $siteId) {
         try {
-            UpdateDomainPreviewImagesJob::dispatch($siteId, true);
+            $this->createImages($siteId, true);
         } catch (Exception $e) {
-            Log::critical($e);
         }
     }
 
     echo $returnarray = json_encode(array('videoid'=>$lastinsertid));
 
 }
-
+//---------------
 	public function stringReplace($string){
 
 		$oldstring = ["  ","(", ")", "?"," "];
@@ -5600,10 +5599,8 @@ exit;
         $date = Carbon::parse($request->date);
 
         if($date > now()) {
-            Log::info('delay');
             UpdateDomainPreviewImagesJob::dispatch($request->domainId)->delay($date);
         } else {
-            Log::info('no delay');
 
             UpdateDomainPreviewImagesJob::dispatch($request->domainId);
         }
@@ -5639,5 +5636,125 @@ exit;
         }
 
         return "Caching process is currently in progress and has started {$in->diffForHumans()}. Please try again after it finishes.";
+    }
+
+    private function createImages($domainId)
+    {
+
+        $images = DB::table('tbl_Video')
+            ->orderByDesc('IntId')
+            ->limit(1)
+            ->get(['IntId', 'VchFolderPath', 'VchVideoName', 'VchResizeimage', 'vchcacheimages', 'vchorginalfile', 'transparent']);
+
+
+        $backgrounds = DB::table('tbl_backgrounds')->where('siteid', 'like', '%'.$domainId.'%')->get(); // get backgrounds.
+
+        $watermark = DB::table('tblwatermarklogo')->where('vchtype','L')->where('vchsiteid', $domainId)->where('enumstatus','A')->first();
+
+        $watermarkImage = Image::make(public_path('/upload/watermark/'.$watermark->vchwatermarklogoname));
+
+        $watermarkImage->resize(852, 480);
+
+        $watermarkImage->opacity(40);
+
+        $this->assureDirectoryExists('watermarkedImages/'.$domainId);
+
+
+        $images->each(function ($dbImage) use ($watermarkImage, $backgrounds, $domainId) {
+
+            try {
+                $this->addWatermark($dbImage, $watermarkImage, $backgrounds, $domainId);
+            } catch (Exception $e) {
+            }
+        });
+    }
+
+    private function assureDirectoryExists($path)
+    {
+        \Illuminate\Support\Facades\File::isDirectory($path) or File::makeDirectory($path, 0777, true, true);
+    }
+
+    private function addWatermark($dbImage, $watermarkImage, $backgrounds, $domainId)
+    {
+        $imagePath = public_path($dbImage->VchFolderPath . '/' . $dbImage->VchVideoName);
+
+        try {
+            $image = Image::make($imagePath);
+        } catch (Exception $e) {
+
+            return 1;
+        }
+
+        $image->resize(852, 480);
+
+        if ($dbImage->transparent === 'N') {
+            try {
+                $image->insert($watermarkImage, 'bottom-left');
+
+                $this->saveImageWithoutBackground($image, $dbImage, $domainId);
+
+                return 1;
+            } catch (Exception $e) {
+
+                return 1;
+            }
+
+        }
+
+        foreach ($backgrounds as $background) {
+            try {
+                $destinationPath = $this->getDestinationPath($background, $dbImage, $domainId);
+
+                $backgroundImage = $this->getBackgroundImage($background);
+
+                if (!$backgroundImage) {
+                }
+
+                $backgroundImage->resize(852, 480);
+
+                $image->save($destinationPath);
+
+                $backgroundImage->insert($destinationPath, 'bottom-left');
+
+                $backgroundImage->save($destinationPath);
+
+                $backgroundImage->insert($watermarkImage, 'bottom-left');
+
+                $backgroundImage->save();
+            } catch (Exception $e) {
+
+                continue;
+            }
+        }
+    }
+
+    private function getBackgroundImage($background)
+    {
+        $imagePath = public_path('background/'.$background->background_img);
+
+        return Image::make($imagePath);
+    }
+
+    /**
+     * @param $background
+     * @param $dbImage
+     * @return string
+     */
+    private function getDestinationPath($background, $dbImage, $domainId): string
+    {
+        $destinationPath = 'watermarkedImages/' . $domainId . '/' . $dbImage->IntId . '/' . $background->bg_id;
+
+        $this->assureDirectoryExists($destinationPath);
+
+        return public_path($destinationPath . '/' . $dbImage->VchVideoName);
+    }
+
+    private function saveImageWithoutBackground($image, $dbImage, $domainId)
+    {
+        $path = public_path("watermarkedImages/{$domainId}/{$dbImage->IntId}");
+
+        $this->assureDirectoryExists($path);
+
+        $image->save($path.'/'.$dbImage->VchVideoName);
     }
 }

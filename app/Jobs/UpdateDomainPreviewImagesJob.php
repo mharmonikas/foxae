@@ -114,7 +114,7 @@ class UpdateDomainPreviewImagesJob implements ShouldQueue
                 $backgroundImage = $this->getBackgroundImage($background);
 
                 if(!$backgroundImage) {
-                    Log::info("Background image with ID {$background->id} is missing");
+                    Log::info("Background image with ID {$background->bg_id} is missing");
                 }
 
                 $backgroundImage->resize(852, 480);
@@ -129,7 +129,7 @@ class UpdateDomainPreviewImagesJob implements ShouldQueue
 
                 $backgroundImage->save();
             } catch (Exception $e) {
-                Log::info("Background image with ID {$background->id} is missing");
+                Log::info("Background image with ID {$background->bg_id} is missing");
                 Log::critical($e);
 
                 continue;
