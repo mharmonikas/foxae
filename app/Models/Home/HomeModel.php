@@ -104,7 +104,7 @@ class HomeModel extends Model{
             ->leftjoin('tbl_plan','tbl_buypackage.buy_id','tbl_plan.plan_id')
             ->where('tbl_buypackage.package_subscription','!=','N')
             ->where('tbl_buypackage.status','A')
-            ->whereIn('package_subscription', ['Y', 'C'])
+            ->where('package_subscription', 'Y')
             ->get();
 	}
 	/* public function getautorenewpackage($timestamp){
