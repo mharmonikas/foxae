@@ -5592,7 +5592,7 @@ exit;
 
     public function scheduleImageCaching(Request $request)
     {
-        if($job = DB::table('jobs')->where('payload', 'like','%UpdateDomainPreviewImagesJob%')->first()) {
+        if($job = DB::table('jobs')->where('payload', 'like','%UpdateDomainPreviewImagesJob%')->where('payload', 'like', "%;i:{$request->domainId};s:%")->first()) {
             if(data_get($job, 'attempts', 0) > 0) {
                 DB::table('jobs')->where('id', $job->id)->delete();
             } else {
@@ -5606,7 +5606,6 @@ exit;
         if($date > now()) {
             UpdateDomainPreviewImagesJob::dispatch($request->domainId)->delay($date);
         } else {
-
             UpdateDomainPreviewImagesJob::dispatch($request->domainId);
         }
 
