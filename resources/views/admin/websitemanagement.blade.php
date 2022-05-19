@@ -545,6 +545,10 @@
                 <p>When should we start caching images for this domain ? (UTC time)</p>
                 <input id="cacheImagesTime" size="16" type="text" value="<?=date('Y-m-d H:i:s')?>" placeholder="2021-06-15 14:45" readonly class="form-control form_datetime">
                 <p id="caching-error" class="d-none text-danger"></p>
+                <div id="clear-jobs-div" class="d-none text-danger">
+                    Want to clear running jobs for this site?
+                    <a id="clear-jobs-btn" style="text-decoration: underline;" class="text-danger" href="">Click here</a>
+                </div>
             </div>
             <div class="modal-footer">
                 <button id="cacheImagesBtn" type="button" class="btn btn-default">Schedule</button>
@@ -635,15 +639,37 @@
                     $('#cacheImagesModal').modal('hide');
                 } else {
                     let err = $('#caching-error')
+                    let clearJobsDiv = $('#clear-jobs-div')
 
                     err.removeClass('d-none')
+                    clearJobsDiv.removeClass('d-none')
                     err.addClass('d-block')
                     err.html(res.message)
                 }
             }
         });
 
+        $('#clear-jobs-btn').click(function() {
+            let result = confirm("Are you sure to stop the queued job for this domain ?");
+            if (result) {
+                $.ajax({
+                    url:'/admin/stopScheduleImageCaching',
+                    type:'POST',
+                    data:{_token: token, domainId: siteId},
+                    success: function(res){
+                        if(res.status) {
+                            $('#cacheImagesModal').modal('hide');
+                        } else {
+                            let err = $('#caching-error')
+
+                            err.html('Something went wrong when removing the job from queue.')
+                        }
+                    }
+                });
+            }
+        })
     })
+
 
     $(".btn-submit-video").click(function(){
         markset('yes',$(".videotype").val(),$(".videologoid").val(),$(".siteid").val())

@@ -5592,8 +5592,13 @@ exit;
 
     public function scheduleImageCaching(Request $request)
     {
-        if($job = DB::table('jobs')->where('payload', 'like','%UpdateDomainPreviewImagesJob%')->where('payload', 'like', "%;i:{$request->domainId};s:%")->first()) {
-            if(data_get($job, 'attempts', 0) > 0) {
+        $job = DB::table('jobs')
+            ->where('payload', 'like','%UpdateDomainPreviewImagesJob%')
+            ->where('payload', 'like', "%;i:{$request->domainId};s:%")
+            ->first();
+
+        if($job) {
+            if(data_get($job, 'attempts', 0) > 1) {
                 DB::table('jobs')->where('id', $job->id)->delete();
             } else {
                 $in = Carbon::parse($job->available_at);
@@ -5610,6 +5615,14 @@ exit;
         }
 
         return response()->json(['status' => 1]);
+    }
+
+    public function stopScheduleImageCaching(Request $request)
+    {
+        return DB::table('jobs')
+            ->where('payload', 'like','%UpdateDomainPreviewImagesJob%')
+            ->where('payload', 'like', "%;i:{$request->domainId};s:%")
+            ->delete();
     }
 
     private function getDbImage($lastinsertid)

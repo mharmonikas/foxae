@@ -205,6 +205,7 @@ Route::get('/admin/replace/{id}', array('as' => 'id', 'uses'=>'MyadminController
 Route::resource('admin/websitemanagement','WebsitemanagementController');
 Route::post('/admin/watermarkupdate', 'MyadminController@watermarkupdate');
 Route::post('/admin/scheduleImageCaching', 'MyadminController@scheduleImageCaching');
+Route::post('/admin/stopScheduleImageCaching', 'MyadminController@stopScheduleImageCaching');
 Route::get('/admin/refreshwatermark', 'MyadminController@refreshwatermark');
 Route::get('/admin/saverefreshwatermark', 'MyadminController@saverefreshwatermark');
 Route::post('/admin/themeoption', 'MyadminController@savethemeoption');
