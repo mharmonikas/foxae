@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Intervention\Image\ImageManagerStatic as Image;
 
-class UpdateDomainPreviewImagesJob implements ShouldQueue
+class UpdateDomainPreviewImagesJob1 implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -39,7 +39,7 @@ class UpdateDomainPreviewImagesJob implements ShouldQueue
      */
     public function handle()
     {
-        Log::info("UpdateDomainPreviewImagesJob for domain ID {$this->domainId}");
+        Log::info("UpdateDomainPreviewImagesJob1 for domain ID {$this->domainId}");
 
         $images = DB::table('tbl_Video')
             ->orderByDesc('IntId')
@@ -59,7 +59,7 @@ class UpdateDomainPreviewImagesJob implements ShouldQueue
 
         $watermarkImage->opacity(40);
 
-        $this->assureDirectoryExists('upload/watermarkedImages/'.$this->domainId);
+        $this->assureDirectoryExists('watermarkedImages/'.$this->domainId);
 
         Log::info("Number of images: {$images->count()}");
 
@@ -120,6 +120,7 @@ class UpdateDomainPreviewImagesJob implements ShouldQueue
                 $backgroundImage->resize(852, 480);
 
                 $image->save($destinationPath);
+//               $image->save(public_path('upload/destination-image-'.time().'.png'));
 
                 $backgroundImage->insert($destinationPath, 'bottom-left');
 
@@ -150,7 +151,7 @@ class UpdateDomainPreviewImagesJob implements ShouldQueue
      */
     private function getDestinationPath($background, $dbImage): string
     {
-        $destinationPath = 'upload/watermarkedImages/' . $this->domainId . '/' . $dbImage->IntId . '/' . $background->bg_id;
+        $destinationPath = 'watermarkedImages/' . $this->domainId . '/' . $dbImage->IntId . '/' . $background->bg_id;
 
         $this->assureDirectoryExists($destinationPath);
 
@@ -166,7 +167,7 @@ class UpdateDomainPreviewImagesJob implements ShouldQueue
 
     private function saveImageWithoutBackground($image, $dbImage)
     {
-        $path = public_path("upload/watermarkedImages/{$this->domainId}/{$dbImage->IntId}");
+        $path = public_path("watermarkedImages/{$this->domainId}/{$dbImage->IntId}");
 
         $this->assureDirectoryExists($path);
 

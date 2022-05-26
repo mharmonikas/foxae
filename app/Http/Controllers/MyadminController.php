@@ -1,23 +1,20 @@
 <?php
 namespace App\Http\Controllers;
-use App\Jobs\CreateWatermarkedImageJob;
-use App\Jobs\UpdateDomainPreviewImagesJob;
+use App\Jobs\UpdateDomainPreviewImagesJob1;
 use Exception;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Models\Admin\AdminModel;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Hash;
-use File;
-use Illuminate\Support\Facades\Log;
 use Intervention\Image\ImageManagerStatic as Image;
 use Session;
 use Mail;
 use App\Admin;
 use Google_Client;
 use Google_Service_Drive;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
+
 class MyadminController extends Controller
 {
    public function __construct(AdminModel $AdminModel) {
@@ -5593,7 +5590,7 @@ exit;
     public function scheduleImageCaching(Request $request)
     {
         $job = DB::table('jobs')
-            ->where('payload', 'like','%UpdateDomainPreviewImagesJob%')
+            ->where('payload', 'like','%UpdateDomainPreviewImagesJob1%')
             ->where('payload', 'like', "%;i:{$request->domainId};s:%")
             ->first();
 
@@ -5609,9 +5606,9 @@ exit;
         $date = Carbon::parse($request->date);
 
         if($date > now()) {
-            UpdateDomainPreviewImagesJob::dispatch($request->domainId)->delay($date);
+            UpdateDomainPreviewImagesJob1::dispatch($request->domainId)->delay($date);
         } else {
-            UpdateDomainPreviewImagesJob::dispatch($request->domainId);
+            UpdateDomainPreviewImagesJob1::dispatch($request->domainId);
         }
 
         return response()->json(['status' => 1]);
@@ -5620,7 +5617,7 @@ exit;
     public function stopScheduleImageCaching(Request $request)
     {
         return DB::table('jobs')
-            ->where('payload', 'like','%UpdateDomainPreviewImagesJob%')
+            ->where('payload', 'like','%UpdateDomainPreviewImagesJob1%')
             ->where('payload', 'like', "%;i:{$request->domainId};s:%")
             ->delete();
     }

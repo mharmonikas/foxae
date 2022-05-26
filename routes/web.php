@@ -12,6 +12,7 @@
 
 use App\Models\Home\HomeModel;
 use Illuminate\Support\Facades\DB;
+use Intervention\Image\ImageManagerStatic as Image;
 
 Route::get('/', 'FrontendController@index');
 Route::get('/index1', 'FrontendController@index1');
@@ -73,7 +74,7 @@ Route::get('/pricing', 'HomeController@pricing');
 Route::get('/i/{seo}', 'HomeController@imageAnimation');
 Route::post('/submitcustom', 'HomeController@submitcustom');
 //Route::get('/test', 'FrontendController@test');
-Route::get('/test', 'HomeController@download');
+//Route::get('/test', 'HomeController@download');
 Route::get('/myprofile', 'HomeController@myprofile');
 Route::get('/change-password', 'HomeController@changepassword');
 
@@ -219,6 +220,17 @@ Route::post('/admin/deletebg','MyadminController@deletebackground');
 Route::post('/admin/recoverpassword', 'MyadminController@recoverpasswordsubmit');
 Route::get('/admin/changeorder', 'MyadminController@changeorder');
 Route::get('/admin/removefeature', 'MyadminController@removefeature');
+
+Route::get('/test', function(){
+    $img = public_path('background/1616708034.png');
+    $image = Image::make($img);
+
+    if($image->save(public_path('upload/image.png'))){
+        echo 'There is image 1 :)';
+    } else {
+        echo 'No image!!!';
+    }
+});
 
 Route::post('/admin/markdefaultlogo', 'MyadminController@markdefaultlogo');
 Route::post('/admin/addgroup', 'MyadminController@addgroup');
