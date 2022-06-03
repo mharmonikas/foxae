@@ -958,10 +958,9 @@ public function managevideosection(Request $request){
 		return view('admin.admin-managetags')->with('allmastertags', $allmastertags);
 	}
 public function saveuploadvideo(Request $request){
+	$this->checklogin();
 
-	echo $this->checklogin();
-
-    $msite = explode(',', $_POST['multisite']);
+    $msite = is_string(request('multisite')) ? explode(',', request('multisite')) : request('multisite');
 
     $servername = $_SERVER['SERVER_NAME'];
     $selectserver = DB::table('tbl_managesite')->where('txtsiteurl',$servername)->first();
