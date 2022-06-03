@@ -413,11 +413,25 @@ exit();
 						@endif
 							<div class="crat-price" id="incart-credit">
 								<span class="title-head">In Cart&nbsp;({{$cartcount}} items): </span>
-								<span><b>
-								@if(empty($userdetail) || empty($availablecreditcount))$@if($incartcredit>0){{number_format($incartcredit, 2)}}
-									@else 0 @endif
-								@else @if($incartcredit>0){{$incartcredit}}
-									@else 0 @endif Credits @endif  </b></span>
+								<span>
+                                    <b>
+                                        @if(empty($userdetail) || empty($availablecreditcount))
+                                            $
+                                            @if($incartcredit>0)
+                                                {{number_format($incartcredit, 2)}}
+                                            @else
+                                                0
+                                            @endif
+                                        @else
+                                            @if($incartcredit>0)
+                                                {{$incartcredit}}
+                                            @else
+                                                0
+                                            @endif
+                                            Credits
+                                        @endif
+                                    </b>
+                                </span>
 							</div>
 							<button class="btn btn-default" onclick="location.href='/cart';">GO TO CART</button>
 

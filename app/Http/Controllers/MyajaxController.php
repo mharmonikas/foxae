@@ -226,9 +226,9 @@ class MyajaxController extends Controller {
         return response()->json($mysearchingkeyword, 200);
     }
 
-    function getallkeywords() {
+    function getallkeywords(){
         $keyword=$_REQUEST['keyword'];
-        $pspell_link = pspell_new("en");
+        $pspell_link = pspell_new('en');
 
         if (!pspell_check($pspell_link,$keyword)) {
             $suggestions = pspell_suggest($pspell_link,$keyword);
@@ -236,21 +236,22 @@ class MyajaxController extends Controller {
             $count = 1;
             $whereconditions = '';
             $selectconditions = '';
-            foreach($suggestions as $mykeyword) {
-               $mykeyword = str_replace("'", '', $mykeyword);
-               if($count==1){
-                  $selectconditions .= "select CASE when tbl_Video.VchTitle like '%$mykeyword%' then '".$mykeyword."' end  as  title from tbl_Video where VchTitle like '%$mykeyword%' ";
+            foreach($suggestions as $mykeyword){
+                $mykeyword = str_replace("'", '', $mykeyword);
+                if($count==1){
+                    $selectconditions .= "select CASE when tbl_Video.VchTitle like '%$mykeyword%' then '".$mykeyword."' end  as  title from tbl_Video where VchTitle like '%$mykeyword%' ";
 
-               }else {
-                   $selectconditions .= " UNION select CASE when VchTitle like '%$mykeyword%' then '".$mykeyword."' end  as title from tbl_Video where VchTitle like '%$mykeyword%' ";
+                }else {
+                    $selectconditions .= " UNION select CASE when VchTitle like '%$mykeyword%' then '".$mykeyword."' end  as title from tbl_Video where VchTitle like '%$mykeyword%' ";
 
-               }
-               $count++;
+                }
+                $count++;
             }
 
             $myresultss = DB::select(DB::raw($selectconditions));
             return response()->json($myresultss);
         }
+
     }
 
     public static function getServerName()
