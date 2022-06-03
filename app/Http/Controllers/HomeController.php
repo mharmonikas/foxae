@@ -1,20 +1,13 @@
 <?php
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use App\Models\Home\HomeModel;
-use Session;
-use App\Admin;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Crypt;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Mail;
-use Response;
 use Stripe;
-use Validator;
-use File;
 use ZipArchive;
 class HomeController extends Controller {
 
@@ -713,7 +706,9 @@ class HomeController extends Controller {
 	public function logout()
     {
 		Session::flush();
-         return redirect('/');
+        session_start(); // start session
+        session_destroy();  // Delete whole session
+        return redirect('/');
     }
 
 	public static function managesite(){
@@ -1926,23 +1921,21 @@ class HomeController extends Controller {
 		$date = date('Y-m-d H:i:s');
 		$cartstatus = $request->cartstatus;
 		if($cartstatus == 'Add'){
-			$checklist=DB::table('tbl_wishlist')->where('userid',$userid)->where('siteid',$managesite->intmanagesiteid)->where('videoid',$id)->first();
-			if(empty($checklist)){
-			$data = array(
-				'videoid'	=> $id,
-				'siteid'	=> $managesite->intmanagesiteid,
-				'userid'=> $userid,
-				'status'=> 'cart',
-				'created_date'	=> $date,
-			);
-			$lastinsetid=$this->HomeModel->wishlistdata($data);
-			}else{
+			$checklist = DB::table('tbl_wishlist')->where('userid',$userid)->where('siteid',$managesite->intmanagesiteid)->where('videoid',$id)->first();
+            if(empty($checklist)){
+                $data = array(
+                    'videoid'	=> $id,
+                    'siteid'	=> $managesite->intmanagesiteid,
+                    'userid'=> $userid,
+                    'status'=> 'cart',
+                    'created_date'	=> $date,
+                );
+                $lastinsetid=$this->HomeModel->wishlistdata($data);
+			} else {
 					$dataarr = array(
 						"status"=> 'cart',
 					);
-			DB::table('tbl_wishlist')->where('id', $checklist->id)->update($dataarr);
-
-
+                    DB::table('tbl_wishlist')->where('id', $checklist->id)->update($dataarr);
 			}
 		}elseif($cartstatus == 'Remove'){
 			$this->HomeModel->DeleteFromWishlist($id,$managesite->intmanagesiteid,$userid);
@@ -2380,7 +2373,6 @@ class HomeController extends Controller {
                 ->where('tbl_wishlist.status','cart')
                 ->where('tbl_wishlist.siteid',$managesite->intmanagesiteid)
                 ->where('tbl_buypackage.status','A')
-                ->where('tbl_buypackage.package_id',$packageid)
                 ->whereDate('tbl_buypackage.package_expiredate','>',date('Y-m-d'))
                 ->orderBy('tbl_wishlist.created_date','DESC')
                 ->groupBy('tbl_Video.IntId')
@@ -2805,7 +2797,7 @@ class HomeController extends Controller {
 	}
 
 	public function checkstock(Request $request){
-		$content = $request->content;
+		$content = request('content');
 		$stock = $request->stock;
 		$id = Crypt::decryptString($request->productid);
 		$managesite = DB::table('tbl_managesite')->leftjoin('tbl_themesetting','tbl_managesite.intmanagesiteid','tbl_themesetting.Intsiteid')->where('txtsiteurl',self::getServerName())->first();
