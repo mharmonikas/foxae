@@ -811,24 +811,16 @@ class HomeController extends Controller {
             $cartvalue=0;
 
             if(!empty($packageid)){
-                $response =  DB::table('tbl_wishlist')->select('tbl_plan.*','tbl_buypackagestock.*','tbl_buypackage.*','tbl_wishlist.*','tbl_Video.*','tbl_Videotagrelations.VchVideoId',DB::raw("(Select GROUP_CONCAT(np.VchSearchcategorytitle SEPARATOR ', ') from tbl_SearchcategoryVideoRelationship as np where np.IntVideoID = tbl_Video.IntId) as videotags "))
-                ->leftjoin('tbl_Video','tbl_wishlist.videoid','tbl_Video.IntId','tbl_Video.content_category')
-                ->leftJoin('tbl_Videotagrelations', 'tbl_Video.IntId', '=', 'tbl_Videotagrelations.VchVideoId')
-                ->leftjoin('tbl_buypackage','tbl_buypackage.package_userid','tbl_wishlist.userid')
-                ->leftjoin("tbl_buypackagestock",function($join){
-                    $join->on("tbl_buypackagestock.buypackage_id","=","tbl_buypackage.package_id")
-                    ->on("tbl_buypackagestock.stocktype_id","=","tbl_Video.stock_category")
-                    ->on("tbl_buypackagestock.contentcat_id","=","tbl_Video.content_category");
-                })
-                ->leftjoin('tbl_plan','tbl_plan.plan_id','tbl_buypackagestock.plan_id')
-                ->where('tbl_wishlist.userid',$userid)
-                ->where('tbl_wishlist.status','cart')
-                ->where('tbl_wishlist.siteid',$managesite->intmanagesiteid)
-                ->where('tbl_buypackage.status','A')
-                ->whereDate('tbl_buypackage.package_expiredate','>',date('Y-m-d'))
-                ->orderBy('tbl_wishlist.created_date','DESC')
-                ->groupBy('tbl_Video.IntId')
-                ->get();
+                $response = DB::table('tbl_wishlist')->select('tblstock.*','tbl_plan.*','tbl_wishlist.*','tbl_Video.*','tbl_Videotagrelations.VchVideoId',DB::raw("(Select GROUP_CONCAT(np.VchSearchcategorytitle SEPARATOR ', ') from tbl_SearchcategoryVideoRelationship as np where np.IntVideoID = tbl_Video.IntId) as videotags "))
+                    ->leftjoin('tbl_Video','tbl_wishlist.videoid','tbl_Video.IntId','tbl_Video.content_category')
+                    ->leftJoin('tbl_Videotagrelations', 'tbl_Video.IntId', '=', 'tbl_Videotagrelations.VchVideoId')
+                    ->leftjoin("tblstock",function($join){
+                        $join->on("tblstock.stocktype_id","=","tbl_Video.stock_category")
+                            ->on("tblstock.contentcat_id","=","tbl_Video.content_category");
+                    })
+                    ->leftjoin('tbl_plan','tbl_plan.plan_id','tblstock.plan_id')
+                    ->where('tbl_wishlist.userid',$userid)->where('tbl_wishlist.status','cart')->where('tbl_wishlist.siteid',$managesite->intmanagesiteid)->orderBy('tbl_wishlist.created_date','DESC')->groupBy('tbl_Video.IntId')
+                    ->get();
 
                 if(!$response->isEmpty()){
                     $totalitems = count($response);
@@ -877,7 +869,7 @@ class HomeController extends Controller {
 			$cartcredit=0;
             $cartvalue=0;
             $userid=Session::getId();
-            $response =  DB::table('tbl_wishlist')->select('tblstock.*','tbl_plan.*','tbl_wishlist.*','tbl_Video.*','tbl_Videotagrelations.VchVideoId',DB::raw("(Select GROUP_CONCAT(np.VchSearchcategorytitle SEPARATOR ', ') from tbl_SearchcategoryVideoRelationship as np where np.IntVideoID = tbl_Video.IntId) as videotags "))
+            $response = DB::table('tbl_wishlist')->select('tblstock.*','tbl_plan.*','tbl_wishlist.*','tbl_Video.*','tbl_Videotagrelations.VchVideoId',DB::raw("(Select GROUP_CONCAT(np.VchSearchcategorytitle SEPARATOR ', ') from tbl_SearchcategoryVideoRelationship as np where np.IntVideoID = tbl_Video.IntId) as videotags "))
             ->leftjoin('tbl_Video','tbl_wishlist.videoid','tbl_Video.IntId','tbl_Video.content_category')
             ->leftJoin('tbl_Videotagrelations', 'tbl_Video.IntId', '=', 'tbl_Videotagrelations.VchVideoId')
                 ->leftjoin("tblstock",function($join){
@@ -1973,47 +1965,33 @@ class HomeController extends Controller {
 
 		if(!empty($packageid)){
 			$cartvalue=0;
-			$response =  DB::table('tbl_wishlist')->select('tbl_plan.*','tbl_buypackagestock.*','tbl_buypackage.*','tbl_wishlist.*','tbl_Video.*','tbl_Videotagrelations.VchVideoId',DB::raw("(Select GROUP_CONCAT(np.VchSearchcategorytitle SEPARATOR ', ') from tbl_SearchcategoryVideoRelationship as np where np.IntVideoID = tbl_Video.IntId) as videotags "))
-			->leftjoin('tbl_Video','tbl_wishlist.videoid','tbl_Video.IntId','tbl_Video.content_category')
-			->leftJoin('tbl_Videotagrelations', 'tbl_Video.IntId', '=', 'tbl_Videotagrelations.VchVideoId')
-			->leftjoin('tbl_buypackage','tbl_buypackage.package_userid','tbl_wishlist.userid')
-
-			->leftjoin("tbl_buypackagestock",function($join){
-						$join->on("tbl_buypackagestock.buypackage_id","=","tbl_buypackage.package_id")
-						->on("tbl_buypackagestock.stocktype_id","=","tbl_Video.stock_category")
-						->on("tbl_buypackagestock.contentcat_id","=","tbl_Video.content_category");
-					})
-			->leftjoin('tbl_plan','tbl_plan.plan_id','tbl_buypackagestock.plan_id')
-			//->where('tbl_buypackagestock.stocktype_id','tbl_Video.stock_category')
-			//->where('tbl_buypackagestock.contentcat_id','tbl_Video.content_category')
-			->where('tbl_wishlist.userid',$userid)
-			->where('tbl_wishlist.status','cart')
-			->where('tbl_wishlist.siteid',$managesite->intmanagesiteid)
-			->where('tbl_buypackage.status','A')
-
-			->whereDate('tbl_buypackage.package_expiredate','>',date('Y-m-d'))
-			->orderBy('tbl_wishlist.created_date','DESC')
-			 ->groupBy('tbl_Video.IntId')
-			->get();
+			$response = DB::table('tbl_wishlist')->select('tblstock.*','tbl_plan.*','tbl_wishlist.*','tbl_Video.*','tbl_Videotagrelations.VchVideoId',DB::raw("(Select GROUP_CONCAT(np.VchSearchcategorytitle SEPARATOR ', ') from tbl_SearchcategoryVideoRelationship as np where np.IntVideoID = tbl_Video.IntId) as videotags "))
+                ->leftjoin('tbl_Video','tbl_wishlist.videoid','tbl_Video.IntId','tbl_Video.content_category')
+                ->leftJoin('tbl_Videotagrelations', 'tbl_Video.IntId', '=', 'tbl_Videotagrelations.VchVideoId')
+                ->leftjoin("tblstock",function($join){
+                    $join->on("tblstock.stocktype_id","=","tbl_Video.stock_category")
+                        ->on("tblstock.contentcat_id","=","tbl_Video.content_category");
+                })
+                ->leftjoin('tbl_plan','tbl_plan.plan_id','tblstock.plan_id')
+                ->where('tbl_wishlist.userid',$userid)->where('tbl_wishlist.status','cart')->where('tbl_wishlist.siteid',$managesite->intmanagesiteid)->orderBy('tbl_wishlist.created_date','DESC')->groupBy('tbl_Video.IntId')
+                ->get();
 			//->paginate(10);
 			//print_r($response);
 
 			if(!$response->isEmpty()){
-			$totalitems=count($response);
-			$cartvalue=$this->incartcredit();
+                $totalitems=count($response);
+                $cartvalue=$this->incartcredit();
+                $cartcredit=0;
 
-			$cartcredit=0;
+                foreach($response as $res){
+                    $cartcredit +=$res->stock;
+                }
 
-				foreach($response as $res){
-					$cartcredit +=$res->stock;
-
-				}
-
-			if(!empty($res->conversion_rate)){
-							$cartvalue =$cartcredit/$res->conversion_rate;
-						}else{
-							$cartvalue =$cartcredit;
-						}
+//                if(!empty($res->conversion_rate)){
+//                    $cartvalue =$cartcredit/$res->conversion_rate;
+//                }else{
+//                    $cartvalue =$cartcredit;
+//                }
 
 			}
 
@@ -2359,28 +2337,20 @@ class HomeController extends Controller {
             $checkloginuser = Session::get('userid');
 
             if (!empty($packageid)) {
-                $response =  DB::table('tbl_wishlist')->select('tbl_plan.*','tbl_buypackagestock.*','tbl_buypackage.*','tbl_wishlist.*','tbl_Video.*','tbl_Videotagrelations.VchVideoId',DB::raw("(Select GROUP_CONCAT(np.VchSearchcategorytitle SEPARATOR ', ') from tbl_SearchcategoryVideoRelationship as np where np.IntVideoID = tbl_Video.IntId) as videotags "))
-                ->leftjoin('tbl_Video','tbl_wishlist.videoid','tbl_Video.IntId','tbl_Video.content_category')
-                ->leftJoin('tbl_Videotagrelations', 'tbl_Video.IntId', '=', 'tbl_Videotagrelations.VchVideoId')
-                ->leftjoin('tbl_buypackage','tbl_buypackage.package_userid','tbl_wishlist.userid')
-                ->leftjoin("tbl_buypackagestock",function($join){
-                    $join->on("tbl_buypackagestock.buypackage_id","=","tbl_buypackage.package_id")
-                    ->on("tbl_buypackagestock.stocktype_id","=","tbl_Video.stock_category")
-                    ->on("tbl_buypackagestock.contentcat_id","=","tbl_Video.content_category");
-                })
-                ->leftjoin('tbl_plan','tbl_plan.plan_id','tbl_buypackagestock.plan_id')
-                ->where('tbl_wishlist.userid',$userid)
-                ->where('tbl_wishlist.status','cart')
-                ->where('tbl_wishlist.siteid',$managesite->intmanagesiteid)
-                ->where('tbl_buypackage.status','A')
-                ->whereDate('tbl_buypackage.package_expiredate','>',date('Y-m-d'))
-                ->orderBy('tbl_wishlist.created_date','DESC')
-                ->groupBy('tbl_Video.IntId')
-                ->get();
+                $response = DB::table('tbl_wishlist')->select('tblstock.*','tbl_plan.*','tbl_wishlist.*','tbl_Video.*','tbl_Videotagrelations.VchVideoId',DB::raw("(Select GROUP_CONCAT(np.VchSearchcategorytitle SEPARATOR ', ') from tbl_SearchcategoryVideoRelationship as np where np.IntVideoID = tbl_Video.IntId) as videotags "))
+                    ->leftjoin('tbl_Video','tbl_wishlist.videoid','tbl_Video.IntId','tbl_Video.content_category')
+                    ->leftJoin('tbl_Videotagrelations', 'tbl_Video.IntId', '=', 'tbl_Videotagrelations.VchVideoId')
+                    ->leftjoin("tblstock",function($join){
+                        $join->on("tblstock.stocktype_id","=","tbl_Video.stock_category")
+                            ->on("tblstock.contentcat_id","=","tbl_Video.content_category");
+                    })
+                    ->leftjoin('tbl_plan','tbl_plan.plan_id','tblstock.plan_id')
+                    ->where('tbl_wishlist.userid',$userid)->where('tbl_wishlist.status','cart')->where('tbl_wishlist.siteid',$managesite->intmanagesiteid)->orderBy('tbl_wishlist.created_date','DESC')->groupBy('tbl_Video.IntId')
+                    ->get();
 
                 if (!$response->isEmpty()) {
                     $totalitems = count($response);
-                    $cartvalue = $this->incartcredit();
+                    $cartvalue = self::incartcredit();
 
                     $cartcredit = 0;
 
@@ -2399,7 +2369,7 @@ class HomeController extends Controller {
                     }
                 }
 
-                $later_response =  DB::table('tbl_wishlist')->select('tbl_plan.*','tbl_buypackagestock.*','tbl_buypackage.*','tbl_wishlist.*','tbl_Video.*','tbl_Videotagrelations.VchVideoId',DB::raw("(Select GROUP_CONCAT(np.VchSearchcategorytitle SEPARATOR ', ') from tbl_SearchcategoryVideoRelationship as np where np.IntVideoID = tbl_Video.IntId) as videotags "))
+                $later_response = DB::table('tbl_wishlist')->select('tbl_plan.*','tbl_buypackagestock.*','tbl_buypackage.*','tbl_wishlist.*','tbl_Video.*','tbl_Videotagrelations.VchVideoId',DB::raw("(Select GROUP_CONCAT(np.VchSearchcategorytitle SEPARATOR ', ') from tbl_SearchcategoryVideoRelationship as np where np.IntVideoID = tbl_Video.IntId) as videotags "))
                     ->leftjoin('tbl_Video','tbl_wishlist.videoid','tbl_Video.IntId','tbl_Video.content_category')
                     ->leftJoin('tbl_Videotagrelations', 'tbl_Video.IntId', '=', 'tbl_Videotagrelations.VchVideoId')
                     ->leftjoin('tbl_buypackage','tbl_buypackage.package_userid','tbl_wishlist.userid')
