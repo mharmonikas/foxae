@@ -110,7 +110,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row suggesstion-row">
+            <div class="row suggesstion-row" style="display: none;">
                 <ul class="keyword" ng-if="showkeyword">
                     Did You Mean:
                     <li ng-repeat="tpname in allkeyword" ng-click="selectautosearch(tpname.title);">@{{tpname.title}}<span>,</span></li>
@@ -120,7 +120,7 @@
                 <input type="hidden" value="@if(!empty($package)){{'yes'}}@else{{'no'}} @endif" data-value="@if(!empty($package)){{$package->package_count-$package->package_download}}@endif" id="package-detail">
                 <input type="hidden" value="" ng-if="tpname.downloadstatus=='out-download'" id="download">
                 <input type="hidden" value="" ng-if="tpname.downloadstatus=='in-download'" id="redownload">
-                <ul class="video-parts">
+                <ul class="video-parts" style="display: none;">
                     <li class="inner-parts" ng-repeat="tpname in allvideo">
                         <div class="btn-model @{{tpname.IntId}}_content" ng-if="tpname.applied_bg==''" data-bg-id="{{data_get($backgrounds, '0.bg_id')}}" data-name="@{{tpname.VchTitle}}" data-tags="@{{tpname.videotags}}" data-image="/showimage/@{{tpname.IntId}}/{{$managesite->intmanagesiteid}}/@{{tpname.VchVideoName}}?=@{{tpname.intsetdefault}}" data-image-name="@{{tpname.VchVideoName}}" data-image-id="@{{tpname.IntId}}" data-transparent="@{{tpname.transparent}}" data-id="@{{tpname.productid}}" data-imgtype="@{{tpname.content_category}}" data-category="@{{tpname.stock_category}}" data-seo="@{{tpname.seo_url}}" data-type="@{{tpname.EnumType}}" data-folder="@{{tpname.VchFolderPath}}" data-download="@{{tpname.downloadstatus}}" cart-status="@{{tpname.cartstatus}}"fav-status="@{{tpname.favoritesstatus}}" video-id="@{{tpname.IntId}}" transparent-status="@{{tpname.transparent}}" >
                             <div class="hover-play-icon group1" ng-if="tpname.EnumType=='V'"   >
@@ -291,6 +291,11 @@
             $(this).siblings('.searchplaceholder').show();
     });
     $('.form-control').blur();
+
+    $( document ).ready(function() {
+        $('.suggesstion-row').css('display', 'block')
+        $('.video-parts').css('display', 'block')
+    })
     /*
     $(document).ready(function(){
         var $this = $('#searchkeyword').val;
