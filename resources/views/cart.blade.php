@@ -12,8 +12,10 @@
 							<div class="table-responsive">
 							<table class="table heading-table top-th" width="100%">
 								<tr>
-									<th ><h4 class="heading_main">Shopping Cart</h4></th>
-									<th class="cart-hide-on-mobile" colspan="3" style="text-align:right;">Price</th>
+									<th>
+                                       <h4 class="heading_main">Shopping Cart</h4>
+                                    </th>
+                                    <span class="cart-hide-on-mobile" style="position: absolute; right: 48px; top: 19px;">Price</span>
 								</tr>
 								</table>
                             <table class="table heading-table" width="100%" id="alert">
@@ -34,171 +36,148 @@
 
 
 											<td class="cart-img ">
-											<h5 class="cart-hide-on-desktop">{{$res->VchTitle}}</h5>
+                                                        <h5 class="cart-hide-on-desktop">{{$res->VchTitle}}</h5>
 
-												<div class="btn-model custom-video" id="alldetail_{{$res->IntId}}" data-bg-id="{{$res->background_id}}" data-site-id="{{$siteid}}" data-image-id="{{$res->IntId}}" data-image-name="{{$res->VchVideoName}}" data-name="{{$res->VchTitle}}" data-tags="{{$res->videotags}}"  data-image="@if(empty($res->applied_bg))/showimage/{{$res->IntId}}/{{$siteid}}/{{$res->VchVideoName}}?={{$res->intsetdefault}} @else /showimg/{{$res->userid}}/{{$res->img_name}} @endif" data-id="{{Crypt::encryptString($res->IntId)}}" data-imgtype="{{$res->content_category}}" data-category="{{$res->stock_category}}" data-seo="{{$res->seo_url}}" data-type="{{$res->EnumType}}" data-folder="{{$res->VchFolderPath}}" data-download="" video-id="{{$res->IntId}}" cart-status="out-cart" fav-status="{{$res->favoritesstatus}}" transparent-status="{{$res->transparent}}">
-												<div class="cart-hide-on-desktop outter">
-											<div class="object-type">
-												@if($res->EnumType=='I')Image @else Video @endif
-											</div>
-											<span class="cart-hide-on-desktop">
-														@php
-												if(empty($checkloginuser)){
-													if($res->stock!=0){
-													$price=$res->stock/$res->conversion_rate;
-													}else{
-													$price=0;
-													}
-												}else{
-													if(empty($packageid)){
-													if($res->stock!=0){
-														$price=$res->stock/$res->conversion_rate;
-													}else{
-													$price=0;
+                                                            <div class="btn-model custom-video" id="alldetail_{{$res->IntId}}" data-bg-id="{{$res->background_id}}" data-site-id="{{$siteid}}" data-image-id="{{$res->IntId}}" data-image-name="{{$res->VchVideoName}}" data-name="{{$res->VchTitle}}" data-tags="{{$res->videotags}}"  data-image="@if(empty($res->applied_bg))/showimage/{{$res->IntId}}/{{$siteid}}/{{$res->VchVideoName}}?={{$res->intsetdefault}} @else /showimg/{{$res->userid}}/{{$res->img_name}} @endif" data-id="{{Crypt::encryptString($res->IntId)}}" data-imgtype="{{$res->content_category}}" data-category="{{$res->stock_category}}" data-seo="{{$res->seo_url}}" data-type="{{$res->EnumType}}" data-folder="{{$res->VchFolderPath}}" data-download="" video-id="{{$res->IntId}}" cart-status="out-cart" fav-status="{{$res->favoritesstatus}}" transparent-status="{{$res->transparent}}">
+                                                            <div class="cart-hide-on-desktop outter">
+                                                        <div class="object-type">
+                                                            @if($res->EnumType=='I')Image @else Video @endif
+                                                        </div>
+                                                        <span class="cart-hide-on-desktop">
+                                                                    @php
+                                                            if(empty($checkloginuser)){
+                                                                if($res->stock!=0){
+                                                                $price=$res->stock/$res->conversion_rate;
+                                                                }else{
+                                                                $price=0;
+                                                                }
+                                                            }else{
+                                                                if(empty($packageid)){
+                                                                if($res->stock!=0){
+                                                                    $price=$res->stock/$res->conversion_rate;
+                                                                }else{
+                                                                $price=0;
 
-													}
-													}
-												}
-											@endphp
+                                                                }
+                                                                }
+                                                            }
+                                                        @endphp
 
-											@if(!empty($checkloginuser))
-												@if(!empty($packageid))
-													@if(!empty($res->stock)){{$res->stock}} Credits @else 0 Credit @endif
-												@else
-													${{number_format($price, 2)}}
-												@endif
-										@else ${{number_format($price, 2)}} @endif
+                                                        @if(!empty($checkloginuser))
+                                                            @if(!empty($packageid))
+                                                                @if(!empty($res->stock)){{$res->stock}} Credits @else 0 Credit @endif
+                                                            @else
+                                                                ${{number_format($price, 2)}}
+                                                            @endif
+                                                    @else ${{number_format($price, 2)}} @endif
 
 
-											</span>
-											</div>
+                                                        </span>
+                                                        </div>
 
-												<div class="cnrflash-for-mobile cart-hide-on-desktop">
-												@if($res->content_category=='1')
-												<div class="cnrflash">
-													<div class="cnrflash-inner first second standard">
-														<span class="cnrflash-label">Standard
-														   </span>
-													</div>
-												</div>
-												@endif
+                                                            <div class="cnrflash-for-mobile cart-hide-on-desktop">
+                                                            @if($res->content_category=='1')
+                                                            <div class="cnrflash">
+                                                                <div class="cnrflash-inner first second standard">
+                                                                    <span class="cnrflash-label">Standard
+                                                                       </span>
+                                                                </div>
+                                                            </div>
+                                                            @endif
 
-												@if($res->content_category=='2')
-												<div class="cnrflash">
-					<div class="cnrflash-inner first second premium">
-						<span class="cnrflash-label">Premium
-						   </span>
-					</div>
-				</div>
-												@endif
+                                                            @if($res->content_category=='2')
+                                                            <div class="cnrflash">
+                                                                <div class="cnrflash-inner first second premium">
+                                                                    <span class="cnrflash-label">Premium
+                                                                       </span>
+                                                                </div>
+                                                            </div>
+                                                                                            @endif
 
-												@if($res->content_category=='3')
-												<div class="cnrflash">
-					<div class="cnrflash-inner first second ultra_premium">
-						<span class="cnrflash-label">Deluxe
-						   </span>
-					</div>
-				</div>
-												@endif
-												</div>
-																@if($res->EnumType=='V')
-													<div class="hover-play-icon group1 cart-hide-on-mobile" >
-														<img src="{{ asset('images') }}/{{$managesite->vchvideoicon}}" alt="img">
-													</div>
+                                                                                            @if($res->content_category=='3')
+                                                                                            <div class="cnrflash">
+                                                                <div class="cnrflash-inner first second ultra_premium">
+                                                                    <span class="cnrflash-label">Deluxe
+                                                                       </span>
+                                                                </div>
+                                                            </div>
+                                                            @endif
+                                                            </div>
+                                                                            @if($res->EnumType=='V')
+                                                                <div class="hover-play-icon group1 cart-hide-on-mobile" >
+                                                                    <img src="{{ asset('images') }}/{{$managesite->vchvideoicon}}" alt="img">
+                                                                </div>
 
-													<img src="/resize2/showimage/{{$res->IntId}}/{{$siteid}}/{{$res->VchVideothumbnail}}/?=16" height="60px" width="100px">
-												@else
-												<img src="/resize1/showimage/{{ $res->IntId }}/{{$siteid}}/{{ $res->VchResizeimage}}/?={{ $res->intsetdefault}}" height="60px" width="100px" class="cart-img-size">
-												</div>
-												@endif
+                                                                <img src="/resize2/showimage/{{$res->IntId}}/{{$siteid}}/{{$res->VchVideothumbnail}}/?=16" height="60px" width="100px">
+                                                            @else
+                                                            <img src="/resize1/showimage/{{ $res->IntId }}/{{$siteid}}/{{ $res->VchResizeimage}}/?={{ $res->intsetdefault}}" height="60px" width="100px" class="cart-img-size">
+                                                            </div>
+                                                            @endif
 												</td>
 
-
 											<td class="cart-text-center">
-											<h5 class="cart-hide-on-mobile">{{$res->VchTitle}}</h5>
-											<div class="cart-hide-on-mobile outter">
-											@if($res->content_category == 1)
-												<div class="standard">
-													<span class="tag">Standard
-													</span>
-												</div>
-											@elseif($res->content_category == 2)
-												<div class="premium">
-													<span class="tag">Premium
-													</span>
-												</div>
-											@elseif($res->content_category == 3)
-												<div class="ultra_premium">
-													<span class="tag">Deluxe
-													</span>
-												</div>
-											@endif
-											<div class="object-type">
-												@if($res->EnumType=='I')Image @else Video @endif
-											</div>
-											</div>
-											@if(!empty($res->applied_bg))
-												<p class="background-effect" id="appliedbg_{{$res->IntId}}">{{$res->applied_bg}} Background</p>
-											@else
-												@if($res->transparent=='Y')
-													<p class="background-effect" id="appliedbg_{{$res->IntId}}">Transparent Background</p>
-											@endif
-											@endif
 
-											<span class="clr-grey">|</span> <a class="delete text-style" data-title="Remove" id="{{$res->id}}" data-value="{{$res->IntId}}" title="Remove">Remove</a>
-											<span class="clr-grey">|</span> <a class="later text-style" onclick="changestatus({{$res->id}},'later')" data-title="Save for Later"  title="Save for Later">Save for Later</a>
-											@if($res->EnumType=='I')
-												@if($res->transparent=='Y')
-											<span class="clr-grey">|</span> <a class="text-style" data-toggle="modal" data-target="#myModal{{ $res->IntId }}">Change Background</a>
-												@endif
-											@endif
-											</td>
-											<td class="price-cart cart-hide-on-mobile" style="text-align:right;">
-{{--                                                @php--}}
-{{--                                                    $coupon = data_get(Session::get('cart-coupon'), 'coupon');--}}
-{{--                                                    $discount = false;--}}
-{{--                                                    $discountText = '';--}}
-
-{{--                                                    if(empty($checkloginuser)) {--}}
-{{--                                                        if($res->stock!=0){--}}
-{{--                                                            $price=$res->stock/$res->conversion_rate;--}}
-{{--                                                        } else {--}}
-{{--                                                            $price=0;--}}
-{{--                                                        }--}}
-{{--                                                    } --}}
-{{--                                                    --}}
-{{--                                                    else if(empty($packageid)) {--}}
-{{--                                                        if($res->stock != 0) {--}}
-{{--                                                            $stock = $res->stock;--}}
-{{--                                                            $tiers = $coupon ? explode(',', $coupon->tier) : [];--}}
-
-{{--                                                            if($coupon && in_array($res->content_category, $tiers)) {--}}
-{{--                                                                $stock = $coupon->discount_type == 'P' ? $stock - $stock * $coupon->amount / 100 : $stock - $coupon->amount;--}}
-{{--                                                                $discount = true;--}}
-{{--                                                                $discountText = $coupon->discount_type == 'P' ? 'Coupon '.$coupon->amount.'% off' : sprintf('Coupon $%s off', $coupon->amount);--}}
-{{--                                                            }--}}
-
-{{--                                                            $price = $stock/$res->conversion_rate;--}}
-{{--                                                        } else {--}}
-{{--                                                            $price = 0;--}}
-{{--                                                        }--}}
-{{--                                                    }--}}
-{{--                                                @endphp--}}
-
-											    @if(!empty($checkloginuser))
-                                                    @if(!empty($packageid))
-                                                        @if(!empty($res->stock)){{$res->stock}} Credits @else 0 Credit @endif
-                                                    @else
-                                                        ${{number_format($price, 2)}}
-                                                    @endif
+                                                <h5 class="cart-hide-on-mobile">
+                                                    {{$res->VchTitle}}
+                                                </h5>
+                                                <div class="cart-hide-on-mobile outter">
+                                                @if($res->content_category == 1)
+                                                    <div class="standard">
+                                                        <span class="tag">Standard
+                                                        </span>
+                                                    </div>
+                                                @elseif($res->content_category == 2)
+                                                    <div class="premium">
+                                                        <span class="tag">Premium
+                                                        </span>
+                                                    </div>
+                                                @elseif($res->content_category == 3)
+                                                    <div class="ultra_premium">
+                                                        <span class="tag">Deluxe
+                                                        </span>
+                                                    </div>
+                                                @endif
+                                                <div class="object-type">
+                                                    @if($res->EnumType=='I')Image @else Video @endif
+                                                </div>
+                                                </div>
+                                                @if(!empty($res->applied_bg))
+                                                    <p class="background-effect" id="appliedbg_{{$res->IntId}}">{{$res->applied_bg}} Background</p>
                                                 @else
-                                                    ${{number_format($price, 2)}}
+                                                    @if($res->transparent=='Y')
+                                                        <p class="background-effect" id="appliedbg_{{$res->IntId}}">Transparent Background</p>
+                                                @endif
                                                 @endif
 
-                                                @if($discountText = data_get($res, 'discountText'))
-                                                    <b><br>{!! nl2br(str_repeat(' ', 30) . $discountText) !!}</b>
+                                                <span class="clr-grey">|</span> <a class="delete text-style" data-title="Remove" id="{{$res->id}}" data-value="{{$res->IntId}}" title="Remove">Remove</a>
+                                                <span class="clr-grey">|</span> <a class="later text-style" onclick="changestatus({{$res->id}},'later')" data-title="Save for Later"  title="Save for Later">Save for Later</a>
+                                                @if($res->EnumType=='I')
+                                                    @if($res->transparent=='Y')
+                                                <span class="clr-grey">|</span> <a class="text-style" data-toggle="modal" data-target="#myModal{{ $res->IntId }}">Change Background</a>
+                                                    @endif
                                                 @endif
+
+
 											</td>
+                                              <td>
+                                                  <div class="price-cart cart-hide-on-mobile" style="float: right; margin-right: -10px;">
+                                                      @if(!empty($checkloginuser))
+                                                          @if(!empty($packageid))
+                                                              @if(!empty($res->stock)){{$res->stock}} Credits @else 0 Credit @endif
+                                                          @else
+                                                              ${{number_format($price, 2)}}
+                                                          @endif
+                                                      @else
+                                                          ${{number_format($price, 2)}}
+                                                      @endif
+
+                                                      @if($discountText = data_get($res, 'discountText'))
+                                                          <b><br>{!! nl2br(str_repeat(' ', 30) . $discountText) !!}</b>
+                                                      @endif
+                                                  </div>
+                                              </td>
+
+{{--											<td class="price-cart cart-hide-on-mobile" style="text-align:right;"></td>--}}
 										</tr>
 										  @php $i++; @endphp
 									@endforeach
